@@ -38,7 +38,11 @@ FILES_FASTQ_POST_ORGANISATION=$dossier2/*$extension
 file_name_searched="references_mafft"
 file_name_searched_A="sequences_ref_A_pre_mafft.fasta"
 file_name_searched_B="sequences_ref_B_pre_mafft.fasta"
-######-----fonctions-----###### 
+
+
+
+
+######-----######-----######-----######-----######-----fonctions-----######-----######-----######-----######-----###### 
 
 verification_conditions() {
     echo "Drop your (.fastq.gz) files in the '_Input_Folder_'"
@@ -58,8 +62,8 @@ verification_conditions() {
         read -p "After deposit, enter 'Y' to continue: " choice
     done
 }    
-# TODO : finir de corriger cette focnti 
 
+######-----######-----######-----######-----######-----SCRIPT-----######-----######-----######-----######-----###### 
 
 coeur_machine=$(nproc)
 read -p "In order to optimize execution speed, this program uses multithreading whenever possible.
@@ -96,7 +100,30 @@ else
     echo "Le répertoire $dossier0 a été créé avec succès."
 fi
 
-verification_conditions 
+read -p "which type of data do you want to treat ?
+        Ilumina (1) | nanopore (2) -> : " data_type
+
+while [ "$data_type" != "1" ] && [ "$data_type" != "2" ];
+    do 
+        read -p "which type of data do you want to treat ?
+        Ilumina (1) | nanopore (2) -> : " data_type
+    done  
+
+if [ "$data_type" == "1" ]; then
+    echo "You have chosen to process ilumina data"
+    # TODO: vérifier si le format de fichier est bien fastq.gz
+    verification_conditions
+
+else if [ "$data_type" == "2" ]; then
+    echo "You have chosen to process nanopore data"
+    verification_conditions
+
+fi
+
+
+
+# good #
+ 
 
 # Création des différents répertoires
 if [ -d "$dossier1" ]; then
@@ -150,13 +177,13 @@ fi
 
 
 # Déplacer les fichiers dans les bons répertoires "1-fastq/fastq.gz" 
-find $FILES_FASTQ -type f -name "*fastq.gz" -exec mv {} "$dossier2" \;
 
-# for file in `ls $FILES_FASTQ`; do
 
-#     mv "$file" "$dossier2"
+ for file in `ls $FILES_FASTQ`; do
 
-# done
+     mv "$file" "$dossier2"
+
+ done
 
 # préparation des données à l'analyse:
 for files in `ls $FILES_FASTQ_POST_ORGANISATION`
