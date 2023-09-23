@@ -253,25 +253,25 @@ else if [ "$data_type" == "2" ]; then
         minimap2 -ax map-ont -t $cores $REF_GEN $files > "$dossier3/$current_name.sam"
         echo "MINIMAP2 PROCESSED $files"
 
-        samtools view -b -S -@ $cores "$dossier3/$current_name.sam" > "$dossier4/$current_name.bam"
-        echo "SAM to BAM PROCESSED $files"
-        #rm $current_name.sam
-
-        samtools sort -@ $cores "$dossier4/$current_name.bam" -o "$dossier5/$current_name.sorted.bam"
-        echo "SORTING PROCESSED $files"
-        #rm $current_name.bam
-
-        samtools index "$dossier5/$current_name.sorted.bam"
-        echo "INDEXATION PROCESSED $files"
-
-        samtools mpileup -a -B "$dossier5/$current_name.sorted.bam" -f $REF_GEN -o "$dossier6/$current_name.pileup"
-        echo "PILEUP PROCESSED $files"
+        
         
     done
 
 fi
 
+        # samtools view -b -S -@ $cores "$dossier3/$current_name.sam" > "$dossier4/$current_name.bam"
+        # echo "SAM to BAM PROCESSED $files"
+        # #rm $current_name.sam
 
+        # samtools sort -@ $cores "$dossier4/$current_name.bam" -o "$dossier5/$current_name.sorted.bam"
+        # echo "SORTING PROCESSED $files"
+        # #rm $current_name.bam
+
+        # samtools index "$dossier5/$current_name.sorted.bam"
+        # echo "INDEXATION PROCESSED $files"
+
+        # samtools mpileup -a -B "$dossier5/$current_name.sorted.bam" -f $REF_GEN -o "$dossier6/$current_name.pileup"
+        # echo "PILEUP PROCESSED $files"
 
 
 
