@@ -1,6 +1,7 @@
 from ete3 import Tree
 import os
-# c'est BIGGz
+
+#c'est biggz 2
 directory = "./../8-IQTree"
 dossier = f"./../9-Distances/result_txt"
 # Lire le fichier .treefile
