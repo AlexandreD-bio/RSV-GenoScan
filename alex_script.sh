@@ -100,8 +100,9 @@ else
     echo "Le répertoire $dossier0 a été créé avec succès."
 fi
 
+# choix et test de type ilumina ou
 read -p "which type of data do you want to treat ?
-        Ilumina (1) | nanopore (2) -> : " data_type
+    Ilumina (1) | nanopore (2) -> : " data_type
 
 while [ "$data_type" != "1" ] && [ "$data_type" != "2" ];
     do 
@@ -109,21 +110,13 @@ while [ "$data_type" != "1" ] && [ "$data_type" != "2" ];
         Ilumina (1) | nanopore (2) -> : " data_type
     done  
 
-if [ "$data_type" == "1" ]; then
-    echo "You have chosen to process ilumina data"
-    # TODO: vérifier si le format de fichier est bien fastq.gz
-    verification_conditions
+#
+#
+# ici pour rechanger l'emplacement des tests if/elseif 
+#
+#
 
-else if [ "$data_type" == "2" ]; then
-    echo "You have chosen to process nanopore data"
-    verification_conditions
-
-fi
-
-
-
-# good #
- 
+verification_conditions
 
 # Création des différents répertoires
 if [ -d "$dossier1" ]; then
@@ -175,15 +168,114 @@ else
     echo "Le répertoire $dossier7 a été créé avec succès."
 fi
 
+# Ilumina 
+if [ "$data_type" == "1" ]; then
+    echo "You have chosen to process ilumina data"
+    # TODO: vérifier si le format de fichier est bien fastq.gz
 
-# Déplacer les fichiers dans les bons répertoires "1-fastq/fastq.gz" 
+    # Déplacer les fichiers dans les bons répertoires "1-fastq/fastq.gz" 
+    for file in `ls $FILES_FASTQ`; do
+
+        mv "$file" "$dossier2"
+
+    done
+    
+    # suite à add ici
+
+    # préparation des données à l'analyse:
+ #   for files in `ls $FILES_FASTQ_POST_ORGANISATION`
+ #   do 
+ #       
+ #       current_name=$(basename $files .fastq.gz)
+ #       
+  #      echo "$current_name"
+ #       minimap2 -ax map-ont -t $cores $REF_GEN $files > "$dossier3/$current_name.sam"
+ #       echo "MINIMAP2 PROCESSED $files"
+#
+    #    samtools view -b -S -@ $cores "$dossier3/$current_name.sam" > "$dossier4/$current_name.bam"
+   #     echo "SAM to BAM PROCESSED $files"
+  #      #rm $current_name.sam
+
+    #    samtools sort -@ $cores "$dossier4/$current_name.bam" -o "$dossier5/$current_name.sorted.bam"
+     #   echo "SORTING PROCESSED $files"
+     #   #rm $current_name.bam
+
+     #   samtools index "$dossier5/$current_name.sorted.bam"
+     #   echo "INDEXATION PROCESSED $files"
+
+     #   samtools mpileup -a -B "$dossier5/$current_name.sorted.bam" -f $REF_GEN -o "$dossier6/$current_name.pileup"
+     #   echo "PILEUP PROCESSED $files"
+        
+    #done
 
 
- for file in `ls $FILES_FASTQ`; do
 
-     mv "$file" "$dossier2"
 
- done
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Nanopore
+else if [ "$data_type" == "2" ]; then
+    echo "You have chosen to process nanopore data"
+    # Déplacer les fichiers dans les bons répertoires "1-fastq/fastq.gz" 
+    for file in `ls $FILES_FASTQ`; do
+
+        mv "$file" "$dossier2"
+
+    done
+
+
+
+    # préparation des données à l'analyse:
+    for files in `ls $FILES_FASTQ_POST_ORGANISATION`
+    do 
+        
+        current_name=$(basename $files .fastq.gz)
+        
+        echo "$current_name"
+        minimap2 -ax map-ont -t $cores $REF_GEN $files > "$dossier3/$current_name.sam"
+        echo "MINIMAP2 PROCESSED $files"
+
+        samtools view -b -S -@ $cores "$dossier3/$current_name.sam" > "$dossier4/$current_name.bam"
+        echo "SAM to BAM PROCESSED $files"
+        #rm $current_name.sam
+
+        samtools sort -@ $cores "$dossier4/$current_name.bam" -o "$dossier5/$current_name.sorted.bam"
+        echo "SORTING PROCESSED $files"
+        #rm $current_name.bam
+
+        samtools index "$dossier5/$current_name.sorted.bam"
+        echo "INDEXATION PROCESSED $files"
+
+        samtools mpileup -a -B "$dossier5/$current_name.sorted.bam" -f $REF_GEN -o "$dossier6/$current_name.pileup"
+        echo "PILEUP PROCESSED $files"
+        
+    done
+
+fi
+
+
+
+
+
+
 
 # préparation des données à l'analyse:
 for files in `ls $FILES_FASTQ_POST_ORGANISATION`
