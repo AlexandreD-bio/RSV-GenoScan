@@ -104,17 +104,10 @@ fi
 read -p "which type of data do you want to treat ?
     Ilumina (1) | nanopore (2) -> : " data_type
 
-while [ "$data_type" != "1" ] && [ "$data_type" != "2" ];
-    do 
-        read -p "which type of data do you want to treat ?
-        Ilumina (1) | nanopore (2) -> : " data_type
-    done  
-
-#
-#
-# ici pour rechanger l'emplacement des tests if/elseif 
-#
-#
+while [ "$data_type" != "1" ] && [ "$data_type" != "2" ]; do 
+    read -p "which type of data do you want to treat ?
+    Ilumina (1) | nanopore (2) -> : " data_type
+done  
 
 verification_conditions
 
@@ -180,60 +173,15 @@ if [ "$data_type" == "1" ]; then
 
     done
     
-    # suite à add ici
-
     # préparation des données à l'analyse:
- #   for files in `ls $FILES_FASTQ_POST_ORGANISATION`
- #   do 
- #       
-       current_name=$(basename $files .fastq.gz)
-       
-    #     echo "$current_name"
-    #     bwa mem ./../references_phylogenie/ref_combined_insertion.fasta ./ERR7013415_1.fastq.gz ./ERR7013415_2.fastq.gz > alignment.sam
-    #     echo "BWA PROCESSED $files"
-    # #
-    #     samtools view -b -S -@ $cores "$dossier3/$current_name.sam" > "$dossier4/$current_name.bam"
-    #     echo "SAM to BAM PROCESSED $files"
-    #     #rm $current_name.sam
-
-    #     samtools sort -@ $cores "$dossier4/$current_name.bam" -o "$dossier5/$current_name.sorted.bam"
-    #     echo "SORTING PROCESSED $files"
-    #     #rm $current_name.bam
-
-    #     samtools index "$dossier5/$current_name.sorted.bam"
-    #     echo "INDEXATION PROCESSED $files"
-
-    #     samtools mpileup -a -B "$dossier5/$current_name.sorted.bam" -f $REF_GEN -o "$dossier6/$current_name.pileup"
-    #     echo "PILEUP PROCESSED $files"
+    python3 analyse_bwa_ilumina.py
+    echo "BWA PROCESSED"
         
-    done
 
+    # Nanopore
+elif [ "$data_type" == "2" ]; then
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Nanopore
-else if [ "$data_type" == "2" ]; then
-    echo "You have chosen to process nanopore data"
+    echo "You have chosen to process Nanopore data"
     # Déplacer les fichiers dans les bons répertoires "1-fastq/fastq.gz" 
     for file in `ls $FILES_FASTQ`; do
 
@@ -241,67 +189,31 @@ else if [ "$data_type" == "2" ]; then
 
     done
 
-
-
     # préparation des données à l'analyse:
-    for files in `ls $FILES_FASTQ_POST_ORGANISATION`
-    do 
+    for files in `ls $FILES_FASTQ_POST_ORGANISATION`; do 
         
         current_name=$(basename $files .fastq.gz)
         
         echo "$current_name"
         minimap2 -ax map-ont -t $cores $REF_GEN $files > "$dossier3/$current_name.sam"
-        echo "MINIMAP2 PROCESSED $files"
-
-        
-        
+        echo "MINIMAP2 PROCESSED $files"   
     done
 
 fi
 
-        # samtools view -b -S -@ $cores "$dossier3/$current_name.sam" > "$dossier4/$current_name.bam"
-        # echo "SAM to BAM PROCESSED $files"
-        # #rm $current_name.sam
+samtools view -b -S -@ $cores "$dossier3/$current_name.sam" > "$dossier4/$current_name.bam"
+echo "SAM to BAM PROCESSED $files"
+#rm $current_name.sam
 
-        # samtools sort -@ $cores "$dossier4/$current_name.bam" -o "$dossier5/$current_name.sorted.bam"
-        # echo "SORTING PROCESSED $files"
-        # #rm $current_name.bam
+samtools sort -@ $cores "$dossier4/$current_name.bam" -o "$dossier5/$current_name.sorted.bam"
+echo "SORTING PROCESSED $files"
+#rm $current_name.bam
 
-        # samtools index "$dossier5/$current_name.sorted.bam"
-        # echo "INDEXATION PROCESSED $files"
+samtools index "$dossier5/$current_name.sorted.bam"
+echo "INDEXATION PROCESSED $files"
 
-        # samtools mpileup -a -B "$dossier5/$current_name.sorted.bam" -f $REF_GEN -o "$dossier6/$current_name.pileup"
-        # echo "PILEUP PROCESSED $files"
-
-
-
-
-
-# préparation des données à l'analyse:
-for files in `ls $FILES_FASTQ_POST_ORGANISATION`
-do 
-    
-    current_name=$(basename $files .fastq.gz)
-    
-    echo "$current_name"
-    minimap2 -ax map-ont -t $cores $REF_GEN $files > "$dossier3/$current_name.sam"
-    echo "MINIMAP2 PROCESSED $files"
-
-    samtools view -b -S -@ $cores "$dossier3/$current_name.sam" > "$dossier4/$current_name.bam"
-    echo "SAM to BAM PROCESSED $files"
-    #rm $current_name.sam
-
-    samtools sort -@ $cores "$dossier4/$current_name.bam" -o "$dossier5/$current_name.sorted.bam"
-    echo "SORTING PROCESSED $files"
-    #rm $current_name.bam
-
-    samtools index "$dossier5/$current_name.sorted.bam"
-    echo "INDEXATION PROCESSED $files"
-
-    samtools mpileup -a -B "$dossier5/$current_name.sorted.bam" -f $REF_GEN -o "$dossier6/$current_name.pileup"
-    echo "PILEUP PROCESSED $files"
-    
-done
+samtools mpileup -a -B "$dossier5/$current_name.sorted.bam" -f $REF_GEN -o "$dossier6/$current_name.pileup"
+echo "PILEUP PROCESSED $files"
 
 #TODO: analyse des pileups
 echo "pileups analysis ..."
