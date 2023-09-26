@@ -1,7 +1,7 @@
 #! /bin/bash
 
 ########## Variables ##########
-
+source script1.sh
  
 #Adding Gblocks to the PATH environment
     #détection de minimap
@@ -16,9 +16,16 @@ dossier4="./../6-Mafft"
 dossier5="./../7-Gblocks"
 dossier6="./../8-IQTree"
 dossier7="./../9-Distances"
-Coeur=2
+
+if [ -z "$cores" ]; then
+    Coeur=1
+else
+    Coeur=$cores
+fi
 
 
+
+echo "Saltation voGeur $Coeur"
 
 ########## Script ##########
 

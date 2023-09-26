@@ -90,7 +90,7 @@ How many core(s) do you want to use ? : " cores
 
 done 
 echo "$cores"
-####################################-----script-----#################################### 
+
 
 # génération du dossier d'input
 if [ -d "$dossier0" ]; then
@@ -111,7 +111,7 @@ done
 
 verification_conditions
 
-# Création des différents répertoires
+######-----######-----######-----######-----######-----génération_dossiers-----######-----######-----######-----######-----######
 if [ -d "$dossier1" ]; then
     echo "Le répertoire $dossier1 existe déjà."
 else
@@ -161,12 +161,12 @@ else
     echo "Le répertoire $dossier7 a été créé avec succès."
 fi
 
-# Ilumina 
+    # Ilumina 
 if [ "$data_type" == "1" ]; then
     echo "You have chosen to process ilumina data"
     # TODO: vérifier si le format de fichier est bien fastq.gz
 
-    # Déplacer les fichiers dans les bons répertoires "1-fastq/fastq.gz" 
+    Déplacer les fichiers dans les bons répertoires "1-fastq/fastq.gz" 
     for file in `ls $FILES_FASTQ`; do
 
         mv "$file" "$dossier2"
@@ -174,7 +174,7 @@ if [ "$data_type" == "1" ]; then
     done
     
     # préparation des données à l'analyse:
-    python3 analyse_bwa_ilumina.py
+    python3 analyse_bwa_ilumina.py $cores
     echo "BWA PROCESSED"
         
 
@@ -197,23 +197,35 @@ elif [ "$data_type" == "2" ]; then
         echo "$current_name"
         minimap2 -ax map-ont -t $cores $REF_GEN $files > "$dossier3/$current_name.sam"
         echo "MINIMAP2 PROCESSED $files"   
+        
     done
 
 fi
 
-samtools view -b -S -@ $cores "$dossier3/$current_name.sam" > "$dossier4/$current_name.bam"
-echo "SAM to BAM PROCESSED $files"
-#rm $current_name.sam
 
-samtools sort -@ $cores "$dossier4/$current_name.bam" -o "$dossier5/$current_name.sorted.bam"
-echo "SORTING PROCESSED $files"
-#rm $current_name.bam
 
-samtools index "$dossier5/$current_name.sorted.bam"
-echo "INDEXATION PROCESSED $files"
+for files in `ls $dossier3`; do 
+        
+    current_name=$(basename $files .sam)
+    
+    echo "$current_name"
+      
+    samtools view -b -S -@ $cores "$dossier3/$current_name.sam" > "$dossier4/$current_name.bam"
+    echo "SAM to BAM PROCESSED $current_name"
+    #rm $current_name.sam
 
-samtools mpileup -a -B "$dossier5/$current_name.sorted.bam" -f $REF_GEN -o "$dossier6/$current_name.pileup"
-echo "PILEUP PROCESSED $files"
+    samtools sort -@ $cores "$dossier4/$current_name.bam" -o "$dossier5/$current_name.sorted.bam"
+    echo "SORTING PROCESSED $current_name"
+    #rm $current_name.bam
+
+    samtools index "$dossier5/$current_name.sorted.bam"
+    echo "INDEXATION PROCESSED $current_name"
+
+    samtools mpileup -a -B "$dossier5/$current_name.sorted.bam" -f $REF_GEN -o "$dossier6/$current_name.pileup"
+    echo "PILEUP PROCESSED $current_name"
+
+done
+
 
 #TODO: analyse des pileups
 echo "pileups analysis ..."
@@ -254,4 +266,8 @@ else
     
 fi
 
+
+export $cores
+
 bash alex_script2.sh
+

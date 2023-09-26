@@ -1664,6 +1664,20 @@ def creation_dossiers(disque: str,nom_fichier_csv: str):
     if not os.path.exists(f"./../2-Dossier_results_FASTA"):
         os.makedirs(f"./../2-Dossier_results_FASTA")
     return sortie_csv
+
+
+def extraction_id(file_name: str,file_id: str)-> str:
+
+    file_id_pattern_regex = r'pileup/([^/]+)\.pileup'
+
+    file_id_match = re.search(file_id_pattern_regex, file_name)
+
+    if file_id_match:
+        file_id = file_id_match.group(1)
+        
+    
+
+    return file_id
 #============================================================ script ============================================================#
 
 
@@ -1672,7 +1686,7 @@ sortie_csv = creation_dossiers(disque, nom_fichier_csv)
 
 
 
-sortie_csv.write("barcode,Couverture_génome_à_10X(en%),exploitable(à_70%),Type,Couverture_protéine_G(en%_à10X),Couverture_protéine_F(en%_à10X),Mediane_de_couverture_en_reads,Présence_dulication_protéine_G\n")
+sortie_csv.write("id,Couverture_génome_à_10X(en%),exploitable(à_70%),Type,Couverture_protéine_G(en%_à10X),Couverture_protéine_F(en%_à10X),Mediane_de_couverture_en_reads,Présence_dulication_protéine_G\n")
 
 # import les fichiers du path choisit et en fait une liste dont les éléments sont les déterminants de la boucle 
 for fichier in os.listdir(path_windows): # path à changer 
@@ -1686,7 +1700,7 @@ for fichier in os.listdir(path_windows): # path à changer
             # ouverture du fichier en "read"        
             file = open (nom_fichier,"r")
             content = file.readlines()
-
+            file_id=""
             # fonction permettant le traitement des fichiers pileups en lisant le fichier de A à Z et en sortant un type A/B,
             # qui permet déviter de refaire des opérations pour l'entièreté du fichier pour les fonction d'après.
             # De plus, il sort le pourcentage de couverture du génome ainsi que si le fichier permet d'exploiter le génome consensus qui sera déterminée plus tard,
@@ -1762,16 +1776,16 @@ for fichier in os.listdir(path_windows): # path à changer
                         
                     # "barcode,Couverture_génome_à_10X(en%),exploitable(à_70%),Type,Couverture_protéine_G(en%_à10X),Couverture_protéine_F(en%_à10X),Mediane_de_couverture_en_reads,Présence_dulication_protéine_G\n"
                     if exploitable:
-                        
-                        sortie_csv.write(f"{nom_fichier[-9:-7]},{round(float(pourcent),2)},{exploitable},A,{round(float(pourcent_cover_G),2)},{round(float(pourcent_cover_F),2)},{mediane},{Duplication}\n")
+                        file_name = extraction_id(nom_fichier, file_id)
+                        sortie_csv.write(f"{file_name},{round(float(pourcent),2)},{exploitable},A,{round(float(pourcent_cover_G),2)},{round(float(pourcent_cover_F),2)},{mediane},{Duplication}\n")
 
-                        with open(f"./../2-Dossier_results_FASTA/result_bc{nom_fichier[-9:-7]}_A.fasta","w") as sortie_fastaA:
+                        with open(f"./../2-Dossier_results_FASTA/result_bc{file_name}_A.fasta","w") as sortie_fastaA:
 
-                            sortie_fastaA.write(f">{nom_fichier[-9:-7]}_A\n")
+                            sortie_fastaA.write(f">{file_name}_A\n")
                             sortie_fastaA.write(f"{sequence_consensus}")
                     else:
-
-                        sortie_csv.write(f"{nom_fichier[-9:-7]},{round(float(pourcent),2)},{exploitable},A,{round(float(pourcent_cover_G),2)},{round(float(pourcent_cover_F),2)},{mediane},{Duplication}\n")
+                        file_name = extraction_id(nom_fichier,file_id)
+                        sortie_csv.write(f"{file_name},{round(float(pourcent),2)},{exploitable},A,{round(float(pourcent_cover_G),2)},{round(float(pourcent_cover_F),2)},{mediane},{Duplication}\n")
                         
                 elif type =="B":
                     
@@ -1820,19 +1834,20 @@ for fichier in os.listdir(path_windows): # path à changer
                             liste_hashmap_inser_del_minoritaire_filtree
                             )
                     if exploitable:
+                        file_name = extraction_id(nom_fichier,file_id)
+                        sortie_csv.write(f"{file_name},{round(float(pourcent),2)},{exploitable},B,{round(float(pourcent_cover_G),2)},{round(float(pourcent_cover_F),2)},{mediane},{Duplication}\n")
 
-                        sortie_csv.write(f"{nom_fichier[-9:-7]},{round(float(pourcent),2)},{exploitable},B,{round(float(pourcent_cover_G),2)},{round(float(pourcent_cover_F),2)},{mediane},{Duplication}\n")
-
-                        with open(f"./../2-Dossier_results_FASTA/result_bc{nom_fichier[-9:-7]}_B.fasta","w") as sortie_fastaB:
-
-                            sortie_fastaB.write(f">bc{nom_fichier[-9:-7]}_B\n")
+                        with open(f"./../2-Dossier_results_FASTA/result_{file_name}_B.fasta","w") as sortie_fastaB:
+                            
+                            sortie_fastaB.write(f">{file_name}_B\n")
                             sortie_fastaB.write(f"{sequence_consensus}")
                     else: 
                         
-
-                        sortie_csv.write(f"{nom_fichier[-9:-7]},{round(float(pourcent),2)},{exploitable},B,{round(float(pourcent_cover_G),2)},{round(float(pourcent_cover_F),2)},{mediane},{Duplication}\n")
-            else:  
-                sortie_csv.write(f"{nom_fichier[-9:-7]},/,/,/,/,/,/,/\n")
+                        file_name = extraction_id(nom_fichier,file_id)
+                        sortie_csv.write(f"{file_name},{round(float(pourcent),2)},{exploitable},B,{round(float(pourcent_cover_G),2)},{round(float(pourcent_cover_F),2)},{mediane},{Duplication}\n")
+            else: 
+                file_name = extraction_id(nom_fichier,file_id) 
+                sortie_csv.write(f"{file_name},/,/,/,/,/,/,/\n")
 
             file.close()
 

@@ -1,9 +1,7 @@
-import os 
-import subprocess
-
-print("coucou")
+import os,sys,subprocess
 
 
+var_ext_cores = sys.argv[1]
 dico_fichier_ilumina={}
 
 
@@ -43,7 +41,7 @@ for elem in liste_fichier_ilumina:
             liste_even.append(fichier1_key)
             liste_even.append(pages)
             
-            commande = f"bwa mem ./../references_phylogenie/ref_combined_insertion.fasta ./../1-fastq/fastq.gz/{fichier1_key}.fastq.gz ./../1-fastq/fastq.gz/{pages}.fastq.gz > ./../1-fastq/sam/{fichier1_value}.sam"
+            commande = f"bwa mem -t{var_ext_cores} ./../references_phylogenie/ref_combined_insertion.fasta ./../1-fastq/fastq.gz/{fichier1_key}.fastq.gz ./../1-fastq/fastq.gz/{pages}.fastq.gz > ./../1-fastq/sam/{fichier1_value[0].replace('[','').replace(']','').replace('_','')}.sam"
             try:
                 result=subprocess.check_output(commande, shell=True, universal_newlines=True)
             except subprocess.CalledProcessError as e:
