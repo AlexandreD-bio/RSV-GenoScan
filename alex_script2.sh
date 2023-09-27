@@ -16,6 +16,8 @@ dossier4="./../6-Mafft"
 dossier5="./../7-Gblocks"
 dossier6="./../8-IQTree"
 dossier7="./../9-Distances"
+dossier8="./../10-test_positions"
+dossier9="./../10.1-dossier_xlsx_result_mutations"
 
 if [ -z "$cores" ]; then
     Coeur=4
@@ -28,6 +30,7 @@ fi
 
 if [ -d "$dossier1" ]; then
     echo "Le répertoire $dossier1 existe déjà."
+    
 else
     mkdir "$dossier1"
     echo "Le répertoire $dossier1 a été créé avec succès."
@@ -77,6 +80,7 @@ if [ "$choix1" == "Y" ]; then
 
     if [ -d "$dossier4" ]; then
         echo "Le répertoire $dossier4 existe déjà."
+        rm -r $dossier4/*
     else
         mkdir "$dossier4"
         echo "Le répertoire $dossier4 a été créé avec succès."
@@ -84,6 +88,7 @@ if [ "$choix1" == "Y" ]; then
 
     if [ -d "$dossier4_1" ]; then
         echo "Le répertoire $dossier4_1 existe déjà."
+        rm -r $dossier4_1/*
     else
         mkdir "$dossier4_1"
         echo "Le répertoire $dossier4_1 a été créé avec succès."
@@ -107,6 +112,7 @@ if [ "$choix1" == "Y" ]; then
     # création du directory 7-Gblocks
     if [ -d "$dossier5" ]; then
         echo "Le répertoire $dossier5 existe déjà."
+        rm -r $dossier5/*
     else
         mkdir "$dossier5"
         echo "Le répertoire $dossier5 a été créé avec succès."
@@ -122,6 +128,7 @@ if [ "$choix1" == "Y" ]; then
     echo "trees creation ..."
     if [ -d "$dossier6" ]; then
         echo "Le répertoire $dossier6 existe déjà."
+        rm -r $dossier6/*
     else
         mkdir "$dossier6"
         echo "Le répertoire $dossier6 a été créé avec succès."
@@ -141,6 +148,7 @@ if [ "$choix1" == "Y" ]; then
     echo "genetic distance determination ..." 
     if [ -d "$dossier7" ]; then
         echo "Le répertoire $dossier7 existe déjà."
+        rm -r $dossier7/*
     else
         mkdir "$dossier7"
         echo "Le répertoire $dossier7 a été créé avec succès."
@@ -153,12 +161,13 @@ if [ "$choix1" == "Y" ]; then
 
 
     echo "assignment in progress ..."
-    if [ -d "$dossier9" ]; then
-        echo "Le répertoire $dossier9 existe déjà."
-    else
-        mkdir "$dossier9"
-        echo "Le répertoire $dossier9 a été créé avec succès."
-    fi
+    # if [ -d "$dossier9" ]; then
+    #     echo "Le répertoire $dossier9 existe déjà."
+    #     rm -r $dossier9/*
+    # else
+    #     mkdir "$dossier9"
+    #     echo "Le répertoire $dossier9 a été créé avec succès."
+    # fi
 
     python3 script_lignee_post_distance.py "A" #TODO? normalement bon ? 
     python3 script_lignee_post_distance.py "B" #TODO? normalement bon ?
@@ -166,6 +175,19 @@ if [ "$choix1" == "Y" ]; then
 
     #TODO: mutations 
     echo "mutation detection ..."
+
+    if [ -d "$dossier8" ]; then
+        echo "Le répertoire $dossier8 existe déjà."
+        rm -r $dossier8/*
+    
+    fi
+
+    if [ -d "$dossier9" ]; then
+        echo "Le répertoire $dossier9 existe déjà."
+        rm -r $dossier9/*
+    
+    fi
+
     python3 detection_mutations.py
     echo "DETECTION COMPLETED"
 
