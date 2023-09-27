@@ -6,17 +6,17 @@
 
 #####-----variables-----#####
 
-# Chemin de l'arborescence d'organisation
-dossier0=./../_Input_Folder_
-dossier1=./../1-fastq
-dossier2="$dossier1/fastq.gz"
-dossier3="$dossier1/sam"
-dossier4="$dossier1/bam"
-dossier5="$dossier1/sorted.bam"
-dossier6="$dossier1/pileup"
-dossier7=./../5-genbank
-dossier8="$dossier7/references"
-dossier9=./../4-graphiques
+# path variables
+folder0=./../_Input_Folder_
+folder1=./../1-fastq
+folder2="$folder1/fastq.gz"
+folder3="$folder1/sam"
+folder4="$folder1/bam"
+folder5="$folder1/sorted.bam"
+folder6="$folder1/pileup"
+folder7=./../5-genbank
+folder8="$folder7/references"
+folder9=./../4-graphiques
 
 #détection de minimap
 PATH_minimap=$(find / -name minimap2 2>/dev/null)
@@ -29,18 +29,13 @@ REF_GEN=./../references_phylogenie/ref_combined_insertion.fasta
 #FILES contains the fastq file for each sample
 extension=.fastq.gz
 FILES_FASTQ=./../_Input_Folder_/*$extension
-FILES_FASTQ_POST_ORGANISATION=$dossier2/*$extension
+FILES_FASTQ_POST_ORGANISATION=$folder2/*$extension
 
 # Valeur utilisée pour le multithreading
-
-
 
 file_name_searched="references_mafft"
 file_name_searched_A="sequences_ref_A_pre_mafft.fasta"
 file_name_searched_B="sequences_ref_B_pre_mafft.fasta"
-
-
-
 
 ######-----######-----######-----######-----######-----fonctions-----######-----######-----######-----######-----###### 
 
@@ -48,11 +43,11 @@ verification_conditions() {
     echo "Drop your (.fastq.gz) files in the '_Input_Folder_'"
     read -p "After deposit, enter 'Y' to continue: " choice
     
-    while [ "$choice" != "Y" ] || [ ! -n "$(ls -A $dossier0)" ] || [ ! "$(echo $dossier/*$extension)" ]; do 
+    while [ "$choice" != "Y" ] || [ ! -n "$(ls -A $folder0)" ] || [ ! "$(echo $dossier/*$extension)" ]; do 
             
         if [ "$choice" != "Y" ]; then 
             echo "You entered the wrong character" 
-        elif [ ! -n "$(ls -A $dossier0)" ]; then
+        elif [ ! -n "$(ls -A $folder0)" ]; then
             echo "The 'Input_Folder' is empty"
         elif [ ! "$(echo $dossier/*$extension)" ]; then 
             echo "There are no (.fastq.gz) files in the 'Input_Folder'"
@@ -91,16 +86,15 @@ How many core(s) do you want to use ? : " cores
 done 
 echo "$cores"
 
-
-# génération du dossier d'input
-if [ -d "$dossier0" ]; then
-    echo "Le répertoire $dossier0 existe déjà."
+# input file generation
+if [ -d "$folder0" ]; then
+    echo "The $folder0 directory already exists."
 else
-    mkdir "$dossier0"
-    echo "Le répertoire $dossier0 a été créé avec succès."
+    mkdir "$folder0"
+    echo "The $folder0 directory has been successfully created."
 fi
 
-# choix et test de type ilumina ou
+# ilumina or nanopore selection and testing
 read -p "which type of data do you want to treat ?
     Ilumina (1) | nanopore (2) -> : " data_type
 
@@ -114,66 +108,66 @@ verification_conditions
 ######-----######-----######-----######-----######-----génération_dossiers-----######-----######-----######-----######-----######
 
 # generation of the ./../1-fastq folder 
-if [ -d "$dossier1" ]; then
-    echo "The $dossier1 directory already exists."
+if [ -d "$folder1" ]; then
+    echo "The $folder1 directory already exists."
     
 else
-    mkdir "$dossier1"
-    echo "The $dossier1 directory has been successfully created."
+    mkdir "$folder1"
+    echo "The $folder1 directory has been successfully created."
 fi
 
 # generation of the ./../1-fastq/fastq.gz folder 
-if [ -d "$dossier2" ]; then
-    echo "The $dossier2 directory already exists."
-    rm -r $dossier2/*
+if [ -d "$folder2" ]; then
+    echo "The $folder2 directory already exists."
+    rm -r $folder2/*
 else
-    mkdir "$dossier2"
-    echo "The $dossier2 directory has been successfully created."
+    mkdir "$folder2"
+    echo "The $folder2 directory has been successfully created."
 fi
 
 # generation of the ./../1-fastq/sam folder
-if [ -d "$dossier3" ]; then
-    echo "The $dossier3 directory already exists."
-    rm -r $dossier3/*
+if [ -d "$folder3" ]; then
+    echo "The $folder3 directory already exists."
+    rm -r $folder3/*
 else
-    mkdir "$dossier3"
-    echo "The $dossier3 directory has been successfully created."
+    mkdir "$folder3"
+    echo "The $folder3 directory has been successfully created."
 fi
 
 # generation of the ./../1-fastq/bam folder
-if [ -d "$dossier4" ]; then
-    echo "The $dossier4 directory already exists."
-    rm -r $dossier4/*
+if [ -d "$folder4" ]; then
+    echo "The $folder4 directory already exists."
+    rm -r $folder4/*
 else
-    mkdir "$dossier4"
-    echo "The $dossier4 directory has been successfully created."
+    mkdir "$folder4"
+    echo "The $folder4 directory has been successfully created."
 fi
 
 # generation of the ./../1-fastq/sorted.bam folder
-if [ -d "$dossier5" ]; then
-    echo "The $dossier5 directory already exists."
-    rm -r $dossier5/*
+if [ -d "$folder5" ]; then
+    echo "The $folder5 directory already exists."
+    rm -r $folder5/*
 else
-    mkdir "$dossier5"
-    echo "The $dossier5 directory has been successfully created."
+    mkdir "$folder5"
+    echo "The $folder5 directory has been successfully created."
 fi
 
 # generation of the ./../1-fastq/pileup folder
-if [ -d "$dossier6" ]; then
-    echo "The $dossier6 directory already exists."
-    rm -r $dossier6/*
+if [ -d "$folder6" ]; then
+    echo "The $folder6 directory already exists."
+    rm -r $folder6/*
 else
-    mkdir "$dossier6"
-    echo "The $dossier6 directory has been successfully created."
+    mkdir "$folder6"
+    echo "The $folder6 directory has been successfully created."
 fi
 
 # generation of the ./../5-genbank folder 
-if [ -d "$dossier7" ]; then
-    echo "The $dossier7 directory already exists."
-    rm -r $dossier7/*
+if [ -d "$folder7" ]; then
+    echo "The $folder7 directory already exists."
+    rm -r $folder7/*
 else
-    mkdir "$dossier7"
-    echo "The $dossier7 directory has been successfully created."
+    mkdir "$folder7"
+    echo "The $folder7 directory has been successfully created."
 fi
 
 
@@ -186,7 +180,7 @@ if [ "$data_type" == "1" ]; then
     # Move files to the correct "1-fastq/fastq.gz" directories
     for file in `ls $FILES_FASTQ`; do
 
-        mv "$file" "$dossier2"
+        mv "$file" "$folder2"
 
     done
     
@@ -202,7 +196,7 @@ elif [ "$data_type" == "2" ]; then
     # Move files to the correct "1-fastq/fastq.gz" directories 
     for file in `ls $FILES_FASTQ`; do
 
-        mv "$file" "$dossier2"
+        mv "$file" "$folder2"
 
     done
 
@@ -212,7 +206,7 @@ elif [ "$data_type" == "2" ]; then
         current_name=$(basename $files .fastq.gz)
         
         echo "$current_name"
-        minimap2 -ax map-ont -t $cores $REF_GEN $files > "$dossier3/$current_name.sam"
+        minimap2 -ax map-ont -t $cores $REF_GEN $files > "$folder3/$current_name.sam"
         echo "MINIMAP2 PROCESSED $files"   
         
     done
@@ -221,24 +215,24 @@ fi
 
 
 
-for files in `ls $dossier3`; do 
+for files in `ls $folder3`; do 
         
     current_name=$(basename $files .sam)
     
     echo "$current_name"
       
-    samtools view -b -S -@ $cores "$dossier3/$current_name.sam" > "$dossier4/$current_name.bam"
+    samtools view -b -S -@ $cores "$folder3/$current_name.sam" > "$folder4/$current_name.bam"
     echo "SAM to BAM PROCESSED $current_name"
     #rm $current_name.sam
 
-    samtools sort -@ $cores "$dossier4/$current_name.bam" -o "$dossier5/$current_name.sorted.bam"
+    samtools sort -@ $cores "$folder4/$current_name.bam" -o "$folder5/$current_name.sorted.bam"
     echo "SORTING PROCESSED $current_name"
     #rm $current_name.bam
 
-    samtools index "$dossier5/$current_name.sorted.bam"
+    samtools index "$folder5/$current_name.sorted.bam"
     echo "INDEXATION PROCESSED $current_name"
 
-    samtools mpileup -a -B "$dossier5/$current_name.sorted.bam" -f $REF_GEN -o "$dossier6/$current_name.pileup"
+    samtools mpileup -a -B "$folder5/$current_name.sorted.bam" -f $REF_GEN -o "$folder6/$current_name.pileup"
     echo "PILEUP PROCESSED $current_name"
 
 done
