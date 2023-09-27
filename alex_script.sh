@@ -266,17 +266,17 @@ while [ "$choix2" != "Y" ] && [ "$choix2" != "n" ];
     done  
 
 if [ "$choix2" == "n" ]; then
-    echo "Vous avez choisi de ne pas lancer la génération des graphiques"
+    echo "You have chosen not to run graphics generation"
 
 else 
 
     
     if [ -d "$dossier9" ]; then
-        echo "Le répertoire $dossier9 existe déjà."
+        echo "The $dossier9 directory already exists."
         rm -r $dossier9/*
     else
         mkdir "$dossier9"
-        echo "Le répertoire $dossier9 a été créé avec succès."
+        echo "The $dossier9 directory has been successfully created."
     fi
     
     echo "graph generation ..."

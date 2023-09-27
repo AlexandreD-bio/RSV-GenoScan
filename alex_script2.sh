@@ -28,77 +28,72 @@ fi
 
 ########## Script ##########
 
+
 if [ -d "$dossier1" ]; then
-    echo "Le répertoire $dossier1 existe déjà."
-    
+    echo "The $dossier1 directory already exists."
 else
     mkdir "$dossier1"
-    echo "Le répertoire $dossier1 a été créé avec succès."
+    echo "The $dossier1 directory has been successfully created."
 fi
 
-# génération d'un dossier New_references_A
+# Generation of a "New_references_A" folder
 if [ -d "$dossier2" ]; then
-    echo "Le répertoire $dossier2 existe déjà."
+    echo "The $dossier2 directory already exists."
 else
     mkdir "$dossier2"
-    echo "Le répertoire $dossier2 a été créé avec succès."
+    echo "The $dossier2 directory has been successfully created."
 fi
 
-# génération d'un dossier New_references_B
+# Generation of a "New_references_B" folder
 if [ -d "$dossier3" ]; then
-    echo "Le répertoire $dossier3 existe déjà."
+    echo "The $dossier3 directory already exists."
 else
     mkdir "$dossier3"
-    echo "Le répertoire $dossier3 a été créé avec succès."
+    echo "The $dossier3 directory has been successfully created."
 fi
 
 
-    #TODO: génération phylogénie
-echo "Voulez-vous intégrer de nouveaux génomes référencés à la phylogénie ?"
-echo "si oui veuillez glissez vos fichiers fasta dans les dossiers respectivement au type des génomes (A ou B)" 
-read -p "Tapez (Y) après dépot ou non pour continuer : " choix1
+# Phylogeny generation
+echo "Would you like to integrate new referenced genomes into the phylogeny?"
+echo "If so, please drag and drop your fasta files into the folders corresponding to the genome type (A or B)." 
+read -p "Type (Y) after deposit or not to continue : " choix1
 
-# mauvais input
+# Wrong input
 while [ "$choix1" != "Y" ] 
     do 
-        echo "L'input est incorrect." 
-        echo "Voulez-vous intégrer de nouveaux génomes référencés à la phylogénie ?"
-        echo "si oui veuillez glissez vos fichiers fasta dans les dossiers respectivement au type des génomes (A ou B)" 
-        read -p "Tapez (Y) après dépot ou non pour continuer : " choix1
+        echo "The input is incorrect." 
+        echo "Would you like to integrate new referenced genomes into the phylogeny?"
+        echo "If so, please drag and drop your fasta files into the folders corresponding to the genome type (A or B)." 
+        read -p "Type (Y) after deposit or not to continue : " choix1
     done  
-# bon input
+# Correct input
 if [ "$choix1" == "Y" ]; then
 
-    # TODO?: préparation des séquences
+    # Sequence preparation
 
     echo "preparing sequences ..."
-    
-
-    
-
-    echo "multiple alignement ..."
 
     if [ -d "$dossier4" ]; then
-        echo "Le répertoire $dossier4 existe déjà."
+        echo "The $dossier4 directory already exists."
         rm -r $dossier4/*
     else
         mkdir "$dossier4"
-        echo "Le répertoire $dossier4 a été créé avec succès."
+        echo "The $dossier4 directory has been successfully created."
     fi
 
     if [ -d "$dossier4_1" ]; then
-        echo "Le répertoire $dossier4_1 existe déjà."
+        echo "The $dossier4_1 directory already exists."
         rm -r $dossier4_1/*
     else
         mkdir "$dossier4_1"
-        echo "Le répertoire $dossier4_1 a été créé avec succès."
+        echo "The $dossier4_1 directory has been successfully created."
     fi
 
-
-
-    
     python3 fasta_clean.py   
     echo "PREPARATION PROCESSED" 
+
+
+    echo "multiple alignement ..."
     #TODO?: mafft
     mafft --auto ./../5-genbank/result/file_all_genomes_A.fasta > ./../6-Mafft/mafft_result_A.fasta 
     mafft --auto ./../5-genbank/result/file_all_genomes_B.fasta > ./../6-Mafft/mafft_result_B.fasta 
@@ -111,11 +106,11 @@ if [ "$choix1" == "Y" ]; then
 
     # création du directory 7-Gblocks
     if [ -d "$dossier5" ]; then
-        echo "Le répertoire $dossier5 existe déjà."
+        echo "The $dossier5 directory already exists."
         rm -r $dossier5/*
     else
         mkdir "$dossier5"
-        echo "Le répertoire $dossier5 a été créé avec succès."
+        echo "The $dossier5 directory has been successfully created."
     fi
 
     export PATH="./Gblocks_0.91b:$PATH"
@@ -127,11 +122,11 @@ if [ "$choix1" == "Y" ]; then
 
     echo "trees creation ..."
     if [ -d "$dossier6" ]; then
-        echo "Le répertoire $dossier6 existe déjà."
+        echo "The $dossier6 already exists."
         rm -r $dossier6/*
     else
         mkdir "$dossier6"
-        echo "Le répertoire $dossier6 a été créé avec succès."
+        echo "The $dossier6 directory has been successfully created."
     fi
     
     mv ./../6-Mafft/mafft_result_A.fasta-gb ./../7-Gblocks
@@ -147,11 +142,11 @@ if [ "$choix1" == "Y" ]; then
 
     echo "genetic distance determination ..." 
     if [ -d "$dossier7" ]; then
-        echo "Le répertoire $dossier7 existe déjà."
+        echo "The $dossier7 already exists."
         rm -r $dossier7/*
     else
         mkdir "$dossier7"
-        echo "Le répertoire $dossier7 a été créé avec succès."
+        echo "The $dossier7 directory has been successfully created."
     fi
 
     
@@ -169,21 +164,21 @@ if [ "$choix1" == "Y" ]; then
     #     echo "Le répertoire $dossier9 a été créé avec succès."
     # fi
 
-    python3 script_lignee_post_distance.py "A" #TODO? normalement bon ? 
-    python3 script_lignee_post_distance.py "B" #TODO? normalement bon ?
+    python3 script_lignee_post_distance.py "A"  
+    python3 script_lignee_post_distance.py "B" 
     echo "ASSIGNMENT COMPLETED"
 
     #TODO: mutations 
     echo "mutation detection ..."
 
     if [ -d "$dossier8" ]; then
-        echo "Le répertoire $dossier8 existe déjà."
+        echo "The $dossier8 already exists."
         rm -r $dossier8/*
     
     fi
 
     if [ -d "$dossier9" ]; then
-        echo "Le répertoire $dossier9 existe déjà."
+        echo "The $dossier9 already exists."
         rm -r $dossier9/*
     
     fi
