@@ -115,65 +115,65 @@ verification_conditions
 
 # generation of the ./../1-fastq folder 
 if [ -d "$dossier1" ]; then
-    echo "Le répertoire $dossier1 existe déjà."
+    echo "The $dossier1 directory already exists."
     
 else
     mkdir "$dossier1"
-    echo "Le répertoire $dossier1 a été créé avec succès."
+    echo "The $dossier1 directory has been successfully created."
 fi
 
 # generation of the ./../1-fastq/fastq.gz folder 
 if [ -d "$dossier2" ]; then
-    echo "Le répertoire $dossier2 existe déjà."
+    echo "The $dossier2 directory already exists."
     rm -r $dossier2/*
 else
     mkdir "$dossier2"
-    echo "Le répertoire $dossier2 a été créé avec succès."
+    echo "The $dossier2 directory has been successfully created."
 fi
 
 # generation of the ./../1-fastq/sam folder
 if [ -d "$dossier3" ]; then
-    echo "Le répertoire $dossier3 existe déjà."
+    echo "The $dossier3 directory already exists."
     rm -r $dossier3/*
 else
     mkdir "$dossier3"
-    echo "Le répertoire $dossier3 a été créé avec succès."
+    echo "The $dossier3 directory has been successfully created."
 fi
 
 # generation of the ./../1-fastq/bam folder
 if [ -d "$dossier4" ]; then
-    echo "Le répertoire $dossier4 existe déjà."
+    echo "The $dossier4 directory already exists."
     rm -r $dossier4/*
 else
     mkdir "$dossier4"
-    echo "Le répertoire $dossier4 a été créé avec succès."
+    echo "The $dossier4 directory has been successfully created."
 fi
 
 # generation of the ./../1-fastq/sorted.bam folder
 if [ -d "$dossier5" ]; then
-    echo "Le répertoire $dossier5 existe déjà."
+    echo "The $dossier5 directory already exists."
     rm -r $dossier5/*
 else
     mkdir "$dossier5"
-    echo "Le répertoire $dossier5 a été créé avec succès."
+    echo "The $dossier5 directory has been successfully created."
 fi
 
 # generation of the ./../1-fastq/pileup folder
 if [ -d "$dossier6" ]; then
-    echo "Le répertoire $dossier6 existe déjà."
+    echo "The $dossier6 directory already exists."
     rm -r $dossier6/*
 else
     mkdir "$dossier6"
-    echo "Le répertoire $dossier6 a été créé avec succès."
+    echo "The $dossier6 directory has been successfully created."
 fi
 
 # generation of the ./../5-genbank folder 
 if [ -d "$dossier7" ]; then
-    echo "Le répertoire $dossier7 existe déjà."
+    echo "The $dossier7 directory already exists."
     rm -r $dossier7/*
 else
     mkdir "$dossier7"
-    echo "Le répertoire $dossier7 a été créé avec succès."
+    echo "The $dossier7 directory has been successfully created."
 fi
 
 
@@ -182,16 +182,15 @@ fi
 # Ilumina 
 if [ "$data_type" == "1" ]; then
     echo "You have chosen to process ilumina data"
-    # TODO: vérifier si le format de fichier est bien fastq.gz
 
-    Déplacer les fichiers dans les bons répertoires "1-fastq/fastq.gz" 
+    # Move files to the correct "1-fastq/fastq.gz" directories
     for file in `ls $FILES_FASTQ`; do
 
         mv "$file" "$dossier2"
 
     done
     
-    # préparation des données à l'analyse:
+    # Preparing data for analysis:
     python3 analyse_bwa_ilumina.py $cores
     echo "BWA PROCESSED"
         
@@ -200,14 +199,14 @@ if [ "$data_type" == "1" ]; then
 elif [ "$data_type" == "2" ]; then
 
     echo "You have chosen to process Nanopore data"
-    # Déplacer les fichiers dans les bons répertoires "1-fastq/fastq.gz" 
+    # Move files to the correct "1-fastq/fastq.gz" directories 
     for file in `ls $FILES_FASTQ`; do
 
         mv "$file" "$dossier2"
 
     done
 
-    # préparation des données à l'analyse:
+    # preparing data for analysis:
     for files in `ls $FILES_FASTQ_POST_ORGANISATION`; do 
         
         current_name=$(basename $files .fastq.gz)
@@ -245,29 +244,28 @@ for files in `ls $dossier3`; do
 done
 
 
-#TODO: analyse des pileups
+# Pileup analysis
 echo "pileups analysis ..."
 python3 alex_v5_non_finit_script_pileup.py
 echo "ANALYSE PROCESSED"
 
-#TODO: génération des fastas des protéines 
+# Generating protein fastas
 echo "protein fasta generation ..."
 python3 alex_script_génération_fasta_F_G.py
 echo "PROTEIN FASTA GENERATION PROCESSED"
 
 
-read -p "Voulez-vous lancer la génération des graphiques ? (Y/n) " choix2
+read -p "Do you want to start the graph generation ? (Y/n) " choix2
 
-# TODO: génération des graphiques
+# Graphics generation
 while [ "$choix2" != "Y" ] && [ "$choix2" != "n" ];
     do 
-        echo "L'input est incorrect." 
-        read -p "Voulez-vous lancer la génération des graphiques  ? (Y/n) " choix2
+        echo "Input is incorrect." 
+        read -p "Do you want to start the graph generation ? (Y/n) " choix2
     done  
 
 if [ "$choix2" == "n" ]; then
     echo "You have chosen not to run graphics generation"
-
 else 
 
     
