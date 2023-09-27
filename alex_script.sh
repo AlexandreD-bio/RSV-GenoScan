@@ -112,6 +112,8 @@ done
 verification_conditions
 
 ######-----######-----######-----######-----######-----génération_dossiers-----######-----######-----######-----######-----######
+
+# generation of the ./../1-fastq folder 
 if [ -d "$dossier1" ]; then
     echo "Le répertoire $dossier1 existe déjà."
 else
@@ -119,6 +121,7 @@ else
     echo "Le répertoire $dossier1 a été créé avec succès."
 fi
 
+# generation of the ./../1-fastq/fastq.gz folder 
 if [ -d "$dossier2" ]; then
     echo "Le répertoire $dossier2 existe déjà."
 else
@@ -126,6 +129,7 @@ else
     echo "Le répertoire $dossier2 a été créé avec succès."
 fi
 
+# generation of the ./../1-fastq/sam folder
 if [ -d "$dossier3" ]; then
     echo "Le répertoire $dossier3 existe déjà."
 else
@@ -133,6 +137,7 @@ else
     echo "Le répertoire $dossier3 a été créé avec succès."
 fi
 
+# generation of the ./../1-fastq/bam folder
 if [ -d "$dossier4" ]; then
     echo "Le répertoire $dossier4 existe déjà."
 else
@@ -140,6 +145,7 @@ else
     echo "Le répertoire $dossier4 a été créé avec succès."
 fi
 
+# generation of the ./../1-fastq/sorted.bam folder
 if [ -d "$dossier5" ]; then
     echo "Le répertoire $dossier5 existe déjà."
 else
@@ -147,6 +153,7 @@ else
     echo "Le répertoire $dossier5 a été créé avec succès."
 fi
 
+# generation of the ./../1-fastq/pileup folder
 if [ -d "$dossier6" ]; then
     echo "Le répertoire $dossier6 existe déjà."
 else
@@ -154,6 +161,7 @@ else
     echo "Le répertoire $dossier6 a été créé avec succès."
 fi
 
+# generation of the ./../5-genbank folder 
 if [ -d "$dossier7" ]; then
     echo "Le répertoire $dossier7 existe déjà."
 else
@@ -161,7 +169,10 @@ else
     echo "Le répertoire $dossier7 a été créé avec succès."
 fi
 
-    # Ilumina 
+
+
+
+# Ilumina 
 if [ "$data_type" == "1" ]; then
     echo "You have chosen to process ilumina data"
     # TODO: vérifier si le format de fichier est bien fastq.gz
@@ -178,7 +189,7 @@ if [ "$data_type" == "1" ]; then
     echo "BWA PROCESSED"
         
 
-    # Nanopore
+# Nanopore
 elif [ "$data_type" == "2" ]; then
 
     echo "You have chosen to process Nanopore data"
