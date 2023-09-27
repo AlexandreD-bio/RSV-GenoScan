@@ -18,14 +18,11 @@ dossier6="./../8-IQTree"
 dossier7="./../9-Distances"
 
 if [ -z "$cores" ]; then
-    Coeur=1
+    Coeur=4
 else
     Coeur=$cores
 fi
 
-
-
-echo "Saltation voGeur $Coeur"
 
 ########## Script ##########
 
@@ -91,7 +88,10 @@ if [ "$choix1" == "Y" ]; then
         mkdir "$dossier4_1"
         echo "Le répertoire $dossier4_1 a été créé avec succès."
     fi
-    echo 'coucou'
+
+
+
+    
     python3 fasta_clean.py   
     echo "PREPARATION PROCESSED" 
     #TODO?: mafft
@@ -111,6 +111,7 @@ if [ "$choix1" == "Y" ]; then
         mkdir "$dossier5"
         echo "Le répertoire $dossier5 a été créé avec succès."
     fi
+
     export PATH="./Gblocks_0.91b:$PATH"
     Gblocks ./../6-Mafft/mafft_result_A.fasta -t=d -b1=./../7-Gblocks/mafft_result_A_gblocks.fasta
     Gblocks ./../6-Mafft/mafft_result_B.fasta -t=d -b1=./../7-Gblocks/mafft_result_B_gblocks.fasta
@@ -137,7 +138,7 @@ if [ "$choix1" == "Y" ]; then
 
     #TODO: Détermination distances génétiques 
 
-    echo "genetic distance determination ..."
+    echo "genetic distance determination ..." 
     if [ -d "$dossier7" ]; then
         echo "Le répertoire $dossier7 existe déjà."
     else
@@ -145,13 +146,7 @@ if [ "$choix1" == "Y" ]; then
         echo "Le répertoire $dossier7 a été créé avec succès."
     fi
 
-    # if [ -d "$dossier8" ]; then
-    #     echo "Le répertoire $dossier8 existe déjà."
-    # else
-    #     mkdir "$dossier8"
-    #     echo "Le répertoire $dossier8 a été créé avec succès."
-    # fi
-    #TODO* good ?
+    
     python3 alex_script_distance_v2.py
     echo "GENETIC DISTANCES DETERMINED"
     

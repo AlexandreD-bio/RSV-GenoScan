@@ -2,6 +2,10 @@ from bokeh.plotting import figure, show
 from bokeh.models import Legend, LegendItem, BoxAnnotation, Label
 from bokeh.io import export_png
 import os
+import re
+
+
+
 
 #======================================== Variables Globales ========================================#
 
@@ -20,13 +24,13 @@ path_windows_output = f"./../4-graphiques"
 
 extension = ".pileup"
 
-########## fonctions ########## 
+#======================================== Fonctions ========================================#
 
 def graphiqueB(ligne_B, num_ligne_virus, total_reads,nom_fichier):
 
 # création de la figure
     p = figure(
-        title=f"Nombre de reads pour chaque base du génome du virus (type B) correspondant au barcode {nom_fichier[-9:-7]}",
+        title=f"Nombre de reads pour chaque base du génome du virus (type B) correspondant à {file_id}",
         x_axis_label='Genome Position',
         x_range=(0, ligne_B),
         y_axis_label='nombre de Reads',
@@ -108,14 +112,14 @@ def graphiqueB(ligne_B, num_ligne_virus, total_reads,nom_fichier):
 
     show(p) # type: ignore 
 
-    export_png(p, filename=f"./../4-graphiques/Graph_bc{nom_fichier[-9:-7]}_B.png") # type: ignore
+    export_png(p, filename=f"./../4-graphiques/Graph_{file_id}_B.png") # type: ignore
 
     return p 
 
 
 def graphiqueA(ligne_A, num_ligne_virus, total_reads,nom_fichier):
     p = figure(
-        title=f"Nombre de reads pour chaque base du génome du virus (type A) correspondant au barcode {nom_fichier[-9:-7]}",
+        title=f"Nombre de reads pour chaque base du génome du virus (type A) correspondant à {file_id}",
         x_axis_label='Genome Position',
         x_range=(0, ligne_A),
         y_axis_label='nombre de Reads',
@@ -178,11 +182,11 @@ def graphiqueA(ligne_A, num_ligne_virus, total_reads,nom_fichier):
 
     show(p) # type: ignore
 
-    export_png(p, filename=f"./../4-graphiques/Graph_bc{nom_fichier[-9:-7]}_A.png") # type: ignore
+    export_png(p, filename=f"./../4-graphiques/Graph_{file_id}_A.png") # type: ignore
 
     return p 
     
-def calcul_percent(nom_fichier):
+def calcul_percent(nom_fichier,file_id: str):
 	with open (nom_fichier,"r") as file :
             i = 0
                             
@@ -251,15 +255,40 @@ def calcul_percent(nom_fichier):
                         # Plot
                     p = graphiqueB(ligne_B, num_ligne_virus, total_reads, nom_fichier)
 
+
+def extraction_id(file_name: str,file_id: str)-> str:
+
+    file_id_pattern_regex = r'pileup/([^/]+)\.pileup'
+
+    file_id_match = re.search(file_id_pattern_regex, file_name)
+
+    if file_id_match:
+        file_id = file_id_match.group(1)
+        
+    
+
+    return file_id
+
+
+
+
+
+
+
+
+#======================================== Code ========================================#
+
 for fichier in os.listdir(path_windows_input):
 	if fichier.endswith(extension):
         
             nom_fichier = os.path.join(path_windows_input,fichier)
+            file_id = ""
+            file_id = extraction_id(nom_fichier,file_id)
             
             file = open (nom_fichier,"r")
             content = file.readlines()
 
-            calcul_percent(nom_fichier)             
+            calcul_percent(nom_fichier,file_id)             
 
 
     

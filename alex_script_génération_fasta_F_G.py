@@ -1823,33 +1823,46 @@ def path_creation():
             os.makedirs(directory)
 
 
-def sortie_fasta(type : str, sequence_F : str, sequence_G: str, nom_fichier, matched_duplication_boolean):
+def sortie_fasta(type : str, sequence_F : str, sequence_G: str, file_id: str, matched_duplication_boolean):
     if type == "A":
 
         
-        with open(f"./../3-Fasta_Sequences_Prots/Fasta_A/Fasta_prot_F/result_bc{nom_fichier[-9:-7]}_A_sequence_F.fasta","w") as sortie_fastaA:
+        with open(f"./../3-Fasta_Sequences_Prots/Fasta_A/Fasta_prot_F/result_{file_id}_A_sequence_F.fasta","w") as sortie_fastaA:
 
-            sortie_fastaA.write(f">{nom_fichier[-9:-7]}_A\n")
+            sortie_fastaA.write(f">{file_id}_A\n")
             sortie_fastaA.write(f"{sequence_F}")
     
-        with open(f"./../3-Fasta_Sequences_Prots/Fasta_A/Fasta_prot_G/result_bc{nom_fichier[-9:-7]}_{matched_duplication_boolean}_A_sequence_G.fasta","w") as sortie_fastaA:
+        with open(f"./../3-Fasta_Sequences_Prots/Fasta_A/Fasta_prot_G/result_{file_id}_{matched_duplication_boolean}_A_sequence_G.fasta","w") as sortie_fastaA:
 
-            sortie_fastaA.write(f">{nom_fichier[-9:-7]}_A\n")
+            sortie_fastaA.write(f">{file_id}_A\n")
             sortie_fastaA.write(f"{sequence_G}")
 
     elif type == "B":
         
 
-            with open(f"./../3-Fasta_Sequences_Prots/Fasta_B/Fasta_prot_F/result_bc{nom_fichier[-9:-7]}_B_sequence_F.fasta","w") as sortie_fastaB:
+            with open(f"./../3-Fasta_Sequences_Prots/Fasta_B/Fasta_prot_F/result_{file_id}_B_sequence_F.fasta","w") as sortie_fastaB:
 
-                sortie_fastaB.write(f">bc{nom_fichier[-9:-7]}_B\n")
+                sortie_fastaB.write(f">{file_id}_B\n")
                 sortie_fastaB.write(f"{sequence_F}")
 
-            with open(f"./../3-Fasta_Sequences_Prots/Fasta_B/Fasta_prot_G/result_bc{nom_fichier[-9:-7]}_{matched_duplication_boolean}_B_sequence_G.fasta","w") as sortie_fastaB:
+            with open(f"./../3-Fasta_Sequences_Prots/Fasta_B/Fasta_prot_G/result_{file_id}_{matched_duplication_boolean}_B_sequence_G.fasta","w") as sortie_fastaB:
 
-                sortie_fastaB.write(f">bc{nom_fichier[-9:-7]}_B\n")
+                sortie_fastaB.write(f">{file_id}_B\n")
                 sortie_fastaB.write(f"{sequence_G}")
 
+
+def extraction_id(file_name: str,file_id: str)-> str:
+
+    file_id_pattern_regex = r'pileup/([^/]+)\.pileup'
+
+    file_id_match = re.search(file_id_pattern_regex, file_name)
+
+    if file_id_match:
+        file_id = file_id_match.group(1)
+        
+    
+
+    return file_id
 
 #==================== script ====================#
 # import les fichiers du path choisit et en fait une liste dont les éléments sont les déterminants de la boucle 
@@ -1861,6 +1874,10 @@ for fichier in os.listdir(path_windows): # path à changer
         # import du fichier pileup de l'occurence de la boucle 
         nom_fichier = os.path.join(path_windows, fichier) #path à changer
 
+        
+        file_id=""
+        file_id = extraction_id(nom_fichier,file_id)
+        print(file_id)
         # ouverture du fichier en "read"        
         file = open (nom_fichier,"r")
 
@@ -1996,7 +2013,7 @@ for fichier in os.listdir(path_windows): # path à changer
                                 Duplication,
                                 liste_hashmap_inser_del_minoritaire_filtree,
                             )
-            sortie_fasta(type, sequence_F, sequence_G, nom_fichier, matched_duplication_boolean) # type: ignore
+            sortie_fasta(type, sequence_F, sequence_G, file_id, matched_duplication_boolean) # type: ignore
         file.close()
     # TODO* : optimiser le code pour qu'il tourne plus vite (haha que je suis drôle)
     

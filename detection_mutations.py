@@ -10,6 +10,7 @@ from Bio.Seq import Seq
 # from Bio.Align import Alignment
 # import numpy as np
 
+
 # TODO : automatiser la génération d'un fasta avec la ref et les sequences étudiées à partir d'un fichier dont je n'ai pas le nom.
 #====================================================    Resume    ====================================================#
 
@@ -56,27 +57,8 @@ csv_final = f"./../10.1-dossier_xlsx_result_mutations"
 
 
 directories = [resultat_mutations,result_proteine_type_A,result_proteine_type_B,result_final_A,result_final_B,csv_final]
+
 #================================================= fonctions =================================================#
-
-"""
-def génération_path(path: str):
-    if not os.path.exists(path):
-        os.makedirs(path)
-
-
-def génération_eof(path_A: str):
-
-    with open(path_A, "r") as file:
-
-        last_char = file.read()[-1]
-
-    if last_char != ">":
-
-        with open(path_A,"a") as file:
-
-            file.write(">")
-
-"""
 
 # ouvre le fichier Path_A
 #si le fichier finir par un G, 
@@ -87,6 +69,33 @@ def génération_eof(path_A: str):
 # si c'est la seconde ligne alors elle est enregistrée comme séquence dans une liste 
 
 #TODO! vérifier si des bouts de code sont inutiles !!!!!!!
+
+def extraction_regex(inputed_string: str, var_str : str, expression_regex: str)-> str:
+
+    return var_str
+
+def extraction_id(file_name: str,file_id: str)-> str:
+
+    file_id_pattern_regex = r'result_([^_]+)'
+    # mutation_boolean_regex = r'True'
+
+    file_id_match = re.search(file_id_pattern_regex, file_name)
+
+    if file_id_match:
+        file_id = file_id_match.group(1)
+    else:
+        file_id = "Fasle"        
+    return file_id
+
+def extraction_boolean_from_file_name(file_name: str,boolean_presence: str)-> str:
+
+    if "True" in file_name:
+        boolean_presence = "True"
+    else:
+        boolean_presence = "False"
+
+    return boolean_presence
+
 
 def append_sequences_prot(path_A:str, path_B:str)-> tuple[list, list, list, list, list, list, list, list, dict[str,bool], dict[str,bool]]:
     
@@ -110,27 +119,27 @@ def append_sequences_prot(path_A:str, path_B:str)-> tuple[list, list, list, list
             folder_path = os.path.join(path_A, dossiers)
 
             for fichier in os.listdir(folder_path):
+
                 file_path = os.path.join(folder_path, fichier)  # Chemin du fichier
 
                 with open(file_path, 'r') as file:
+
                     presence_duplication = re.search("True",file_path)
                     if presence_duplication:
-                        duplication_G_A[f"{file_path[57:61]}"]=True
-                        
+
+                        file_id=""
+                        file_id=extraction_id(file_path,file_id)
+                       
+                        duplication_G_A[f"{file_id}"]=True
                     else:
-                        duplication_G_A[f"{file_path[57:61]}"]=False
-                    # correspondance = re.search(r"bc(\d+)", file_path)
-                    # if correspondance:
-                    #     expression = correspondance.group(0)+"_A"
-                        
-                    # extraction de la séquence de la protéine G
+                        duplication_G_A[f"{file_id}"]=False
+                    
                     i = 0
                     for lines in file:
-
                         if i == 0:
                             lines = lines.rstrip("\n")
-                            clefs_G_A.append(f"{file_path[57:61]}")
-                            
+                            clefs_G_A.append(f"{lines[1:-2]}")
+
                         elif i == 1:
                             sequences_bc_prot_G_A.append(Seq(lines))
                         
@@ -149,7 +158,7 @@ def append_sequences_prot(path_A:str, path_B:str)-> tuple[list, list, list, list
                     for lines in file:
                         if i == 0:
                             lines = lines.rstrip("\n")
-                            clefs_F_A.append(f"{file_path[57:61]}")
+                            clefs_F_A.append(f"{lines[1:-2]}")
                              
                         elif i == 1:
                             sequences_bc_prot_F_A.append(Seq(lines))
@@ -167,11 +176,15 @@ def append_sequences_prot(path_A:str, path_B:str)-> tuple[list, list, list, list
 
                 with open(file_path, 'r') as file:
                     presence_duplication = re.search("True",file_path)
+
+                    file_id=""
+                    file_id=extraction_id(file_path,file_id)
+
                     if presence_duplication:
-                        duplication_G_B[f"{file_path[57:61]}"]=True
+                        duplication_G_B[f"{file_id}"]=True
                         
                     else:
-                        duplication_G_B[f"{file_path[57:61]}"]=False
+                        duplication_G_B[f"{file_id}"]=False
                     # correspondance = re.search(r"bc(\d+)", file_path)
                     # if correspondance:
                     #     expression = correspondance.group(0)+"_B"
@@ -180,7 +193,7 @@ def append_sequences_prot(path_A:str, path_B:str)-> tuple[list, list, list, list
                     for lines in file:
                         if i == 0:
                             lines = lines.rstrip("\n")
-                            clefs_G_B.append(f"{file_path[57:61]}")
+                            clefs_G_B.append(f"{lines[1:-2]}")
 
                         elif i == 1:
                             sequences_bc_prot_G_B.append(Seq(lines))
@@ -646,22 +659,22 @@ def generation_alignement_txtv1(
         with open(f"./../10-test_positions/result_proteines/results_protéines_type_A/result_{clefs_G_A[y].replace('>', '_')}.txt","a") as sortie_A:
             
             if duplication_G_A[clefs_G_A[y]] == False:
-                sortie_A.write(f"Alignement de la protéine G du {clefs_G_A[y]} avec la protéine G de référence\n\n")
+                sortie_A.write(f"Alignement de la protéine G de {clefs_G_A[y]} avec la protéine G de référence\n\n")
                 alignement_proteine = alignement(proteines_A[0],sequences_bc_prot_G_A[y])
                 sortie_A.write(f"{alignement_proteine}")
 
                 # mutations_G_A_output,mutations_G_A = liste_mutations_prot(proteines_A[0],sequences_bc_prot_G_A[(y)])
-                sortie_A.write(f"Alignement de la protéine F du {clefs_G_A[y]} avec la protéine F de référence\n\n")
+                sortie_A.write(f"Alignement de la protéine F de {clefs_G_A[y]} avec la protéine F de référence\n\n")
                 alignement_proteine = alignement(proteines_A[1],sequences_bc_prot_F_A[(y)])
                 sortie_A.write(f"{alignement_proteine}")
 
             else:
 
-                sortie_A.write(f"Alignement de la protéine G du {clefs_G_A[y]} avec la protéine G de référence\n\n")
+                sortie_A.write(f"Alignement de la protéine G de {clefs_G_A[y]} avec la protéine G de référence\n\n")
                 alignement_proteine = alignement(proteine_A_dupli[0],sequences_bc_prot_G_A[y])
                 sortie_A.write(f"{alignement_proteine}")
 
-                sortie_A.write(f"Alignement de la protéine F du {clefs_G_A[y]} avec la protéine F de référence\n\n")
+                sortie_A.write(f"Alignement de la protéine F de {clefs_G_A[y]} avec la protéine F de référence\n\n")
                 alignement_proteine = alignement(proteine_A_dupli[1],sequences_bc_prot_F_A[y])
                 sortie_A.write(f"{alignement_proteine}")
 
@@ -681,21 +694,21 @@ def generation_alignement_txtv1(
         with open(f"./../10-test_positions/result_proteines/results_protéines_type_B/result_{clefs_G_B[z].replace('>', '_',)}.txt","a") as sortie_B:
     
             if duplication_G_B[clefs_G_B[z]] == False:
-                sortie_B.write(f"Alignement de la protéine G du {clefs_G_B[z]} avec la protéine G de référence\n\n\n")
+                sortie_B.write(f"Alignement de la protéine G de {clefs_G_B[z]} avec la protéine G de référence\n\n\n")
                 alignement_proteine= alignement(proteines_B[0],sequences_bc_prot_G_B[z])
                 sortie_B.write(f"{alignement_proteine}")
 
                 # mutations_G_A_output,mutations_G_A = liste_mutations_prot(proteines_A[0],sequences_bc_prot_G_A[(y)])
-                sortie_B.write(f"Alignement de la protéine F du {clefs_G_B[z]} avec la protéine F de référence\n\n")
+                sortie_B.write(f"Alignement de la protéine F de {clefs_G_B[z]} avec la protéine F de référence\n\n")
                 alignement_proteine= alignement(proteines_B[1],sequences_bc_prot_F_B[(z)])
                 sortie_B.write(f"{alignement_proteine}")
             else:
 
-                sortie_B.write(f"Alignement de la protéine G du {clefs_G_B[z]} avec la protéine G de référence\n\n")
+                sortie_B.write(f"Alignement de la protéine G de {clefs_G_B[z]} avec la protéine G de référence\n\n")
                 alignement_proteine= alignement(proteine_B_dupli[0],sequences_bc_prot_G_B[z])
                 sortie_B.write(f"{alignement_proteine}")
 
-                sortie_B.write(f"Alignement de la protéine F du {clefs_G_B[z]} avec la protéine F de référence\n\n")
+                sortie_B.write(f"Alignement de la protéine F de {clefs_G_B[z]} avec la protéine F de référence\n\n")
                 alignement_proteine= alignement(proteine_B_dupli[1],sequences_bc_prot_F_B[(z)])
                 sortie_B.write(f"{alignement_proteine}")
                     
@@ -837,8 +850,7 @@ def extraction_txt(path_txt:str, fichier:str, csv_posits, csv_result, csv_final_
 
         lignes = file.readlines()
         # ouverture en écriture : 
-            
-        final_file = open(f"{nom_fichier[0:22]}/result_proteines_final_{nom_fichier[63]}/{barcode.replace('>','')}.txt","a")
+        final_file = open(f"{nom_fichier[0:22]}/result_proteines_final_{nom_fichier[63]}/{barcode}.txt","a")
         
         # ouverture en lecture :
         csv_ref = open(f"./../references_phylogenie/Mutations_RSV{nom_fichier[63]}.csv","r")
@@ -864,12 +876,13 @@ def extraction_txt(path_txt:str, fichier:str, csv_posits, csv_result, csv_final_
             #génération du fichier txt v2
             # génération de la ligne "titre" pour la protéine G
             if i == 0:
-                final_file.write(f"Alignement de la protéine G du {barcode} avec la protéine G de référence\n\n")
+                final_file.write(f"Alignement de la protéine G de {barcode} avec la protéine G de référence\n\n")
                 i+=2
                 
             if i != 0 :
                 # extraction des variables par caractères par 3 lignes 
                 # extraction de des éléments de la ligne "target" i.e. de la séquence de référence 
+
                 target = lignes[i]
                 
                 target = target.split(" ")
@@ -1006,7 +1019,7 @@ def extraction_txt(path_txt:str, fichier:str, csv_posits, csv_result, csv_final_
             FC_IC50_nirsevimab = lignes[10]
             suptavumab = lignes[11]
             FC_IC50_suptavumab = lignes[12]
-            # References = lignes[13]
+            
 
             
             if protein == "G":
@@ -1025,12 +1038,12 @@ def extraction_txt(path_txt:str, fichier:str, csv_posits, csv_result, csv_final_
                     
                     if presence:
                         
-                        csv_result.write(f"{extract_number(nom_fichier[71:])},{protein},{subunit},{mutation},True,{palivizumab},{FC_IC50_palivizumab},{nirsevimab},{FC_IC50_nirsevimab},{suptavumab},{FC_IC50_suptavumab[:-1]}\n")
-                        csv_posits.write(f"{extract_number(nom_fichier[71:])},{protein},{subunit},{mutation},True,{palivizumab},{FC_IC50_palivizumab},{nirsevimab},{FC_IC50_nirsevimab},{suptavumab},{FC_IC50_suptavumab[:-1]}\n")
+                        csv_result.write(f"{barcode},{protein},{subunit},{mutation},True,{palivizumab},{FC_IC50_palivizumab},{nirsevimab},{FC_IC50_nirsevimab},{suptavumab},{FC_IC50_suptavumab[:-1]}\n")
+                        csv_posits.write(f"{barcode},{protein},{subunit},{mutation},True,{palivizumab},{FC_IC50_palivizumab},{nirsevimab},{FC_IC50_nirsevimab},{suptavumab},{FC_IC50_suptavumab[:-1]}\n")
                         mutation_number+=1
                         liste_mutation_à_ajouter_au_csv_G.append({"mutation":mutation,"palivizumab":palivizumab,"nirsevimab":nirsevimab,"suptavumab":suptavumab})
                     else : 
-                        csv_result.write(f"{extract_number(nom_fichier[71:])},{protein},{subunit},{mutation},False,{palivizumab},{FC_IC50_palivizumab},{nirsevimab},{FC_IC50_nirsevimab},{suptavumab},{FC_IC50_suptavumab[:-1]}\n")
+                        csv_result.write(f"{barcode},{protein},{subunit},{mutation},False,{palivizumab},{FC_IC50_palivizumab},{nirsevimab},{FC_IC50_nirsevimab},{suptavumab},{FC_IC50_suptavumab[:-1]}\n")
                         
                 elif mutation.count("+") == "1":
                     
@@ -1045,12 +1058,12 @@ def extraction_txt(path_txt:str, fichier:str, csv_posits, csv_result, csv_final_
                         
                             
                     if len(presence_verification_list) == len(liste_mutations):
-                        csv_result.write(f"{extract_number(nom_fichier[71:])},{protein},{subunit},{mutation},True,{palivizumab},{FC_IC50_palivizumab},{nirsevimab},{FC_IC50_nirsevimab},{suptavumab},{FC_IC50_suptavumab[:-1]}\n")
-                        csv_posits.write(f"{extract_number(nom_fichier[71:])},{protein},{subunit},{mutation},True,{palivizumab},{FC_IC50_palivizumab},{nirsevimab},{FC_IC50_nirsevimab},{suptavumab},{FC_IC50_suptavumab[:-1]}\n")
+                        csv_result.write(f"{barcode},{protein},{subunit},{mutation},True,{palivizumab},{FC_IC50_palivizumab},{nirsevimab},{FC_IC50_nirsevimab},{suptavumab},{FC_IC50_suptavumab[:-1]}\n")
+                        csv_posits.write(f"{barcode},{protein},{subunit},{mutation},True,{palivizumab},{FC_IC50_palivizumab},{nirsevimab},{FC_IC50_nirsevimab},{suptavumab},{FC_IC50_suptavumab[:-1]}\n")
                         mutation_number += 1 
                         liste_mutation_à_ajouter_au_csv_G.append({"mutation":mutation,"palivizumab":palivizumab,"nirsevimab":nirsevimab,"suptavumab":suptavumab})
                     else:
-                        csv_result.write(f"{extract_number(nom_fichier[71:])},{protein},{subunit},{mutation},False,{palivizumab},{FC_IC50_palivizumab},{nirsevimab},{FC_IC50_nirsevimab},{suptavumab},{FC_IC50_suptavumab[:-1]}\n")
+                        csv_result.write(f"{barcode},{protein},{subunit},{mutation},False,{palivizumab},{FC_IC50_palivizumab},{nirsevimab},{FC_IC50_nirsevimab},{suptavumab},{FC_IC50_suptavumab[:-1]}\n")
                 
             elif protein == "F":
                 
@@ -1063,13 +1076,13 @@ def extraction_txt(path_txt:str, fichier:str, csv_posits, csv_result, csv_final_
 
                     
                     if presence:
-                        print(f"coucou {extract_number(nom_fichier[71:])}")
-                        csv_result.write(f"{extract_number(nom_fichier[71:])},{protein},{subunit},{mutation},True,{palivizumab},{FC_IC50_palivizumab},{nirsevimab},{FC_IC50_nirsevimab},{suptavumab},{FC_IC50_suptavumab[:-1]}\n")
-                        csv_posits.write(f"{extract_number(nom_fichier[71:])},{protein},{subunit},{mutation},True,{palivizumab},{FC_IC50_palivizumab},{nirsevimab},{FC_IC50_nirsevimab},{suptavumab},{FC_IC50_suptavumab[:-1]}\n")
+                        
+                        csv_result.write(f"{barcode},{protein},{subunit},{mutation},True,{palivizumab},{FC_IC50_palivizumab},{nirsevimab},{FC_IC50_nirsevimab},{suptavumab},{FC_IC50_suptavumab[:-1]}\n")
+                        csv_posits.write(f"{barcode},{protein},{subunit},{mutation},True,{palivizumab},{FC_IC50_palivizumab},{nirsevimab},{FC_IC50_nirsevimab},{suptavumab},{FC_IC50_suptavumab[:-1]}\n")
                         mutation_number+=1
                         liste_mutation_à_ajouter_au_csv_F.append({"mutation":mutation,"palivizumab":palivizumab,"nirsevimab":nirsevimab,"suptavumab":suptavumab})
                     else : 
-                        csv_result.write(f"{extract_number(nom_fichier[71:])},{protein},{subunit},{mutation},False,{palivizumab},{FC_IC50_palivizumab},{nirsevimab},{FC_IC50_nirsevimab},{suptavumab},{FC_IC50_suptavumab[:-1]}\n")
+                        csv_result.write(f"{barcode},{protein},{subunit},{mutation},False,{palivizumab},{FC_IC50_palivizumab},{nirsevimab},{FC_IC50_nirsevimab},{suptavumab},{FC_IC50_suptavumab[:-1]}\n")
                     
                 elif mutation.count("+") >= 1:
                     
@@ -1085,13 +1098,13 @@ def extraction_txt(path_txt:str, fichier:str, csv_posits, csv_result, csv_final_
                             
                         
                     if len(presence_verification_list) == len(liste_mutations):
-                        print(f"coucou {extract_number(nom_fichier)}")
-                        csv_result.write(f"{extract_number(nom_fichier[71:])},{protein},{subunit},{mutation},True,{palivizumab},{FC_IC50_palivizumab},{nirsevimab},{FC_IC50_nirsevimab},{suptavumab},{FC_IC50_suptavumab[:-1]}\n")
-                        csv_posits.write(f"{extract_number(nom_fichier[71:])},{protein},{subunit},{mutation},True,{palivizumab},{FC_IC50_palivizumab},{nirsevimab},{FC_IC50_nirsevimab},{suptavumab},{FC_IC50_suptavumab[:-1]}\n")
+                        
+                        csv_result.write(f"{barcode},{protein},{subunit},{mutation},True,{palivizumab},{FC_IC50_palivizumab},{nirsevimab},{FC_IC50_nirsevimab},{suptavumab},{FC_IC50_suptavumab[:-1]}\n")
+                        csv_posits.write(f"{barcode},{protein},{subunit},{mutation},True,{palivizumab},{FC_IC50_palivizumab},{nirsevimab},{FC_IC50_nirsevimab},{suptavumab},{FC_IC50_suptavumab[:-1]}\n")
                         
                         liste_mutation_à_ajouter_au_csv_F.append({"mutation":mutation,"palivizumab":palivizumab,"nirsevimab":nirsevimab,"suptavumab":suptavumab, "mutation_numbers":len(liste_mutations)})
                     else:
-                        csv_result.write(f"{extract_number(nom_fichier[71:])},{protein},{subunit},{mutation},False,{palivizumab},{FC_IC50_palivizumab},{nirsevimab},{FC_IC50_nirsevimab},{suptavumab},{FC_IC50_suptavumab[:-1]}\n")    
+                        csv_result.write(f"{barcode},{protein},{subunit},{mutation},False,{palivizumab},{FC_IC50_palivizumab},{nirsevimab},{FC_IC50_nirsevimab},{suptavumab},{FC_IC50_suptavumab[:-1]}\n")    
         
         if mutation_number == 0:
             # (f"{barcode}, Couverture_génome_à_10X(en%), exploitable(à_70%), Type, Couverture_protéine_G(en%_à10X), Couverture_protéine_F(en%_à10X), Mediane_de_couverture_en_reads, Présence_dulication_protéine_G,{protein},{subunit},{mutation},True,{palivizumab},{FC_IC50_palivizumab},{nirsevimab},{FC_IC50_nirsevimab},{suptavumab},{FC_IC50_suptavumab[:-1]} ,abscence de mutations")
@@ -1113,26 +1126,12 @@ def extraction_txt(path_txt:str, fichier:str, csv_posits, csv_result, csv_final_
             csv_final_write.write(f"F,{resistance_palivizumab_F},{type_resistance_palivizumab_F},{resistance_nirsevimab_F},{type_resistance_nirsevimab_F},{resistance_suptavumab_F},{type_resistance_suptavumab_F} \n")
         final_file.close()
         csv_ref.close()
-    """
-    if os.path.exists(nom_fichier):
-        os.remove(nom_fichier)
-        print("Le fichier a été détruit par l'atome avec succès.")
-    else:
-        print("Le fichier n'existe pas.")
-    """
+
     return listing_mutation_returned_G,listing_mutation_returned_F
     
 #TODO: changer le tableau de récap de présence.
 #TODO? : vérifier si il n'est pas possible de faire tourner cette fonction.
-"""
-def destruction_par_l_atome(chemin:str):
-    if os.path.exists(chemin):
-        os.remove(chemin)
-        print("Le fichier a été atomisé avec succès.")
-    else:
-        print("Le fichier n'existe pas.")
 
-"""
 def path_creation(directories:list[str]):
     
     
@@ -1145,11 +1144,11 @@ def path_creation(directories:list[str]):
 def generation_results():
 
     liste_lignes_csv_v1 = []
-    csv_result = open(f"./../10-test_positions/tableau_results.csv","a")
-    csv_result.write("Barcode,Protein,Subunit,Mutation,Présence_mutation,palivizumab,FC.IC50.palivizumab,nirsevimab,FC.IC50.nirsevimab,suptavumab,FC.IC50.suptavumab\n")
+    csv_result = open(f"./../10-test_positions/Boolean_table_of_the_presence_of_referenced_mutations_in_the_dataset.csv","a")
+    csv_result.write("Id,Protein,Subunit,Mutation,Présence_mutation,palivizumab,FC.IC50.palivizumab,nirsevimab,FC.IC50.nirsevimab,suptavumab,FC.IC50.suptavumab\n")
 
-    csv_posits = open(f"./../10-test_positions/results_mutations/tableau_recap_presence_mutation.csv","a")
-    csv_posits.write("Barcode,Protein,Subunit,Mutation,Présence_mutation,palivizumab,FC.IC50.palivizumab,nirsevimab,FC.IC50.nirsevimab,suptavumab,FC.IC50.suptavumab\n")
+    csv_posits = open(f"./../10-test_positions/results_mutations/table_of_presence_of_mutations_involving_resistance.csv","a")
+    csv_posits.write("Id,Protein,Subunit,Mutation,Présence_mutation,palivizumab,FC.IC50.palivizumab,nirsevimab,FC.IC50.nirsevimab,suptavumab,FC.IC50.suptavumab\n")
 
     csv_final_write = open(f"./../10.1-dossier_xlsx_result_mutations/resume_mutations.csv","a")
 
