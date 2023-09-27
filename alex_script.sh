@@ -16,7 +16,7 @@ dossier5="$dossier1/sorted.bam"
 dossier6="$dossier1/pileup"
 dossier7=./../5-genbank
 dossier8="$dossier7/references"
-
+dossier9=./../4-graphiques
 
 #détection de minimap
 PATH_minimap=$(find / -name minimap2 2>/dev/null)
@@ -116,6 +116,7 @@ verification_conditions
 # generation of the ./../1-fastq folder 
 if [ -d "$dossier1" ]; then
     echo "Le répertoire $dossier1 existe déjà."
+    
 else
     mkdir "$dossier1"
     echo "Le répertoire $dossier1 a été créé avec succès."
@@ -124,6 +125,7 @@ fi
 # generation of the ./../1-fastq/fastq.gz folder 
 if [ -d "$dossier2" ]; then
     echo "Le répertoire $dossier2 existe déjà."
+    rm -r $dossier2/*
 else
     mkdir "$dossier2"
     echo "Le répertoire $dossier2 a été créé avec succès."
@@ -132,6 +134,7 @@ fi
 # generation of the ./../1-fastq/sam folder
 if [ -d "$dossier3" ]; then
     echo "Le répertoire $dossier3 existe déjà."
+    rm -r $dossier3/*
 else
     mkdir "$dossier3"
     echo "Le répertoire $dossier3 a été créé avec succès."
@@ -140,6 +143,7 @@ fi
 # generation of the ./../1-fastq/bam folder
 if [ -d "$dossier4" ]; then
     echo "Le répertoire $dossier4 existe déjà."
+    rm -r $dossier4/*
 else
     mkdir "$dossier4"
     echo "Le répertoire $dossier4 a été créé avec succès."
@@ -148,6 +152,7 @@ fi
 # generation of the ./../1-fastq/sorted.bam folder
 if [ -d "$dossier5" ]; then
     echo "Le répertoire $dossier5 existe déjà."
+    rm -r $dossier5/*
 else
     mkdir "$dossier5"
     echo "Le répertoire $dossier5 a été créé avec succès."
@@ -156,6 +161,7 @@ fi
 # generation of the ./../1-fastq/pileup folder
 if [ -d "$dossier6" ]; then
     echo "Le répertoire $dossier6 existe déjà."
+    rm -r $dossier6/*
 else
     mkdir "$dossier6"
     echo "Le répertoire $dossier6 a été créé avec succès."
@@ -164,6 +170,7 @@ fi
 # generation of the ./../5-genbank folder 
 if [ -d "$dossier7" ]; then
     echo "Le répertoire $dossier7 existe déjà."
+    rm -r $dossier7/*
 else
     mkdir "$dossier7"
     echo "Le répertoire $dossier7 a été créé avec succès."
@@ -263,9 +270,10 @@ if [ "$choix2" == "n" ]; then
 
 else 
 
-    dossier9=./../4-graphiques
+    
     if [ -d "$dossier9" ]; then
-    echo "Le répertoire $dossier9 existe déjà."
+        echo "Le répertoire $dossier9 existe déjà."
+        rm -r $dossier9/*
     else
         mkdir "$dossier9"
         echo "Le répertoire $dossier9 a été créé avec succès."
