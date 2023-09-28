@@ -17,7 +17,8 @@ folder6="$folder1/pileup"
 folder7=./../5-genbank
 folder8="$folder7/references"
 folder9=./../4-graphiques
-
+folder10=./../2.1-dossier_xlsx_result_pileup
+folder11=./../2-Dossier_result_FASTA
 #détection de minimap
 PATH_minimap=$(find / -name minimap2 2>/dev/null)
 #Adding MINIMAP2 to the PATH environment
@@ -228,6 +229,18 @@ done
 
 # Pileup analysis
 echo "pileups analysis ..."
+
+if [ -d "$folder10" ]; then
+    echo "The $folder10 directory already exists."
+    rm -r $folder10/*
+fi
+if [ -d "$folder11" ]; then
+    echo "The $folder11 directory already exists."
+    rm -r $folder11/*
+fi
+
+
+
 python3 alex_v5_non_finit_script_pileup.py
 echo "ANALYSE PROCESSED"
 
