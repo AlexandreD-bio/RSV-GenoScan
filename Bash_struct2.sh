@@ -25,12 +25,11 @@ else
     Coeur=$cores
 fi
 
-
 ########## Script ##########
-
 
 if [ -d "$dossier1" ]; then
     echo "The $dossier1 directory already exists."
+    rm -r $dossier1/*
 else
     mkdir "$dossier1"
     echo "The $dossier1 directory has been successfully created."
@@ -52,7 +51,6 @@ else
     echo "The $dossier3 directory has been successfully created."
 fi
 
-
 # Phylogeny generation
 echo "Would you like to integrate new referenced genomes into the phylogeny?"
 echo "If so, please drag and drop your fasta files into the folders corresponding to the genome type (A or B)." 
@@ -66,6 +64,7 @@ while [ "$choix1" != "Y" ]
         echo "If so, please drag and drop your fasta files into the folders corresponding to the genome type (A or B)." 
         read -p "Type (Y) after deposit or not to continue : " choix1
     done  
+
 # Correct input
 if [ "$choix1" == "Y" ]; then
 
@@ -89,7 +88,7 @@ if [ "$choix1" == "Y" ]; then
         echo "The $dossier4_1 directory has been successfully created."
     fi
 
-    python3 fasta_clean.py   
+    python3 fasta_homogenization.py   
     echo "PREPARATION PROCESSED" 
 
 
@@ -118,7 +117,7 @@ if [ "$choix1" == "Y" ]; then
     Gblocks ./../6-Mafft/mafft_result_B.fasta -t=d -b1=./../7-Gblocks/mafft_result_B_gblocks.fasta
     echo "CLEANING PROCESSED"
 
-    #TODO?: IQTREE
+    # IQTREE
 
     echo "trees creation ..."
     if [ -d "$dossier6" ]; then
@@ -149,23 +148,15 @@ if [ "$choix1" == "Y" ]; then
         echo "The $dossier7 directory has been successfully created."
     fi
 
-    
-    python3 alex_script_distance_v2.py
+    python3 genetic_distances.py
     echo "GENETIC DISTANCES DETERMINED"
-    
-
+ 
 
     echo "assignment in progress ..."
-    # if [ -d "$dossier9" ]; then
-    #     echo "Le répertoire $dossier9 existe déjà."
-    #     rm -r $dossier9/*
-    # else
-    #     mkdir "$dossier9"
-    #     echo "Le répertoire $dossier9 a été créé avec succès."
-    # fi
 
-    python3 script_lignee_post_distance.py "A"  
-    python3 script_lignee_post_distance.py "B" 
+
+    python3 lineage_determination.py "A"  
+    python3 lineage_determination.py "B" 
     echo "ASSIGNMENT COMPLETED"
 
     #TODO: mutations 
@@ -183,7 +174,7 @@ if [ "$choix1" == "Y" ]; then
     
     fi
 
-    python3 detection_mutations.py
+    python3 mutation_detection.py
     echo "DETECTION COMPLETED"
 
     echo "ANALYSE COMPLETED !"

@@ -14,11 +14,11 @@ folder3="$folder1/sam"
 folder4="$folder1/bam"
 folder5="$folder1/sorted.bam"
 folder6="$folder1/pileup"
-folder7=./../5-genbank
-folder8="$folder7/references"
 folder9=./../4-graphiques
 folder10=./../2.1-dossier_xlsx_result_pileup
 folder11=./../2-Dossier_result_FASTA
+folder12=./../3-Fasta_Sequences_Prots
+
 #détection de minimap
 PATH_minimap=$(find / -name minimap2 2>/dev/null)
 #Adding MINIMAP2 to the PATH environment
@@ -99,6 +99,7 @@ fi
 read -p "which type of data do you want to treat ?
     Ilumina (1) | nanopore (2) -> : " data_type
 
+
 while [ "$data_type" != "1" ] && [ "$data_type" != "2" ]; do 
     read -p "which type of data do you want to treat ?
     Ilumina (1) | nanopore (2) -> : " data_type
@@ -111,7 +112,6 @@ verification_conditions
 # generation of the ./../1-fastq folder 
 if [ -d "$folder1" ]; then
     echo "The $folder1 directory already exists."
-    
 else
     mkdir "$folder1"
     echo "The $folder1 directory has been successfully created."
@@ -120,7 +120,7 @@ fi
 # generation of the ./../1-fastq/fastq.gz folder 
 if [ -d "$folder2" ]; then
     echo "The $folder2 directory already exists."
-    rm -r $folder2/*
+    rm -r $folder2/* 2>/dev/null
 else
     mkdir "$folder2"
     echo "The $folder2 directory has been successfully created."
@@ -129,7 +129,7 @@ fi
 # generation of the ./../1-fastq/sam folder
 if [ -d "$folder3" ]; then
     echo "The $folder3 directory already exists."
-    rm -r $folder3/*
+    rm -r $folder3/* 2>/dev/null
 else
     mkdir "$folder3"
     echo "The $folder3 directory has been successfully created."
@@ -138,7 +138,7 @@ fi
 # generation of the ./../1-fastq/bam folder
 if [ -d "$folder4" ]; then
     echo "The $folder4 directory already exists."
-    rm -r $folder4/*
+    rm -r $folder4/* 2>/dev/null
 else
     mkdir "$folder4"
     echo "The $folder4 directory has been successfully created."
@@ -147,7 +147,7 @@ fi
 # generation of the ./../1-fastq/sorted.bam folder
 if [ -d "$folder5" ]; then
     echo "The $folder5 directory already exists."
-    rm -r $folder5/*
+    rm -r $folder5/* 2>/dev/null
 else
     mkdir "$folder5"
     echo "The $folder5 directory has been successfully created."
@@ -155,8 +155,8 @@ fi
 
 # generation of the ./../1-fastq/pileup folder
 if [ -d "$folder6" ]; then
-    echo "The $folder6 directory already exists."
-    rm -r $folder6/*
+    echo -e "The $folder6 directory already exists. \n"
+    rm -r $folder6/* 2>/dev/null
 else
     mkdir "$folder6"
     echo "The $folder6 directory has been successfully created."
@@ -172,9 +172,19 @@ if [ "$data_type" == "1" ]; then
         mv "$file" "$folder2"
 
     done
-    
+    # faire ça
+    # ilumina or nanopore selection and testing
+    read -p "which type of fastq do you want to treat ?
+    paired (1) | paired-end (2) -> : " pair_type
+
+
+    while [ "$data_type" != "1" ] && [ "$data_type" != "2" ]; do 
+        read -p "which type of fastq do you want to treat ?
+        paired (1) | paired-end (2) -> : " pair_type
+    done 
+
     # Preparing data for analysis:
-    python3 analyse_bwa_ilumina.py $cores
+    python3 analyse_bwa_ilumina.py $cores $pair_type
     echo "BWA PROCESSED"
         
 
@@ -196,12 +206,10 @@ elif [ "$data_type" == "2" ]; then
         
         echo "$current_name"
         minimap2 -ax map-ont -t $cores $REF_GEN $files > "$folder3/$current_name.sam"
-        echo "MINIMAP2 PROCESSED $files"   
-        
+        echo "MINIMAP2 PROCESSED $files"     
     done
 
 fi
-
 
 
 for files in `ls $folder3`; do 
@@ -212,11 +220,9 @@ for files in `ls $folder3`; do
       
     samtools view -b -S -@ $cores "$folder3/$current_name.sam" > "$folder4/$current_name.bam"
     echo "SAM to BAM PROCESSED $current_name"
-    #rm $current_name.sam
 
     samtools sort -@ $cores "$folder4/$current_name.bam" -o "$folder5/$current_name.sorted.bam"
     echo "SORTING PROCESSED $current_name"
-    #rm $current_name.bam
 
     samtools index "$folder5/$current_name.sorted.bam"
     echo "INDEXATION PROCESSED $current_name"
@@ -232,21 +238,25 @@ echo "pileups analysis ..."
 
 if [ -d "$folder10" ]; then
     echo "The $folder10 directory already exists."
-    rm -r $folder10/*
+    rm -r $folder10/* 2>/dev/null
 fi
+
 if [ -d "$folder11" ]; then
     echo "The $folder11 directory already exists."
-    rm -r $folder11/*
+    rm -r $folder11/* 2>/dev/null
 fi
 
-
-
-python3 alex_v5_non_finit_script_pileup.py
+python3 pileup_analysis.py
 echo "ANALYSE PROCESSED"
 
 # Generating protein fastas
+if [ -d "$folder12" ]; then
+    echo "The $folder12 directory already exists."
+    rm -r $folder12/* 2>/dev/null
+fi
+
 echo "protein fasta generation ..."
-python3 alex_script_génération_fasta_F_G.py
+python3 fasta_protein_generation.py
 echo "PROTEIN FASTA GENERATION PROCESSED"
 
 
@@ -266,14 +276,14 @@ else
     
     if [ -d "$folder9" ]; then
         echo "The $folder9 directory already exists."
-        rm -r $folder9/*
+        rm -r $folder9/* 2>/dev/null
     else
         mkdir "$folder9"
         echo "The $folder9 directory has been successfully created."
     fi
     
     echo "graph generation ..."
-    python3 alex_script_graph_alex.py
+    python3 graphics_generation.py
     echo "GRAPHICS GENERATION PROCCESSED"
     
 fi
@@ -281,5 +291,4 @@ fi
 
 export $cores
 
-bash alex_script2.sh
-
+bash Bash_struct2.sh

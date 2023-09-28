@@ -91,16 +91,16 @@ else
         echo "mafft is installed."
     fi
 
-    if Gblocks --version &> /dev/null; then
-    echo "Gblocks is already installed."
-    else
-        echo "Gblocks is not installed."
-        echo "Installation in progress..."
-        sudo apt update
-        sudo apt install Gblocks 
-        echo "Gblocks is installed."
-    fi
-    if iqtree --version &> /dev/null; then
+    # if Gblocks --version &> /dev/null; then
+    # echo "Gblocks is already installed."
+    # else
+    #     echo "Gblocks is not installed."
+    #     echo "Installation in progress..."
+    #     sudo apt update
+    #     sudo apt install Gblocks 
+    #     echo "Gblocks is installed."
+    # fi
+    if iqtree2 --version &> /dev/null; then
     echo "IQTree is already installed."
     else
         echo "IQTree is not installed."
