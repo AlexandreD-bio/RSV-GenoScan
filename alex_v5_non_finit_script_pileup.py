@@ -1183,7 +1183,7 @@ def correction_sequence(
                 < G_protein_type_A[0] + valeur_decalage_pre_genes:
                     
                     valeur_decalage_pre_genes -= int(nombre)
-                    print(f"decalage_pre_genes {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
+                    # print(f"decalage_pre_genes {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
 
                 # zone intra_protéine G
                 elif  G_protein_type_A[0] + valeur_decalage_pre_genes \
@@ -1193,7 +1193,7 @@ def correction_sequence(
                                                         stockage_valeurs_propres_inser_del_majoritaires[elem]["clé"],\
                                                         stockage_valeurs_propres_inser_del_majoritaires[elem]['value']])
                     decalage_proteine_G -= int(nombre)
-                    print(f"decalage_proteine_G {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
+                    # print(f"decalage_proteine_G {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
 
                 #zone inter protéine G et F 
                 elif G_protein_type_A[1]+ duplication_type_A + valeur_decalage_pre_genes + decalage_proteine_G \
@@ -1203,7 +1203,7 @@ def correction_sequence(
                                                                 stockage_valeurs_propres_inser_del_majoritaires[elem]["clé"],\
                                                                 stockage_valeurs_propres_inser_del_majoritaires[elem]['value']])
                     decalage_inter_proteine_G_F -= int(nombre) 
-                    print(f"decalage_inter_proteine_G_F {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
+                    # print(f"decalage_inter_proteine_G_F {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
 
 
                 # zone intra_protéine F 
@@ -1214,7 +1214,7 @@ def correction_sequence(
                                                         stockage_valeurs_propres_inser_del_majoritaires[elem]["clé"],\
                                                         stockage_valeurs_propres_inser_del_majoritaires[elem]['value']])
                     decalage_proteine_F -=int(nombre)
-                    print(f"decalage_proteine_F {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
+                    # print(f"decalage_proteine_F {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
 
 
             if type == "B":
@@ -1227,7 +1227,7 @@ def correction_sequence(
                 < G_protein_type_B[0] + valeur_decalage_pre_genes:
                     
                     valeur_decalage_pre_genes -= int(nombre)
-                    print(f"decalage_pre_genes {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
+                    # print(f"decalage_pre_genes {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
 
                 # zone intra_protéine G
                 elif  G_protein_type_B[0] + valeur_decalage_pre_genes \
@@ -1237,7 +1237,7 @@ def correction_sequence(
                                                         stockage_valeurs_propres_inser_del_majoritaires[elem]["clé"],\
                                                         stockage_valeurs_propres_inser_del_majoritaires[elem]['value']])
                     decalage_proteine_G -= int(nombre)
-                    print(f"decalage_proteine_G {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
+                    # print(f"decalage_proteine_G {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
 
                 #zone inter protéine G et F 
                 elif G_protein_type_B[1]+ duplication_type_B + valeur_decalage_pre_genes + decalage_proteine_G \
@@ -1247,7 +1247,7 @@ def correction_sequence(
                                                         stockage_valeurs_propres_inser_del_majoritaires[elem]["clé"],\
                                                         stockage_valeurs_propres_inser_del_majoritaires[elem]['value']])
                     decalage_inter_proteine_G_F -= int(nombre) 
-                    print(f"decalage_inter_proteine_G_F {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
+                    # print(f"decalage_inter_proteine_G_F {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
 
 
                 # zone intra_protéine F 
@@ -1258,7 +1258,7 @@ def correction_sequence(
                                                         stockage_valeurs_propres_inser_del_majoritaires[elem]["clé"],\
                                                         stockage_valeurs_propres_inser_del_majoritaires[elem]['value']])
                     decalage_proteine_F -=int(nombre)
-                    print(f"decalage_proteine_F {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
+                    # print(f"decalage_proteine_F {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
 
 
 
@@ -1283,7 +1283,7 @@ def correction_sequence(
                 < G_protein_type_A[0] + valeur_decalage_pre_genes:
                     
                     valeur_decalage_pre_genes += int(nombre)
-                    print(f"decalage_pre_genes {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
+                    # print(f"decalage_pre_genes {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
 
                 # zone intra_protéine G
                 elif  G_protein_type_A[0] + valeur_decalage_pre_genes \
@@ -1293,7 +1293,7 @@ def correction_sequence(
                                                         stockage_valeurs_propres_inser_del_majoritaires[elem]["clé"],\
                                                         stockage_valeurs_propres_inser_del_majoritaires[elem]['value']])
                     decalage_proteine_G += int(nombre)
-                    print(f"decalage_proteine_G {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
+                    # print(f"decalage_proteine_G {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
 
                 #zone inter protéine G et F 
                 elif G_protein_type_A[1]+ duplication_type_A + valeur_decalage_pre_genes + decalage_proteine_G \
@@ -1303,7 +1303,7 @@ def correction_sequence(
                                                         stockage_valeurs_propres_inser_del_majoritaires[elem]["clé"],\
                                                         stockage_valeurs_propres_inser_del_majoritaires[elem]['value']])
                     decalage_inter_proteine_G_F += int(nombre) 
-                    print(f"decalage_inter_proteine_G_F {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
+                    # print(f"decalage_inter_proteine_G_F {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
 
 
                 # zone intra_protéine F 
@@ -1312,7 +1312,7 @@ def correction_sequence(
                 <= F_protein_type_A[0]+ duplication_type_A + valeur_decalage_pre_genes + decalage_proteine_G + decalage_inter_proteine_G_F + decalage_proteine_F:
                     
                     decalage_proteine_F +=int(nombre)
-                    print(f"decalage_proteine_F {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
+                    # print(f"decalage_proteine_F {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
 
 
             if type == "B":
@@ -1325,7 +1325,7 @@ def correction_sequence(
                 < G_protein_type_B[0] + valeur_decalage_pre_genes:
                     
                     valeur_decalage_pre_genes += int(nombre)
-                    print(f"decalage_pre_genes {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
+                    # print(f"decalage_pre_genes {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
 
                 # zone intra_protéine G
                 elif  G_protein_type_B[0] + valeur_decalage_pre_genes \
@@ -1335,7 +1335,7 @@ def correction_sequence(
                                                         stockage_valeurs_propres_inser_del_majoritaires[elem]["clé"],\
                                                         stockage_valeurs_propres_inser_del_majoritaires[elem]['value']])
                     decalage_proteine_G += int(nombre)
-                    print(f"decalage_proteine_G {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
+                    # print(f"decalage_proteine_G {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
 
                 #zone inter protéine G et F 
                 elif G_protein_type_B[1]+ duplication_type_B + valeur_decalage_pre_genes + decalage_proteine_G \
@@ -1345,7 +1345,7 @@ def correction_sequence(
                                                         stockage_valeurs_propres_inser_del_majoritaires[elem]["clé"],\
                                                         stockage_valeurs_propres_inser_del_majoritaires[elem]['value']])
                     decalage_inter_proteine_G_F += int(nombre) 
-                    print(f"decalage_inter_proteine_G_F {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
+                    # print(f"decalage_inter_proteine_G_F {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
 
 
                 # zone intra_protéine F 
@@ -1356,15 +1356,15 @@ def correction_sequence(
                                                         stockage_valeurs_propres_inser_del_majoritaires[elem]["clé"],\
                                                         stockage_valeurs_propres_inser_del_majoritaires[elem]['value']])
                     decalage_proteine_F +=int(nombre)
-                    print(f"decalage_proteine_F {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
+                    # print(f"decalage_proteine_F {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
 
             modulation += int(nombre)
 
-    print(f"stockage_decalage_proteine_G{stockage_decalage_proteine_G}")
-    print(f"stockage_decalage_inter_proteine_G_F{stockage_decalage_inter_proteine_G_F}")
-    print(f"{stockage_decalage_proteine_F}")
-    print(f"{stockage_decalage_proteine_F}")
-    print(f"liste_hashmap_inser_del_minoritaire_filtree{liste_hashmap_inser_del_minoritaire_filtree}")
+    # print(f"stockage_decalage_proteine_G{stockage_decalage_proteine_G}")
+    # print(f"stockage_decalage_inter_proteine_G_F{stockage_decalage_inter_proteine_G_F}")
+    # print(f"{stockage_decalage_proteine_F}")
+    # print(f"{stockage_decalage_proteine_F}")
+    # print(f"liste_hashmap_inser_del_minoritaire_filtree{liste_hashmap_inser_del_minoritaire_filtree}")
 
     if type == "A":
         
@@ -1579,8 +1579,8 @@ def determination_sequence_consensus(
                     if skip == "0":
 
                         result_base, skip, stockage_hasmap_inser_del_non_majoritaire, stockage_inser_del_majoritaire, stockage_valeurs_propres_inser_del_majoritaires, liste_hashmap_inser_del_minoritaire_filtree = base_consensus(str(sequence), base_ref, skip, depth, int(base_number), stockage_hasmap_inser_del_non_majoritaire,stockage_inser_del_majoritaire, stockage_valeurs_propres_inser_del_majoritaires, liste_hashmap_inser_del_minoritaire_filtree)
-                        if result_base == "." :
-                            print(f"il y a un point base : {base_number}")
+                        # if result_base == "." :
+                            # print(f"il y a un point base : {base_number}")
                         sequence_consensus += str(result_base)
 
                     else : 

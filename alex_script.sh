@@ -161,18 +161,6 @@ else
     echo "The $folder6 directory has been successfully created."
 fi
 
-# generation of the ./../5-genbank folder 
-if [ -d "$folder7" ]; then
-    echo "The $folder7 directory already exists."
-    rm -r $folder7/*
-else
-    mkdir "$folder7"
-    echo "The $folder7 directory has been successfully created."
-fi
-
-
-
-
 # Ilumina 
 if [ "$data_type" == "1" ]; then
     echo "You have chosen to process ilumina data"
@@ -263,12 +251,12 @@ if [ "$choix2" == "n" ]; then
 else 
 
     
-    if [ -d "$dossier9" ]; then
-        echo "The $dossier9 directory already exists."
-        rm -r $dossier9/*
+    if [ -d "$folder9" ]; then
+        echo "The $folder9 directory already exists."
+        rm -r $folder9/*
     else
-        mkdir "$dossier9"
-        echo "The $dossier9 directory has been successfully created."
+        mkdir "$folder9"
+        echo "The $folder9 directory has been successfully created."
     fi
     
     echo "graph generation ..."
