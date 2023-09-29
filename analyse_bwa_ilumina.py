@@ -1,10 +1,10 @@
 import os,sys,subprocess
 
 
-# var_ext_cores = sys.argv[1]
-# var_fastq_type = str(sys.argv[2])
-var_ext_cores=4
-var_fastq_type = "A"
+var_ext_cores = sys.argv[1]
+var_fastq_type = str(sys.argv[2])
+# var_ext_cores=4
+# var_fastq_type = "A"
 dico_fichier_ilumina={}
 
 
