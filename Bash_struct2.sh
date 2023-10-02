@@ -133,8 +133,8 @@ if [ "$choix1" == "Y" ]; then
     mv ./../6-Mafft/mafft_result_A.fasta-gb.htm ./../7-Gblocks
     mv ./../6-Mafft/mafft_result_B.fasta-gb.htm ./../7-Gblocks
 
-    iqtree -s ./../7-Gblocks/mafft_result_A.fasta-gb -m GTR+I+G -nt $Coeur -pre $dossier6/mafft_result_A_iqtree
-    iqtree -s ./../7-Gblocks/mafft_result_B.fasta-gb -m GTR+I+G -nt $Coeur -pre $dossier6/mafft_result_B_iqtree
+    iqtree2 -s ./../7-Gblocks/mafft_result_A.fasta-gb -m GTR+I+G -nt $Coeur -pre $dossier6/mafft_result_A_iqtree
+    iqtree2 -s ./../7-Gblocks/mafft_result_B.fasta-gb -m GTR+I+G -nt $Coeur -pre $dossier6/mafft_result_B_iqtree
     echo "TREES CREADTED"
 
     #TODO: Détermination distances génétiques 
