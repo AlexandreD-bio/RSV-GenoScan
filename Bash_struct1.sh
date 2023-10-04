@@ -59,6 +59,34 @@ verification_conditions() {
     done
 }    
 
+illumina_indexing_check(){
+    amb="False"
+    ann="False"
+    bwt="False"
+    pac="False"
+    sa="False"
+    for files in  ./../references_phylogenie/*; do
+        if [$files == "./../references_phylogenie/ref_combined_insertion.fasta.amb"];then 
+            $amb="True"
+        fi
+        if [$files == "./../references_phylogenie/ref_combined_insertion.fasta.ann"];then 
+            $ann='True'
+        fi
+        if [$files == "./../references_phylogenie/ref_combined_insertion.fasta.bwt"];then 
+            $bwt='True'
+        fi
+        if [$files == "./../references_phylogenie/ref_combined_insertion.fasta.pac"];then 
+            $pac='True'
+        fi
+        if [$files == "./../references_phylogenie/ref_combined_insertion.fasta.sa"];then 
+            $sa='True'
+        fi
+    done
+
+    if  [ "$amb" = "False" ] || [ "$ann" = "False" ] || [ "$bwt" = "False" ] || [ "$pac" = "False" ] || [ "$sa" = "False" ]; then  
+        bwa index ./../references_phylogenie/ref_combined_insertion.fasta 
+    fi
+}
 ######-----######-----######-----######-----######-----SCRIPT-----######-----######-----######-----######-----###### 
 
 coeur_machine=$(nproc)
@@ -184,6 +212,9 @@ if [ "$data_type" == "1" ]; then
     done 
 
     # Preparing data for analysis:
+    illumina_indexing_check
+    
+
     python3 analyse_bwa_ilumina.py $cores $pair_type
     echo "BWA PROCESSED"
         

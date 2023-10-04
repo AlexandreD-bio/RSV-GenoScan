@@ -14,10 +14,10 @@ import re
 #============================================================ Variables Globales ============================================================#
 
 chemin = os.getcwd()
-disque = chemin[0]
+disk = chemin[0]
 
 
-nom_fichier_csv  = r"resume_pileup.csv"
+csv_file_name  = r"resume_pileup.csv"
 
 # script_path = os.path.abspath(__file__)
 # parent_dir = os.path.dirname(script_path)
@@ -1656,10 +1656,10 @@ def determination_sequence_consensus(
     return sequence_consensus, liste_median, base_G, base_F, base_G_dupli, base_F_dupli, stockage_valeurs_propres_inser_del_majoritaires,  liste_hashmap_inser_del_minoritaire_filtree
 
 
-def creation_dossiers(disque: str,nom_fichier_csv: str):
+def creation_dossiers(disk: str,csv_file_name: str):
     if not os.path.exists(f"./../2.1-dossier_xlsx_result_pileup"):
         os.makedirs(f"./../2.1-dossier_xlsx_result_pileup")
-    sortie_csv = open(f"./../2.1-dossier_xlsx_result_pileup/{nom_fichier_csv}","a")
+    sortie_csv = open(f"./../2.1-dossier_xlsx_result_pileup/{csv_file_name}","a")
     
     if not os.path.exists(f"./../2-Dossier_results_FASTA"):
         os.makedirs(f"./../2-Dossier_results_FASTA")
@@ -1682,7 +1682,7 @@ def extraction_id(file_name: str,file_id: str)-> str:
 
 
 
-sortie_csv = creation_dossiers(disque, nom_fichier_csv)
+sortie_csv = creation_dossiers(disk, csv_file_name)
 
 
 
