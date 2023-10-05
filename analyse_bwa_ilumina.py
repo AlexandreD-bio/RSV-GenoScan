@@ -10,13 +10,15 @@ dico_fichier_ilumina={}
 
 
 dossier_fastq = os.listdir(f"./../1-fastq/fastq.gz")
-# dossier_fastq = os.listdir(f"./../1-fastq/flux")
 
-# print(dossier_fastq)
+
 number_ = 0
 files_count = 0
 convention=False
-
+# id_items=[f"{file.split('_')[0]}",f"{file.split('_')[1]}"]
+item_used_as_id=0
+sample_name_comparaison_list=[]
+item_id=["id","sample_index"]
 # détection de la convention de nomenclature
 for file in dossier_fastq:
     
@@ -24,6 +26,7 @@ for file in dossier_fastq:
     if file.count("_") == 4:
         number_ += 1
     
+   
 
 # les fichiers illumina sont nommés selon la convention
 if number_ == files_count:
@@ -31,40 +34,39 @@ if number_ == files_count:
     files={}
     id_list = []
     files_names = []
-
+    files_sample_index=[]
     for file in dossier_fastq:
 
         dico_convention_name = {}
         dico_convention_name["id"]=f"{file.split('_')[0]}"
+        sample_name_comparaison_list.append(f"{file.split('_')[0]}")
         dico_convention_name["sample_index"]=f"{file.split('_')[1]}"
         dico_convention_name["lane"]=f"{file.split('_')[2]}"
         dico_convention_name["Read_number"]=f"{file.split('_')[3]}"
         dico_convention_name["sequencing_iteration"]=f"{file.split('_')[4]}"
         id_list.append(dico_convention_name)
         files_names.append(file.split('_')[0])
-
-
+        files_sample_index.append(file.split('_')[1])
+    selection_item = [files_names,files_sample_index]
+    if len(set(sample_name_comparaison_list)) ==1:
+        item_used_as_id=1
     if var_fastq_type == "2":
-        print("2.2")
+        
         
         alredy_used_item = []
 
-        # print(set(files_names))
-        unique_files_names=set(files_names)
-
+        unique_files_names=set(selection_item[item_used_as_id])
         double=0
         for elem in unique_files_names:
 
             name_stockage = []
             
-            # print(f"elem des ids : {elem}")
             for names in id_list :
-                # print(f"names : {names['id']}")
-                if names['id'] in alredy_used_item and double ==2 :
+                if names[item_id[item_used_as_id]] in alredy_used_item and double ==2 :
                     double=0
-                    alredy_used_item.append(names["id"])
+                    alredy_used_item.append(names[item_id[item_used_as_id]])
                     continue
-                if names["id"] == elem:
+                if names[item_id[item_used_as_id]] == elem:
                     double +=1
                     
                     
@@ -75,7 +77,6 @@ if number_ == files_count:
                         file2=f"./../1-fastq/fastq.gz/{name_stockage[1]['id']}_{name_stockage[1]['sample_index']}_{name_stockage[1]['lane']}_{name_stockage[1]['Read_number']}_{name_stockage[1]['sequencing_iteration']}"
 
                         commande = f"bwa mem -t{var_ext_cores} ./../references_phylogenie/ref_combined_insertion.fasta {file1} {file2} > ./../1-fastq/sam/{name_stockage[0]['id']}.sam"
-                        
 
 
                         try:
@@ -86,9 +87,11 @@ if number_ == files_count:
     
     # Pour le non paired-end
     else:
-        print("2.1")
         for file in dossier_fastq:
-            commande = f"bwa mem -t{var_ext_cores} ./../references_phylogenie/ref_combined_insertion.fasta ./../1-fastq/fastq.gz/{file} > ./../1-fastq/sam/{file.split('_')[0]}.sam"
+            add=""
+            if item_used_as_id ==1:
+                add=f"_{file.split('_')[1]}"
+            commande = f"bwa mem -t{var_ext_cores} ./../references_phylogenie/ref_combined_insertion.fasta ./../1-fastq/fastq.gz/{file} > ./../1-fastq/sam/{file.split('_')[0]}{add}.sam"
             try:
                 result=subprocess.check_output(commande, shell=True, universal_newlines=True)
             except subprocess.CalledProcessError as e:
@@ -97,15 +100,15 @@ if number_ == files_count:
 else:
     id_list=[]
     files_names=[]
-    for files in dossier_fastq:
+    for file in dossier_fastq:
         
         dico_non_convention_name={}
-        dico_non_convention_name['id']=files.split('_')[0]
-        dico_non_convention_name['Read']=files.split('_')[1]
+        dico_non_convention_name['id']=file.split('_')[0]
+        dico_non_convention_name['Read']=file.split('_')[1]
         id_list.append(dico_non_convention_name)
         
         
-        files_names.append(files.split('_')[0])
+        files_names.append(file.split('_')[0])
 
     if var_fastq_type == "2":
         
@@ -118,9 +121,7 @@ else:
 
             name_stockage = []
             
-            # print(f"elem des ids : {elem}")
             for names in id_list :
-                # print(f"names : {names['id']}")
                 if names['id'] in alredy_used_item and double ==2 :
                     double=0
                     alredy_used_item.append(names["id"])
@@ -137,7 +138,6 @@ else:
                         file2=f"./../1-fastq/fastq.gz/{name_stockage[1]['id']}_{name_stockage[1]['Read']}"
 
                         commande = f"bwa mem -t{var_ext_cores} ./../references_phylogenie/ref_combined_insertion.fasta {file1} {file2} > ./../1-fastq/sam/{name_stockage[0]['id']}.sam"
-                        print(commande)
 
 
                         try:
@@ -149,8 +149,8 @@ else:
         for file in dossier_fastq:
             
             commande = f"bwa mem -t{var_ext_cores} ./../references_phylogenie/ref_combined_insertion.fasta ./../1-fastq/fastq.gz/{file} > ./../1-fastq/sam/{file.split('_')[0]}.sam"
-            try:
-                result=subprocess.check_output(commande, shell=True, universal_newlines=True)
-            except subprocess.CalledProcessError as e:
-                print(f"Error executing Bash command : {e}")
+            # try:
+            #     result=subprocess.check_output(commande, shell=True, universal_newlines=True)
+            # except subprocess.CalledProcessError as e:
+            #     print(f"Error executing Bash command : {e}")
  
