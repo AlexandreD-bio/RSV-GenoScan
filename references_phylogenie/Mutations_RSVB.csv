@@ -1,0 +1,36 @@
+Protein,Subunit,Mutation,RSV-A,RSV-B,Comment,Impact on fitness,palivizumab,FC.IC50.palivizumab,nirsevimab,FC.IC50.nirsevimab,suptavumab,FC.IC50.suptavumab,References
+F,F2,N63S,NA,Yes,Recombinant,,S,"8,2",S,"2,5",,,https://doi.org/10.1016/S1473-3099(23)00062-2
+F,F2,K65R,NA,Yes,Recombinant,,S,"1,5",S,"0,8",,,https://doi.org/10.1016/S1473-3099(23)00062-2
+F,F2,E66D,NA,Yes,Recombinant,,S,"1,7",S,2,,,https://doi.org/10.1016/S1473-3099(23)00062-2
+F,F2,E66K,Yes,Yes,,,,,,,,,
+F,F2,T67A,NA,Yes,Recombinant,,S,3,S,"1,2",,,https://doi.org/10.1016/S1473-3099(23)00062-2
+F,F2,K68N,NA,Yes,Recombinant,,,,S,"3,8",,,https://doi.org/10.1093/infdis/jiy189
+F,F2+F1,K68N+N201S,NA,Yes,Selective pressure,No,,,R,5532,,,https://doi.org/10.1093/infdis/jiy189
+F,F2+F1,K68N+N208S,NA,Yes,Selective pressure,No,,,R,>250 000,,,https://doi.org/10.1093/infdis/jiy189
+F,F2+F1,K68N+N201S,NA,Yes,Recombinant,,,,R,13438 ,,,https://doi.org/10.1093/infdis/jiy189
+F,F2+F1,K68N+N208S,NA,Yes,Recombinant,,,,R,>90000 ,,,https://doi.org/10.1093/infdis/jiy189
+F,F2,K68N,NA,Yes,Recombinant,,S,2,I,"29,9",,,https://doi.org/10.1016/S1473-3099(23)00062-2
+F,F1+F2,K68Q+I206M+Q209R,NA,Yes,Recombinant,,S,"1,6",I,"46,4",,,https://doi.org/10.1016/S1473-3099(23)00062-2
+F,F2,K68Q,NA,Yes,Recombinant,,S,"2,7",R,"369,5",,,https://doi.org/10.1016/S1473-3099(23)00062-2
+F,F2,K68R,NA,Yes,Recombinant,,S,"1,9",S,"1,3",,,https://doi.org/10.1016/S1473-3099(23)00062-2
+F,F2 extracellular region,A103V,NA,Yes,Recombinant,,S,"1,8",S,"0,9",,,https://doi.org/10.1016/S1473-3099(23)00062-2
+F,F1 extracellular domain,L172Q,NA,Yes,Recombinant,,S,"2,3",S,"1,1",,,https://doi.org/10.1016/S1473-3099(23)00062-2
+F,F1 extracellular domain,S173L,NA,Yes,Recombinant,,S,"1,9",S,"0,9",,,https://doi.org/10.1016/S1473-3099(23)00062-2
+F,F1,N201S,NA,Yes,Recombinant,,,,I,"64,5",,,https://doi.org/10.1093/infdis/jiy189
+F,F1,N201S,NA,Yes,Recombinant,,S,"3,1",R,"126,7",,,https://doi.org/10.1016/S1473-3099(23)00062-2
+F,F1,N201S+I206M+Q209R,NA,Yes,Recombinant,,S,"3,2",R,>418,,,https://doi.org/10.1016/S1473-3099(23)00062-2
+F,F1,N201T,NA,Yes,Recombinant,,S,"2,8",R,>405,,,https://doi.org/10.1016/S1473-3099(23)00062-2
+F,F1,I206M,NA,Yes,Recombinant,,S,2,S,5,,,https://doi.org/10.1016/S1473-3099(23)00062-2
+F,F1,I206M+Q209R,NA,Yes,Recombinant,,S,"1,3",S,"0,2",,,https://doi.org/10.1016/S1473-3099(23)00062-2
+F,F1,I206M+Q209R+K272N,NA,Yes,Recombinant,,R,>306,S,"0,6",,,https://doi.org/10.1016/S1473-3099(23)00062-2
+F,F1,I206M+Q209R+K272Q,NA,Yes,Recombinant,,R,>269,S,"0,2",,,https://doi.org/10.1016/S1473-3099(23)00062-2
+F,F1,N208S,NA,Yes,Selective pressure,No,,,R,14623,,,https://doi.org/10.1093/infdis/jiy189
+F,F1,N208D,NA,Yes,Selective pressure,No,,,R,>250 000,,,https://doi.org/10.1093/infdis/jiy189
+F,F1,N208D,NA,Yes,Recombinant,,,,R,>90000 ,,,https://doi.org/10.1093/infdis/jiy189
+F,F1,N208S,NA,Yes,Recombinant,,,,R,24618 ,,,https://doi.org/10.1093/infdis/jiy189
+F,F1,Q209R,NA,Yes,Recombinant,,S,"3,1",S,"0,5",,,https://doi.org/10.1016/S1473-3099(23)00062-2
+F,F1,Q209K,Yes,Yes,Recombinant,,S,"1,8",S,"0,5",,,https://doi.org/10.1016/S1473-3099(23)00062-2
+F,F1,Q209L,Yes,Yes,Recombinant,,S,"0,8",S,"0,4",,,https://doi.org/10.1016/S1473-3099(23)00062-2
+F,F1,K272N,NA,Yes,Recombinant,,R,>214,S,"1,2",,,https://doi.org/10.1016/S1473-3099(23)00062-2
+F,F1,K272Q,NA,Yes,Recombinant,,R,>226,S,"1,4",,,https://doi.org/10.1016/S1473-3099(23)00062-2
+F,F1,K272R,NA,Yes,Recombinant,,I,"41,8",,,,,https://doi.org/10.1016/S1473-3099(23)00062-2

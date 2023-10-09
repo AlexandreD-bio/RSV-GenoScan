@@ -1,0 +1,15 @@
+Protein,Subunit,Mutation,RSV-A,RSV-B,Comment,Impact on fitness,palivizumab,FC.IC50.palivizumab,nirsevimab,FC.IC50.nirsevimab,suptavumab,FC.IC50.suptavumab,References
+F,F2,I64V,Yes,NA,Recombinant,,S,"1,8",S,"1,7",,,https://doi.org/10.1016/S1473-3099(23)00062-2
+F,F2,K65R,Yes,NA,Recombinant,,S,"2,2",S,"3,9",,,https://doi.org/10.1016/S1473-3099(23)00062-2
+F,F2,N67I,Yes,NA,Recombinant,No,,,S,"1,5",,,https://doi.org/10.1093/infdis/jiy189
+F,F2+F1,N67I+N208Y,Yes,NA,Selective pressure,,,,R,475,,,https://doi.org/10.1093/infdis/jiy189
+F,F2+F1,N67I+N208Y,Yes,NA,Recombinant,No,,,R,"102,5",,,https://doi.org/10.1093/infdis/jiy189
+F,F2,K68E,Yes,NA,Recombinant,,S,"1,9",I,"12,6",,,https://doi.org/10.1016/S1473-3099(23)00062-2
+F,F2,K68N,Yes,NA,Recombinant,,S,"2,1",S,"5,1",,,https://doi.org/10.1016/S1473-3099(23)00062-2
+F,F2,K68R,Yes,NA,Recombinant,,S,"0,8",S,"1,4",,,https://doi.org/10.1016/S1473-3099(23)00062-2
+F,F1,N208Y,Yes,NA,Recombinant,,,,S,"1,1",,,https://doi.org/10.1093/infdis/jiy189
+F,F1,K272M,Yes,NA,Recombinant,,R,>180,S,"2,7",,,https://doi.org/10.1016/S1473-3099(23)00062-2
+F,F1,K272T,Yes,NA,Recombinant,,R,>214,S,"1,1",,,https://doi.org/10.1016/S1473-3099(23)00062-2
+F,F1,S275F,Yes,NA,Recombinant,,R,>356,S,"6,4",,,https://doi.org/10.1016/S1473-3099(23)00062-2
+F,F1,Q209K,Yes,Yes,Recombinant,,S,"1,8",S,"0,5",,,https://doi.org/10.1016/S1473-3099(23)00062-2
+F,F1,Q209L,Yes,Yes,Recombinant,,S,"0,8",S,"0,4",,,https://doi.org/10.1016/S1473-3099(23)00062-2
