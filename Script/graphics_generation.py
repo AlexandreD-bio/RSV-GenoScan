@@ -30,10 +30,10 @@ def graphiqueB(ligne_B, num_ligne_virus, total_reads,nom_fichier):
 
 # création de la figure
     p = figure(
-        title=f"Nombre de reads pour chaque base du génome du virus (type B) correspondant à {file_id}",
+        title=f"Number of reads for each base of the virus genome (type B) corresponding to {file_id}",
         x_axis_label='Genome Position',
         x_range=(0, ligne_B),
-        y_axis_label='nombre de Reads',
+        y_axis_label='number of Reads',
         y_axis_type="log",
         width=2100,
         height=800,
@@ -73,10 +73,10 @@ def graphiqueB(ligne_B, num_ligne_virus, total_reads,nom_fichier):
     # ajout de la légende
     legend = Legend(
          
-        title="Légende:",
+        title="Caption:",
         items=[
-            ("Nombre de reads", [p.renderers[0]]),# type: ignore
-            ("Palier de 10 reads", [p.renderers[1]]),# type: ignore
+            ("Number of Reads", [p.renderers[0]]),# type: ignore
+            ("steps of 10 Reads", [p.renderers[1]]),# type: ignore
         ],
         label_text_font_size="16pt",
         title_text_font_size="16pt"  
@@ -89,7 +89,7 @@ def graphiqueB(ligne_B, num_ligne_virus, total_reads,nom_fichier):
         y=20,
         x_units='screen',
         y_units='screen',
-        text='Protéine G',
+        text='G protein',
         background_fill_color='yellowgreen',
         background_fill_alpha=0.5   
     )
@@ -100,7 +100,7 @@ def graphiqueB(ligne_B, num_ligne_virus, total_reads,nom_fichier):
         y=20,
         x_units='screen',
         y_units='screen',
-        text='Protéine F',
+        text='F Protein',
         background_fill_color='orange',
         background_fill_alpha=0.5,    
     )
@@ -119,10 +119,10 @@ def graphiqueB(ligne_B, num_ligne_virus, total_reads,nom_fichier):
 
 def graphiqueA(ligne_A, num_ligne_virus, total_reads,nom_fichier):
     p = figure(
-        title=f"Nombre de reads pour chaque base du génome du virus (type A) correspondant à {file_id}",
+        title=f"Number of reads for each base of the virus genome (type A) corresponding to {file_id}",
         x_axis_label='Genome Position',
         x_range=(0, ligne_A),
-        y_axis_label='nombre de Reads',
+        y_axis_label='Number of Reads',
         y_axis_type="log",
         width=2100,
         height=800,
@@ -163,17 +163,17 @@ def graphiqueA(ligne_A, num_ligne_virus, total_reads,nom_fichier):
     legend = Legend(
         title="Légende:",
         items=[
-            ("Nombre de reads", [p.renderers[0]]), # type: ignore
+            ("Number of Reads", [p.renderers[0]]), # type: ignore
             ("Palier de 10 reads", [p.renderers[1]]),# type: ignore
         ],
         label_text_font_size="16pt",
         title_text_font_size="16pt"     
     )
     
-    legende_Prot_G = Label(x=641, y=20, x_units='screen', y_units='screen', text='Protéine G',
+    legende_Prot_G = Label(x=641, y=20, x_units='screen', y_units='screen', text='G Protein',
         background_fill_color='yellowgreen', background_fill_alpha=0.5)
     
-    legende_Prot_F = Label(x=828, y=20, x_units='screen', y_units='screen', text='Protéine F',
+    legende_Prot_F = Label(x=828, y=20, x_units='screen', y_units='screen', text='F Protein',
      background_fill_color='orange', background_fill_alpha=0.5)
     
     p.add_layout(legende_Prot_G)
@@ -233,10 +233,10 @@ def calcul_percent(nom_fichier,file_id: str):
             if ligne_A != 0 and ligne_B != 0:
                 
                 pourcentage_couverture_A = (nb_bases_couvertes_A*100)/(ligne_A)
-                print(f"pourcentage_couverture_A {pourcentage_couverture_A}")
+                print(f"percentage coverage_A {pourcentage_couverture_A}")
 
                 pourcentage_couverture_B = (nb_bases_couvertes_B*100)/(ligne_B)
-                print(f"pourcentage_couverture_B {pourcentage_couverture_B}")
+                print(f"percentage coverage_B {pourcentage_couverture_B}")
                 #type A
                 if  pourcentage_couverture_A > pourcentage_couverture_B:
                     #x
