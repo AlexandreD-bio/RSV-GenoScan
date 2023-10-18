@@ -16,7 +16,7 @@ folder5="$folder1/sorted.bam"
 folder6="$folder1/pileup"
 folder9=./../4-Graphs
 folder10=./../2.1-dossier_xlsx_result_pileup
-folder11=./../2-Dossier_result_FASTA
+folder11=./../2-Dossier_results_FASTA
 folder12=./../3-Fasta_Sequences_Prots
 
 #détection de minimap
@@ -92,28 +92,25 @@ illumina_indexing_check(){
 coeur_machine=$(nproc)
 read -p "In order to optimize execution speed, this program uses multithreading whenever possible.
 This machine uses $coeur_machine cores.
-How many core(s) do you want to use ? [1-$coeur_machine] : " cores 
-    
-while ! [[ "$cores" =~ ^[0-9]+$ ]] || (("$cores > $coeur_machine")); do
-    if ! [[ "$cores" =~ ^[0-9]+$ ]];
-        then
+How many core(s) do you want to use ? [1-$coeur_machine] : " cores
 
+while ! [[ "$cores" =~ ^[0-9]+$ ]] || (("$cores > $coeur_machine")); do
+    if ! [[ "$cores" =~ ^[0-9]+$ ]]; then
         read -p "This input is not a number.
 Please enter a number.
 In order to optimize execution speed, this program uses multithreading whenever possible.
 This machine uses $coeur_machine cores
-How many core(s) do you want to use ? : " cores 
-        
-    elif (("$cores > $coeur_machine"));
-        then
+How many core(s) do you want to use ? : " cores
+    elif (("$cores > $coeur_machine")); then
         read -p "This input is greater than the number of cores on this machine.
 In order to optimize execution speed, this program uses multithreading whenever possible.
 This machine uses $coeur_machine cores
-How many core(s) do you want to use ? : " cores 
+How many core(s) do you want to use ? : " cores
     fi
+done
 
-done 
 echo "$cores"
+
 
 # input file generation
 if [ -d "$folder0" ]; then
@@ -203,12 +200,12 @@ if [ "$data_type" == "1" ]; then
     # faire ça
     # ilumina or nanopore selection and testing
     read -p "which type of fastq do you want to treat ?
-    Single-Read (1) | paired-end (2) -> : " pair_type
+    paired (1) | paired-end (2) -> : " pair_type
 
 
     while [ "$data_type" != "1" ] && [ "$data_type" != "2" ]; do 
         read -p "which type of fastq do you want to treat ?
-        Single-Read (1) | paired-end (2) -> : " pair_type
+        paired (1) | paired-end (2) -> : " pair_type
     done 
 
     # Preparing data for analysis:
@@ -274,8 +271,13 @@ fi
 
 if [ -d "$folder11" ]; then
     echo "The $folder11 directory already exists."
-    rm -r $folder11/* 2>/dev/null
+    rm -r "$folder11"
+    mkdir "$folder11"
+else
+    mkdir "$folder11"
+    echo "The $folder11 directory has been successfully created."
 fi
+
 
 python3 pileup_analysis.py
 echo "ANALYSE PROCESSED"
@@ -319,7 +321,155 @@ else
     
 fi
 
+#######################################################################################################
+##########################################  Partie2  ##################################################
+#######################################################################################################
+PATH_Gblocks=$(find / -name Gblocks 2>/dev/null)
+export PATH="$PATH_Gblocks:$PATH"
 
-export $cores
+dossier1=./../5-genbank
 
-bash Bash_struct2.sh
+dossier4_1=$dossier1/result
+dossier4="./../6-Mafft"
+dossier5="./../7-Gblocks"
+dossier6="./../8-IQTree"
+dossier7="./../9-Distances"
+dossier8="./../10-test_positions"
+dossier9="./../10.1-dossier_xlsx_result_mutations"
+
+if [ -z "$cores" ]; then
+    Coeur=2
+else
+    Coeur=$cores
+fi
+
+########## Script ##########
+
+if [ -d "$dossier1" ]; then
+    echo "The $dossier1 directory already exists."
+    rm -r $dossier1/*
+else
+    mkdir "$dossier1"
+    echo "The $dossier1 directory has been successfully created."
+fi
+
+# Phylogeny generation
+
+
+    # Sequence preparation
+
+echo "preparing sequences ..."
+
+if [ -d "$dossier4" ]; then
+    echo "The $dossier4 directory already exists."
+    rm -r $dossier4/*
+else
+    mkdir "$dossier4"
+    echo "The $dossier4 directory has been successfully created."
+fi
+
+if [ -d "$dossier4_1" ]; then
+    echo "The $dossier4_1 directory already exists."
+    rm -r $dossier4_1/*
+else
+    mkdir "$dossier4_1"
+    echo "The $dossier4_1 directory has been successfully created."
+fi
+
+python3 fasta_homogenization.py   
+echo "PREPARATION PROCESSED" 
+
+
+echo "multiple alignement ..."
+#TODO?: mafft
+mafft --auto ./../5-genbank/result/file_all_genomes_A.fasta > ./../6-Mafft/mafft_result_A.fasta 
+mafft --auto ./../5-genbank/result/file_all_genomes_B.fasta > ./../6-Mafft/mafft_result_B.fasta 
+
+echo "MULTIPLE ALIGNEMENT PROCESSED"
+
+#TODO?: gblocks
+
+echo "Cleaning sequences ..."
+
+# création du directory 7-Gblocks
+if [ -d "$dossier5" ]; then
+    echo "The $dossier5 directory already exists."
+    rm -r $dossier5/*
+else
+    mkdir "$dossier5"
+    echo "The $dossier5 directory has been successfully created."
+fi
+
+export PATH="./Gblocks_0.91b:$PATH"
+Gblocks ./../6-Mafft/mafft_result_A.fasta -t=d -b1=./../7-Gblocks/mafft_result_A_gblocks.fasta
+Gblocks ./../6-Mafft/mafft_result_B.fasta -t=d -b1=./../7-Gblocks/mafft_result_B_gblocks.fasta
+echo "CLEANING PROCESSED"
+
+# IQTREE
+
+echo "trees creation ..."
+if [ -d "$dossier6" ]; then
+    echo "The $dossier6 already exists."
+    rm -r $dossier6/*
+else
+    mkdir "$dossier6"
+    echo "The $dossier6 directory has been successfully created."
+fi
+
+mv ./../6-Mafft/mafft_result_A.fasta-gb ./../7-Gblocks
+mv ./../6-Mafft/mafft_result_B.fasta-gb ./../7-Gblocks
+mv ./../6-Mafft/mafft_result_A.fasta-gb.htm ./../7-Gblocks
+mv ./../6-Mafft/mafft_result_B.fasta-gb.htm ./../7-Gblocks
+
+iqtree -s ./../7-Gblocks/mafft_result_A.fasta-gb -m GTR+I+G -nt $Coeur -pre $dossier6/mafft_result_A_iqtree
+iqtree -s ./../7-Gblocks/mafft_result_B.fasta-gb -m GTR+I+G -nt $Coeur -pre $dossier6/mafft_result_B_iqtree
+echo "TREES CREADTED"
+
+#TODO: Détermination distances génétiques 
+
+echo "genetic distance determination ..." 
+if [ -d "$dossier7" ]; then
+    echo "The $dossier7 already exists."
+    rm -r $dossier7/*
+else
+    mkdir "$dossier7"
+    echo "The $dossier7 directory has been successfully created."
+fi
+
+python3 genetic_distances.py
+echo "GENETIC DISTANCES DETERMINED"
+
+
+echo "assignment in progress ..."
+
+
+python3 lineage_determination.py "A"  
+python3 lineage_determination.py "B" 
+echo "ASSIGNMENT COMPLETED"
+
+#TODO: mutations 
+echo "mutation detection ..."
+
+if [ -d "$dossier8" ]; then
+    echo "The $dossier8 already exists."
+    rm -r $dossier8/*
+
+fi
+
+if [ -d "$dossier9" ]; then
+    echo "The $dossier9 already exists."
+    rm -r $dossier9/*
+
+fi
+
+python3 mutation_detection.py
+echo "DETECTION COMPLETED"
+
+echo "ANALYSE COMPLETED !"
+
+
+
+
+
+
+

@@ -19,9 +19,6 @@ parent_dir = os.path.dirname(os.path.dirname(script_path))
 # path_sortie_fusion_A = f"{disque}:\\ANALYSE_RSV\\6-Mafft\\cleaned\\fusion_result_fasta_A.fasta" #TODO: fusion des génomes étudiés
 # path_sortie_fusion_B = f"{disque}:\\ANALYSE_RSV\\6-Mafft\\cleaned\\fusion_result_fasta_B.fasta" #TODO: fusion des génomes étudiés
 
-
-
-
 # # variables de la fonction clean_ref
 # path_input_A = f"{disque}:\\ANALYSE_RSV\\6-Mafft\\sequences_ref_A_pre_mafft.fasta" #TODO*: génomes ref 
 # path_input_B = f"{disque}:\\ANALYSE_RSV\\6-Mafft\\sequences_ref_B_pre_mafft.fasta" #TODO*: génomes ref 
@@ -43,10 +40,6 @@ parent_dir = os.path.dirname(os.path.dirname(script_path))
 # New_references_A_path = f"./../5-genbank/New_references_A"
 
 """
-
-
-
-
 studied_genomes_path = f"{parent_dir}/2-Dossier_results_FASTA"  #TODO: génomes étudiés
 
 fasta_A = "A.fasta"
@@ -121,6 +114,15 @@ def clean_ref(path_input: str, path_output):
             print(len(seq_record.seq))
             print(seq_record)
             path_output.write(f">{seq_record.id}\n{seq_record.seq}\n")
+
+
+
+
+
+
+
+
+            
 
 # fusion en 1 fichier des sequences de références, et des séquences étudiées.
 # def fusion_par_l_atome(files_to_combine: list, output: str):
