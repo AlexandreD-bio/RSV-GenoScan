@@ -19,6 +19,9 @@ parent_dir = os.path.dirname(os.path.dirname(script_path))
 # path_sortie_fusion_A = f"{disque}:\\ANALYSE_RSV\\6-Mafft\\cleaned\\fusion_result_fasta_A.fasta" #TODO: fusion des génomes étudiés
 # path_sortie_fusion_B = f"{disque}:\\ANALYSE_RSV\\6-Mafft\\cleaned\\fusion_result_fasta_B.fasta" #TODO: fusion des génomes étudiés
 
+
+
+
 # # variables de la fonction clean_ref
 # path_input_A = f"{disque}:\\ANALYSE_RSV\\6-Mafft\\sequences_ref_A_pre_mafft.fasta" #TODO*: génomes ref 
 # path_input_B = f"{disque}:\\ANALYSE_RSV\\6-Mafft\\sequences_ref_B_pre_mafft.fasta" #TODO*: génomes ref 
@@ -40,6 +43,10 @@ parent_dir = os.path.dirname(os.path.dirname(script_path))
 # New_references_A_path = f"./../5-genbank/New_references_A"
 
 """
+
+
+
+
 studied_genomes_path = f"{parent_dir}/2-Dossier_results_FASTA"  #TODO: génomes étudiés
 
 fasta_A = "A.fasta"
@@ -115,15 +122,6 @@ def clean_ref(path_input: str, path_output):
             print(seq_record)
             path_output.write(f">{seq_record.id}\n{seq_record.seq}\n")
 
-
-
-
-
-
-
-
-            
-
 # fusion en 1 fichier des sequences de références, et des séquences étudiées.
 # def fusion_par_l_atome(files_to_combine: list, output: str):
 
@@ -184,17 +182,17 @@ for fichier in fichiers:
 
                 sortie_file_A.write(f">{seq_record.id}\n{seq_record.seq}\n")
 
-if is_directory_not_empty(directory_du_dossier_contenant_les_fasta_input_par_user_en_plus_A):
-    fichiers = os.listdir(f"./../5-genbank/New_References_A")
-    for fichier in fichiers:
+# if is_directory_not_empty(directory_du_dossier_contenant_les_fasta_input_par_user_en_plus_A):
+#     fichiers = os.listdir(f"./../5-genbank/New_References_A")
+#     for fichier in fichiers:
 
-        if fichier.endswith(".fasta"):
+#         if fichier.endswith(".fasta"):
                 
-            for seq_record in SeqIO.parse(f"./../5-genbank/New_References_A/{fichier}","fasta"):
+#             for seq_record in SeqIO.parse(f"./../5-genbank/New_References_A/{fichier}","fasta"):
                     
-                if len(seq_record.seq) > 15000:
+#                 if len(seq_record.seq) > 15000:
 
-                    sortie_file_A.write(f">{seq_record.id}\n{seq_record.seq}\n")
+#                     sortie_file_A.write(f">{seq_record.id}\n{seq_record.seq}\n")
 
 for seq_record in SeqIO.parse(f"./../references_phylogenie/sequences_ref_A_pre_mafft.fasta","fasta"):
         
@@ -219,17 +217,17 @@ for fichier in fichiers:
 
                 sortie_file_B.write(f">{seq_record.id}\n{seq_record.seq}\n")
 
-if is_directory_not_empty(directory_du_dossier_contenant_les_fasta_input_par_user_en_plus_B):
-    fichiers = os.listdir(f"{parent_dir}/5-genbank/New_References_B")
-    for fichier in fichiers:
+# if is_directory_not_empty(directory_du_dossier_contenant_les_fasta_input_par_user_en_plus_B):
+#     fichiers = os.listdir(f"{parent_dir}/5-genbank/New_References_B")
+#     for fichier in fichiers:
 
-        if fichier.endswith(".fasta"):
+#         if fichier.endswith(".fasta"):
                 
-            for seq_record in SeqIO.parse(f"{parent_dir}/5-genbank/New_References_B/{fichier}","fasta"):
+#             for seq_record in SeqIO.parse(f"{parent_dir}/5-genbank/New_References_B/{fichier}","fasta"):
                     
-                if len(seq_record.seq) > 15000:
+#                 if len(seq_record.seq) > 15000:
 
-                    sortie_file_B.write(f">{seq_record.id}\n{seq_record.seq}\n")
+#                     sortie_file_B.write(f">{seq_record.id}\n{seq_record.seq}\n")
 
 for seq_record in SeqIO.parse(f"{parent_dir}/references_phylogenie/sequences_ref_B_pre_mafft.fasta","fasta"):
         
