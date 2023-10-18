@@ -20,7 +20,7 @@ parent_dir = os.path.dirname(parent_dir)
 
 path_windows_input = f"./../1-fastq/pileup"
 
-path_windows_output = f"./../4-graphiques"
+path_windows_output = f"./../4-Graphs"
 
 extension = ".pileup"
 
@@ -112,7 +112,7 @@ def graphiqueB(ligne_B, num_ligne_virus, total_reads,nom_fichier):
 
     show(p) # type: ignore 
 
-    export_png(p, filename=f"./../4-graphiques/Graph_{file_id}_B.png") # type: ignore
+    export_png(p, filename=f"./../4-Graphs/Graph_{file_id}_B.png") # type: ignore
 
     return p 
 
@@ -182,7 +182,7 @@ def graphiqueA(ligne_A, num_ligne_virus, total_reads,nom_fichier):
 
     show(p) # type: ignore
 
-    export_png(p, filename=f"./../4-graphiques/Graph_{file_id}_A.png") # type: ignore
+    export_png(p, filename=f"./../4-Graphs/Graph_{file_id}_A.png") # type: ignore
 
     return p 
     
