@@ -18,6 +18,7 @@ folder9=./../4-Graphs
 folder10=./../2.1-dossier_xlsx_result_pileup
 folder11=./../2-Dossier_results_FASTA
 folder12=./../3-Fasta_Sequences_Prots
+folder13="./../references_phylogenie"
 
 #détection de minimap
 PATH_minimap=$(find / -name minimap2 2>/dev/null)
@@ -65,26 +66,42 @@ illumina_indexing_check(){
     bwt="False"
     pac="False"
     sa="False"
-    for files in  ./../references_phylogenie/*; do
-        if [$files == "./../references_phylogenie/ref_combined_insertion.fasta.amb"];then 
-            $amb="True"
+
+    for files in  "$folder13"/*; do
+        echo "coucou $files"
+        echo "salut  $folder13/ref_combined_insertion.fasta.amb"
+        if [ "$files" == "$folder13/ref_combined_insertion.fasta.amb" ];then 
+            echo "TRUE"
+            amb="True"
         fi
-        if [$files == "./../references_phylogenie/ref_combined_insertion.fasta.ann"];then 
-            $ann='True'
+
+        if [ "$files" == "$folder13/ref_combined_insertion.fasta.ann" ];then 
+            echo "TRUE"
+            ann='True'
         fi
-        if [$files == "./../references_phylogenie/ref_combined_insertion.fasta.bwt"];then 
-            $bwt='True'
+        if [ "$files" == "$folder13/ref_combined_insertion.fasta.bwt" ];then
+            echo "TRUE"
+            bwt='True'
         fi
-        if [$files == "./../references_phylogenie/ref_combined_insertion.fasta.pac"];then 
-            $pac='True'
+        if [ "$files" == "$folder13/ref_combined_insertion.fasta.pac" ];then
+            echo "TRUE"
+            pac='True'
         fi
-        if [$files == "./../references_phylogenie/ref_combined_insertion.fasta.sa"];then 
-            $sa='True'
+        if [ "$files" == "$folder13/ref_combined_insertion.fasta.sa" ];then 
+            echo "TRUE"
+            sa='True'
         fi
     done
-
+    echo "amb = $amb"
+    echo "ann = $ann"
+    echo "bwt = $bwt"
+    echo "pac = $pac"
+    echo "sa = $sa"
+    
     if  [ "$amb" = "False" ] || [ "$ann" = "False" ] || [ "$bwt" = "False" ] || [ "$pac" = "False" ] || [ "$sa" = "False" ]; then  
+        echo "start indexing references"
         bwa index ./../references_phylogenie/ref_combined_insertion.fasta 
+        echo "INDEXING REFERENCES COMPLETED"
     fi
 }
 ######-----######-----######-----######-----######-----SCRIPT-----######-----######-----######-----######-----###### 
