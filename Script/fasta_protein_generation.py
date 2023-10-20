@@ -1813,10 +1813,10 @@ def path_creation():
     
     directories = [
 
-        f"./../3-Fasta_Sequences_Prots/Fasta_A/Fasta_prot_F",
-        f"./../3-Fasta_Sequences_Prots/Fasta_A/Fasta_prot_G",
-        f"./../3-Fasta_Sequences_Prots/Fasta_B/Fasta_prot_F",
-        f"./../3-Fasta_Sequences_Prots/Fasta_B/Fasta_prot_G"
+        f"./../3-FASTA_protein_sequences/Fasta_A/Fasta_prot_F",
+        f"./../3-FASTA_protein_sequences/Fasta_A/Fasta_prot_G",
+        f"./../3-FASTA_protein_sequences/Fasta_B/Fasta_prot_F",
+        f"./../3-FASTA_protein_sequences/Fasta_B/Fasta_prot_G"
     ]
     for directory in directories:
         if not os.path.exists(directory):
@@ -1827,12 +1827,12 @@ def sortie_fasta(type : str, sequence_F : str, sequence_G: str, file_id: str, ma
     if type == "A":
 
         
-        with open(f"./../3-Fasta_Sequences_Prots/Fasta_A/Fasta_prot_F/result_{file_id}_A_sequence_F.fasta","w") as sortie_fastaA:
+        with open(f"./../3-FASTA_protein_sequences/Fasta_A/Fasta_prot_F/result_{file_id}_A_sequence_F.fasta","w") as sortie_fastaA:
 
             sortie_fastaA.write(f">{file_id}_A\n")
             sortie_fastaA.write(f"{sequence_F}")
     
-        with open(f"./../3-Fasta_Sequences_Prots/Fasta_A/Fasta_prot_G/result_{file_id}_{matched_duplication_boolean}_A_sequence_G.fasta","w") as sortie_fastaA:
+        with open(f"./../3-FASTA_protein_sequences/Fasta_A/Fasta_prot_G/result_{file_id}_{matched_duplication_boolean}_A_sequence_G.fasta","w") as sortie_fastaA:
 
             sortie_fastaA.write(f">{file_id}_A\n")
             sortie_fastaA.write(f"{sequence_G}")
@@ -1840,12 +1840,12 @@ def sortie_fasta(type : str, sequence_F : str, sequence_G: str, file_id: str, ma
     elif type == "B":
         
 
-            with open(f"./../3-Fasta_Sequences_Prots/Fasta_B/Fasta_prot_F/result_{file_id}_B_sequence_F.fasta","w") as sortie_fastaB:
+            with open(f"./../3-FASTA_protein_sequences/Fasta_B/Fasta_prot_F/result_{file_id}_B_sequence_F.fasta","w") as sortie_fastaB:
 
                 sortie_fastaB.write(f">{file_id}_B\n")
                 sortie_fastaB.write(f"{sequence_F}")
 
-            with open(f"./../3-Fasta_Sequences_Prots/Fasta_B/Fasta_prot_G/result_{file_id}_{matched_duplication_boolean}_B_sequence_G.fasta","w") as sortie_fastaB:
+            with open(f"./../3-FASTA_protein_sequences/Fasta_B/Fasta_prot_G/result_{file_id}_{matched_duplication_boolean}_B_sequence_G.fasta","w") as sortie_fastaB:
 
                 sortie_fastaB.write(f">{file_id}_B\n")
                 sortie_fastaB.write(f"{sequence_G}")

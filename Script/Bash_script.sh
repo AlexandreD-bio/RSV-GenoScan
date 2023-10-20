@@ -17,7 +17,7 @@ folder6="$folder1/pileup"
 folder9=./../4-Graphs
 folder10=./../2.1-Pileup_result_csv_Folder
 folder11=./../2-FASTA_result_folder
-folder12=./../3-Fasta_Sequences_Prots
+folder12=./../3-FASTA_protein_sequences
 folder13="./../references_phylogenie"
 
 #détection de minimap

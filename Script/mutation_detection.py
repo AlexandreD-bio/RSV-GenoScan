@@ -24,8 +24,8 @@ disque = chemin[0]
 path = f"./../10-test_positions/results"
 
 # path pour accéder aux dossiers fasta A et B
-path_A = f"./../3-Fasta_Sequences_Prots/Fasta_A"
-path_B = f"./../3-Fasta_Sequences_Prots/Fasta_B"
+path_A = f"./../3-FASTA_protein_sequences/Fasta_A"
+path_B = f"./../3-FASTA_protein_sequences/Fasta_B"
 
 
 # variable globale à changer qui permet de déterminer si les séquences de références vont comporter la duplication au niveau de la protéine G
@@ -110,7 +110,7 @@ def append_sequences_prot(path_A:str, path_B:str)-> tuple[list, list, list, list
     sequences_bc_prot_F_A = []
     sequences_bc_prot_F_B = []
 
-    # chacun des pour les dossiers dans 3-Fasta_Sequences_Prots
+    # chacun des pour les dossiers dans 3-FASTA_protein_sequences
     for dossiers in os.listdir(path_A):
 
         # pour les dossiers se terminant par un G (soit: ceux contenant la protéine G)
