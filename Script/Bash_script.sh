@@ -68,23 +68,22 @@ illumina_indexing_check(){
     sa="False"
 
     for files in  "$folder13"/*; do
-        echo "coucou $files"
-        echo "salut  $folder13/ref_combined_insertion.fasta.amb"
+        
         if [ "$files" == "$folder13/ref_combined_insertion.fasta.amb" ];then 
-            echo "TRUE"
+            
             amb="True"
         fi
 
         if [ "$files" == "$folder13/ref_combined_insertion.fasta.ann" ];then 
-            echo "TRUE"
+            
             ann='True'
         fi
         if [ "$files" == "$folder13/ref_combined_insertion.fasta.bwt" ];then
-            echo "TRUE"
+            
             bwt='True'
         fi
         if [ "$files" == "$folder13/ref_combined_insertion.fasta.pac" ];then
-            echo "TRUE"
+           
             pac='True'
         fi
         if [ "$files" == "$folder13/ref_combined_insertion.fasta.sa" ];then 
@@ -92,11 +91,11 @@ illumina_indexing_check(){
             sa='True'
         fi
     done
-    echo "amb = $amb"
-    echo "ann = $ann"
-    echo "bwt = $bwt"
-    echo "pac = $pac"
-    echo "sa = $sa"
+    echo "amb : $amb"
+    echo "ann : $ann"
+    echo "bwt : $bwt"
+    echo "pac : $pac"
+    echo "sa : $sa"
     
     if  [ "$amb" = "False" ] || [ "$ann" = "False" ] || [ "$bwt" = "False" ] || [ "$pac" = "False" ] || [ "$sa" = "False" ]; then  
         echo "start indexing references"
