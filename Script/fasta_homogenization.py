@@ -47,7 +47,7 @@ parent_dir = os.path.dirname(os.path.dirname(script_path))
 
 
 
-studied_genomes_path = f"{parent_dir}/2-Dossier_results_FASTA"  #TODO: génomes étudiés
+studied_genomes_path = f"{parent_dir}/2-FASTA_result_folder"  #TODO: génomes étudiés
 
 fasta_A = "A.fasta"
 fasta_B = "B.fasta"
@@ -171,12 +171,12 @@ main()
 sortie_file_A = open(f"{chemin_output_structure_dépendant_A}/file_all_genomes_A.fasta","w") # TODO? outputA
  # fasta_clean()
 
-fichiers = os.listdir(f"./../2-Dossier_results_FASTA")
+fichiers = os.listdir(f"./../2-FASTA_result_folder")
 for fichier in fichiers:
     
     if fichier.endswith("A.fasta"):
         
-        for seq_record in SeqIO.parse(f"./../2-Dossier_results_FASTA/{fichier}","fasta"):
+        for seq_record in SeqIO.parse(f"./../2-FASTA_result_folder/{fichier}","fasta"):
                 
             if len(seq_record.seq) > 15000:
 
@@ -206,12 +206,12 @@ sortie_file_A.close()
 #test B
 sortie_file_B = open(f"{chemin_output_structure_dépendant_B}/file_all_genomes_B.fasta","w") # fasta_clean()
 
-fichiers = os.listdir(f"./../2-Dossier_results_FASTA")
+fichiers = os.listdir(f"./../2-FASTA_result_folder")
 for fichier in fichiers:
 
     if fichier.endswith("B.fasta"):
             
-        for seq_record in SeqIO.parse(f"./../2-Dossier_results_FASTA/{fichier}","fasta"):
+        for seq_record in SeqIO.parse(f"./../2-FASTA_result_folder/{fichier}","fasta"):
                 
             if len(seq_record.seq) > 15000:
 

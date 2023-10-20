@@ -1661,8 +1661,8 @@ def creation_dossiers(disk: str,csv_file_name: str):
         os.makedirs(f"./../2.1-Pileup_result_csv_Folder")
     sortie_csv = open(f"./../2.1-Pileup_result_csv_Folder/{csv_file_name}","a")
     
-    if not os.path.exists(f"./../2-Dossier_results_FASTA"):
-        os.makedirs(f"./../2-Dossier_results_FASTA")
+    if not os.path.exists(f"./../2-FASTA_result_folder"):
+        os.makedirs(f"./../2-FASTA_result_folder")
     return sortie_csv
 
 
@@ -1779,7 +1779,7 @@ for fichier in os.listdir(path_windows): # path à changer
                         file_name = extraction_id(nom_fichier, file_id)
                         sortie_csv.write(f"{file_name},{round(float(pourcent),2)},{exploitable},A,{round(float(pourcent_cover_G),2)},{round(float(pourcent_cover_F),2)},{mediane},{Duplication}\n")
 
-                        with open(f"./../2-Dossier_results_FASTA/result_bc{file_name}_A.fasta","w") as sortie_fastaA:
+                        with open(f"./../2-FASTA_result_folder/result_bc{file_name}_A.fasta","w") as sortie_fastaA:
 
                             sortie_fastaA.write(f">{file_name}_A\n")
                             sortie_fastaA.write(f"{sequence_consensus}")
@@ -1837,7 +1837,7 @@ for fichier in os.listdir(path_windows): # path à changer
                         file_name = extraction_id(nom_fichier,file_id)
                         sortie_csv.write(f"{file_name},{round(float(pourcent),2)},{exploitable},B,{round(float(pourcent_cover_G),2)},{round(float(pourcent_cover_F),2)},{mediane},{Duplication}\n")
 
-                        with open(f"./../2-Dossier_results_FASTA/result_{file_name}_B.fasta","w") as sortie_fastaB:
+                        with open(f"./../2-FASTA_result_folder/result_{file_name}_B.fasta","w") as sortie_fastaB:
                             
                             sortie_fastaB.write(f">{file_name}_B\n")
                             sortie_fastaB.write(f"{sequence_consensus}")
