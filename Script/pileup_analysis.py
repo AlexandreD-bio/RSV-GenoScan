@@ -1657,9 +1657,9 @@ def determination_sequence_consensus(
 
 
 def creation_dossiers(disk: str,csv_file_name: str):
-    if not os.path.exists(f"./../2.1-dossier_xlsx_result_pileup"):
-        os.makedirs(f"./../2.1-dossier_xlsx_result_pileup")
-    sortie_csv = open(f"./../2.1-dossier_xlsx_result_pileup/{csv_file_name}","a")
+    if not os.path.exists(f"./../2.1-Pileup_result_csv_Folder"):
+        os.makedirs(f"./../2.1-Pileup_result_csv_Folder")
+    sortie_csv = open(f"./../2.1-Pileup_result_csv_Folder/{csv_file_name}","a")
     
     if not os.path.exists(f"./../2-Dossier_results_FASTA"):
         os.makedirs(f"./../2-Dossier_results_FASTA")

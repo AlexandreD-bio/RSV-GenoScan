@@ -39,7 +39,7 @@ location_duplication_B = [5468, 5527]
 # sert à extraire la liste des valeurs True or fasle du fichier csv qui permettent de savoir si il y a duplication ou non
 def extraction_Boolean_duplication():
 
-    with open(f"./../2.1-dossier_xlsx_result_pileup/resume_pileup.csv","r") as csv_file:
+    with open(f"./../2.1-Pileup_result_csv_Folder/resume_pileup.csv","r") as csv_file:
         i = 0
         csv_values = []
         for lines in csv_file:

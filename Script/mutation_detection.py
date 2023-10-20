@@ -1152,7 +1152,7 @@ def generation_results():
 
     csv_final_write = open(f"./../10.1-dossier_xlsx_result_mutations/resume_mutations.csv","a")
 
-    csv_recap_lecture = open(f"./../2.1-dossier_xlsx_result_pileup/resume_pileup.csv","r")
+    csv_recap_lecture = open(f"./../2.1-Pileup_result_csv_Folder/resume_pileup.csv","r")
     content = csv.reader(csv_recap_lecture)
     
 
