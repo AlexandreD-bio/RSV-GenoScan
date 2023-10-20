@@ -87,7 +87,7 @@ illumina_indexing_check(){
             pac='True'
         fi
         if [ "$files" == "$folder13/ref_combined_insertion.fasta.sa" ];then 
-            echo "TRUE"
+            
             sa='True'
         fi
     done
@@ -256,7 +256,7 @@ elif [ "$data_type" == "2" ]; then
 fi
 
 
-for files in `ls $folder3`; do 
+for files in "$folder3"/*; do 
         
     current_name=$(basename $files .sam)
     
