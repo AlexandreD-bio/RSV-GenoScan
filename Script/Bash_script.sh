@@ -68,27 +68,26 @@ illumina_indexing_check(){
     sa="False"
 
     for files in  "$folder13"/*; do
-        echo "coucou $files"
-        echo "salut  $folder13/ref_combined_insertion.fasta.amb"
+        
         if [ "$files" == "$folder13/ref_combined_insertion.fasta.amb" ];then 
-            echo "TRUE"
+            
             amb="True"
         fi
 
         if [ "$files" == "$folder13/ref_combined_insertion.fasta.ann" ];then 
-            echo "TRUE"
+            
             ann='True'
         fi
         if [ "$files" == "$folder13/ref_combined_insertion.fasta.bwt" ];then
-            echo "TRUE"
+            
             bwt='True'
         fi
         if [ "$files" == "$folder13/ref_combined_insertion.fasta.pac" ];then
-            echo "TRUE"
+            
             pac='True'
         fi
         if [ "$files" == "$folder13/ref_combined_insertion.fasta.sa" ];then 
-            echo "TRUE"
+            
             sa='True'
         fi
     done
@@ -228,7 +227,7 @@ if [ "$data_type" == "1" ]; then
     # Preparing data for analysis:
     illumina_indexing_check
     
-
+    echo "beginning of BWA alignment"
     python3 analyse_bwa_ilumina.py $cores $pair_type
     echo "BWA PROCESSED"
         
