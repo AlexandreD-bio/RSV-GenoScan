@@ -26,7 +26,7 @@ PATH_minimap=$(find / -name minimap2 2>/dev/null)
 export PATH="$PATH_minimap:$PATH"
 
 #Location of the Reference genome
-REF_GEN=./../references_phylogenie/ref_combined_insertion.fasta
+REF_GEN="$folder13/ref_combined_insertion.fasta"
 
 #FILES contains the fastq file for each sample
 extension=.fastq.gz
@@ -70,24 +70,19 @@ illumina_indexing_check(){
     for files in  "$folder13"/*; do
         
         if [ "$files" == "$folder13/ref_combined_insertion.fasta.amb" ];then 
-            
             amb="True"
         fi
 
         if [ "$files" == "$folder13/ref_combined_insertion.fasta.ann" ];then 
-            
             ann='True'
         fi
         if [ "$files" == "$folder13/ref_combined_insertion.fasta.bwt" ];then
-            
             bwt='True'
         fi
         if [ "$files" == "$folder13/ref_combined_insertion.fasta.pac" ];then
-           
             pac='True'
         fi
         if [ "$files" == "$folder13/ref_combined_insertion.fasta.sa" ];then 
-            
             sa='True'
         fi
     done
@@ -95,7 +90,7 @@ illumina_indexing_check(){
     echo "ann : $ann"
     echo "bwt : $bwt"
     echo "pac : $pac"
-    echo "sa : $sa"
+    echo "sa  : $sa"
     
     if  [ "$amb" = "False" ] || [ "$ann" = "False" ] || [ "$bwt" = "False" ] || [ "$pac" = "False" ] || [ "$sa" = "False" ]; then  
         echo "start indexing references"
@@ -227,7 +222,7 @@ if [ "$data_type" == "1" ]; then
     # Preparing data for analysis:
     illumina_indexing_check
     
-
+    echo "strating BWA alignement" 
     python3 analyse_bwa_ilumina.py $cores $pair_type
     echo "BWA PROCESSED"
         
@@ -349,7 +344,7 @@ dossier4_1=$dossier1/result
 dossier4="./../6-Mafft"
 dossier5="./../7-Gblocks"
 dossier6="./../8-IQTree"
-dossier7="./../9-Distances"
+dossier7="./../9-genetic_distances"
 dossier8="./../10-test_positions"
 dossier9="./../10.1-dossier_xlsx_result_mutations"
 

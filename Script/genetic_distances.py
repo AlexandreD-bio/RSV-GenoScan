@@ -3,7 +3,7 @@ import os
 
 
 directory = "./../8-IQTree"
-dossier = f"./../9-Distances/result_txt"
+dossier = f"./../9-genetic_distances/result_txt"
 # Lire le fichier .treefile
 if os.path.exists(dossier):
     print(f"Le dossier '{dossier}' existe.")
@@ -25,7 +25,7 @@ for filename in os.listdir(directory):
         
         viral_type = parts[2]
 
-        with open(f"./../9-Distances/result_txt/distance_{viral_type}_result.txt","w") as file:
+        with open(f"./../9-genetic_distances/result_txt/distance_{viral_type}_result.txt","w") as file:
             # Parcourir toutes les sorties
             for i, seq1 in enumerate(leaf_names):
                 print("Distances génétiques pour la sortie:", seq1)

@@ -11,7 +11,7 @@ sous_lignee_A = "sous_lignées_A.txt"
 sous_lignee_B = "sous_lignées_B.txt"
 ref_fasta_A = "ref_A.fasta"
 ref_fasta_B = "ref_B.fasta"
-dossier = f"./../9-Distances/attribution_lignée"
+dossier = f"./../9-genetic_distances/attribution_lignée"
 
 
 def import_variable(ext_variable:str)->tuple[str, str, str]:
@@ -44,9 +44,9 @@ def main():
         os.mkdir(f"{dossier}")
         print(f"le dossier {dossier} a été créé")
 
-    with open(f"./../9-Distances/result_txt/{file_name}","r") as open_file:
+    with open(f"./../9-genetic_distances/result_txt/{file_name}","r") as open_file:
     
-        with open (f"./../9-Distances/attribution_lignée/{sous_lignee}","w") as write_file:
+        with open (f"./../9-genetic_distances/attribution_lignée/{sous_lignee}","w") as write_file:
             write_file.write(f"Num ID sous_lignée sous_lignée_apparentée\n")
             
             
