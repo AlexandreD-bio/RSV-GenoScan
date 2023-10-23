@@ -254,7 +254,7 @@ fi
 for files in "$folder3"/*; do 
       
     current_name=$(basename $files .sam)
-    echo "coucou $files"
+    
     echo "$current_name"
       
     samtools view -b -S -@ $cores "$folder3/$current_name.sam" > "$folder4/$current_name.bam"

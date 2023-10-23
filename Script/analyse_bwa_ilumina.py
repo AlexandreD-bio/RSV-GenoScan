@@ -158,8 +158,7 @@ else:
                         name_stockage =[]
     else:
         for file in dossier_fastq:
-            print(file)
-            print(f"coucou {file.split('_')[0]}")
+            
             commande = f"bwa mem -t{var_ext_cores} ./../references_phylogenie/ref_combined_insertion.fasta ./../1-fastq/fastq.gz/{file} > ./../1-fastq/sam/{file.split('_')[0]}.sam"
             try:
                 result=subprocess.check_output(commande, shell=True, universal_newlines=True)
