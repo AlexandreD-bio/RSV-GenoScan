@@ -2,7 +2,8 @@ import os,sys,subprocess
 
 
 var_ext_cores = sys.argv[1]
-var_fastq_type = str(sys.argv[2])
+var_fastq_type = str(sys.argv[2]) # 1 ou 2
+
 
 dico_fichier_ilumina={}
 
@@ -50,6 +51,10 @@ if number_ == files_count:
     selection_item = [files_names,files_sample_index]
     if len(set(sample_name_comparaison_list)) ==1:
         item_used_as_id=1
+
+
+
+    # paired-end (2)
     if var_fastq_type == "2":
         
         
@@ -85,7 +90,7 @@ if number_ == files_count:
                             print(f"Error executing Bash command : {e}")
                         name_stockage =[]
     
-    # Pour le non paired-end
+    # Pour le non paired (1)
     else:
         for file in dossier_fastq:
             add=""
@@ -96,6 +101,12 @@ if number_ == files_count:
                 result=subprocess.check_output(commande, shell=True, universal_newlines=True)
             except subprocess.CalledProcessError as e:
                 print(f"Error executing Bash command : {e}")
+
+
+
+
+
+
 # les fichiers illumina ne sont pas nommés selon la convention 
 else:
     id_list=[]
@@ -147,10 +158,11 @@ else:
                         name_stockage =[]
     else:
         for file in dossier_fastq:
-            
+            print(file)
+            print(f"coucou {file.split('_')[0]}")
             commande = f"bwa mem -t{var_ext_cores} ./../references_phylogenie/ref_combined_insertion.fasta ./../1-fastq/fastq.gz/{file} > ./../1-fastq/sam/{file.split('_')[0]}.sam"
-            # try:
-            #     result=subprocess.check_output(commande, shell=True, universal_newlines=True)
-            # except subprocess.CalledProcessError as e:
-            #     print(f"Error executing Bash command : {e}")
+            try:
+                result=subprocess.check_output(commande, shell=True, universal_newlines=True)
+            except subprocess.CalledProcessError as e:
+                print(f"Error executing Bash command : {e}")
  

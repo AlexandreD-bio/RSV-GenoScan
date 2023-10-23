@@ -222,7 +222,7 @@ if [ "$data_type" == "1" ]; then
     # Preparing data for analysis:
     illumina_indexing_check
     
-    echo "strating BWA alignement" 
+    echo "starting BWA alignement" 
     python3 analyse_bwa_ilumina.py $cores $pair_type
     echo "BWA PROCESSED"
         
@@ -252,9 +252,9 @@ fi
 
 
 for files in "$folder3"/*; do 
-        
+      
     current_name=$(basename $files .sam)
-    
+    echo "coucou $files"
     echo "$current_name"
       
     samtools view -b -S -@ $cores "$folder3/$current_name.sam" > "$folder4/$current_name.bam"
