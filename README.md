@@ -46,7 +46,7 @@ The pipeline:
 - detects mutations in F and G known to confer drug resistance
 
 # Tutorial
-in progress (video or image + text)
+A video tutorial has been created for easy installation and execution of RSV-GenoScan:  https://youtu.be/8LQlHOGjkfI 
 
 # Citation
 To be submitted
