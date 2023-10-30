@@ -30,7 +30,7 @@ bash Bash_struct.sh
 
 Then, just follow the instructions until the program ends.
 
-Note: For the phylogenetic analysis, additional reference genomes can be added to the existing panel by pasting their fasta files to the ``references_phylogeny`` repository when the program asks if you wish to add reference genomes for the phylogeny. 
+Note: For the phylogenetic analysis, additional reference genomes can be added to the existing panel by pasting their fasta files to the ``references_phylogeny`` repository (files ref_A.fasta and ref_B.fasta). 
 
 # Outputs
 The pipeline:
