@@ -25,7 +25,7 @@ bash packets_installation.sh
 Once installed, you can easily run the program with the following command:
 
 ```
-bash Bash_struct1.sh
+bash Bash_struct.sh
 ```
 
 Then, just follow the instructions until the program ends.
