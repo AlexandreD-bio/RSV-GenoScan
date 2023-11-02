@@ -211,12 +211,12 @@ if [ "$data_type" == "1" ]; then
     # faire ça
     # ilumina or nanopore selection and testing
     read -p "which type of fastq do you want to treat ?
-    paired (1) | paired-end (2) -> : " pair_type
+    single-read (1) | paired-end (2) -> : " pair_type
 
 
     while [ "$data_type" != "1" ] && [ "$data_type" != "2" ]; do 
         read -p "which type of fastq do you want to treat ?
-        paired (1) | paired-end (2) -> : " pair_type
+        single-read (1) | paired-end (2) -> : " pair_type
     done 
 
     # Preparing data for analysis:
