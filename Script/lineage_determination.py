@@ -7,11 +7,11 @@ ext_variable = sys.argv[1]
 
 distance_A  = "distance_A_result.txt"
 distance_B = "distance_B_result.txt"
-sous_lignee_A = "sous_lignées_A.txt"
-sous_lignee_B = "sous_lignées_B.txt"
+sous_lignee_A = "sub_lineage_A.txt"
+sous_lignee_B = "sub_lineage_B.txt"
 ref_fasta_A = "ref_A.fasta"
 ref_fasta_B = "ref_B.fasta"
-dossier = f"./../9-genetic_distances/attribution_lignée"
+dossier = f"./../9-genetic_distances/attribution_lineage"
 
 
 def import_variable(ext_variable:str)->tuple[str, str, str]:
@@ -38,16 +38,16 @@ def main():
     file_name,sous_lignee, ref_fasta = import_variable(ext_variable)
 
     if os.path.exists(dossier):
-        print(f"Le dossier '{dossier}' existe.")
+        print(f"The '{dossier}' folder exists.")
     else:
-        print(f"Le dossier '{dossier}' n'existe pas.")
+        print(f"The '{dossier}' folder does not exist.")
         os.mkdir(f"{dossier}")
-        print(f"le dossier {dossier} a été créé")
+        print(f"The '{dossier}' folder has been created")
 
     with open(f"./../9-genetic_distances/result_txt/{file_name}","r") as open_file:
     
-        with open (f"./../9-genetic_distances/attribution_lignée/{sous_lignee}","w") as write_file:
-            write_file.write(f"Num ID sous_lignée sous_lignée_apparentée\n")
+        with open (f"./../9-genetic_distances/attribution_lineage/{sous_lignee}","w") as write_file:
+            write_file.write(f"Num ID sub_lineage sub_related_lineage\n")
             
             
             # parcour des lignes du fichier distanc, pour chaque ligne (correspondant à un id spécifique on regarde le match dans le fichier de ref: si match, alors )

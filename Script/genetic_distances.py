@@ -4,13 +4,14 @@ import os
 
 directory = "./../8-IQTree"
 dossier = f"./../9-genetic_distances/result_txt"
+
 # Lire le fichier .treefile
 if os.path.exists(dossier):
-    print(f"Le dossier '{dossier}' existe.")
+    print(f"The '{dossier}' folder exists.")
 else:
-    print(f"Le dossier '{dossier}' n'existe pas.")
+    print(f"The '{dossier}' folder does not exist.")
     os.mkdir(f"{dossier}")
-    print(f"le dossier {dossier} a été créé")
+    print(f"The {dossier} folder has been created")
 
 for filename in os.listdir(directory):
     if filename.endswith(".treefile"):
@@ -28,7 +29,7 @@ for filename in os.listdir(directory):
         with open(f"./../9-genetic_distances/result_txt/distance_{viral_type}_result.txt","w") as file:
             # Parcourir toutes les sorties
             for i, seq1 in enumerate(leaf_names):
-                print("Distances génétiques pour la sortie:", seq1)
+                print("Genetic distances for output:", seq1)
                 
                 list_temporaire = []
                 liste_seq_tempo = []
@@ -44,5 +45,5 @@ for filename in os.listdir(directory):
                         list_temporaire.append(dist)
                 
                 distance_min_index = list_temporaire.index(min(list_temporaire))
-                print(f"Distance génétique entre {seq1} et {liste_seq_tempo[distance_min_index]}: {list_temporaire[distance_min_index]}\n")
-                file.write(f"Distance genetique entre {seq1} et {liste_seq_tempo[distance_min_index]}: {list_temporaire[distance_min_index]}\n")
+                print(f"Genetic distance between {seq1} and {liste_seq_tempo[distance_min_index]}: {list_temporaire[distance_min_index]}\n")
+                file.write(f"Genetic distance between {seq1} and {liste_seq_tempo[distance_min_index]}: {list_temporaire[distance_min_index]}\n")

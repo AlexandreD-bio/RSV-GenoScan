@@ -1040,7 +1040,7 @@ def base_consensus(
         key_with_highest_proportion = max(proportions, key=lambda x: x[1])[0]
         
 
-        stockage_valeurs_propres_inser_del_majoritaires[base_number] = {"base_number": base_number, "clé":key_with_highest_proportion, "value": stockage_inser_del_majoritaire[base_number][key_with_highest_proportion]/int(depth) }
+        stockage_valeurs_propres_inser_del_majoritaires[base_number] = {"base_number": base_number, "keys":key_with_highest_proportion, "value": stockage_inser_del_majoritaire[base_number][key_with_highest_proportion]/int(depth) }
 
         if len(key_with_highest_proportion) >= 104:
             skip = len(key_with_highest_proportion) - 4
@@ -1070,7 +1070,7 @@ def base_consensus(
 
         key_with_highest_proportion = max(proportions, key=lambda x: x[1])[0]
         
-        stockage_valeurs_propres_inser_del_majoritaires[base_number] = {"base_number":base_number, "clé":key_with_highest_proportion, "value": stockage_inser_del_majoritaire[base_number][key_with_highest_proportion]/int(depth) }
+        stockage_valeurs_propres_inser_del_majoritaires[base_number] = {"base_number":base_number, "keys":key_with_highest_proportion, "value": stockage_inser_del_majoritaire[base_number][key_with_highest_proportion]/int(depth) }
         y = 1
         most_common = ""
         if len(key_with_highest_proportion) >= 104:
@@ -1289,16 +1289,16 @@ def correction_sequence(
     proteine_F = ""
 
     for elem in stockage_valeurs_propres_inser_del_majoritaires : 
-        # renvoie la clé 
+        # renvoie la keys 
         
 
         # (-)
-        if stockage_valeurs_propres_inser_del_majoritaires[elem]["clé"][0] == "-":
+        if stockage_valeurs_propres_inser_del_majoritaires[elem]["keys"][0] == "-":
             y = 1
             nombre = ""
-            while stockage_valeurs_propres_inser_del_majoritaires[elem]["clé"][0+y].isdigit():
+            while stockage_valeurs_propres_inser_del_majoritaires[elem]["keys"][0+y].isdigit():
                 
-                nombre += stockage_valeurs_propres_inser_del_majoritaires[elem]["clé"][0+y]
+                nombre += stockage_valeurs_propres_inser_del_majoritaires[elem]["keys"][0+y]
                 y += 1
 
             if type == "A":
@@ -1318,7 +1318,7 @@ def correction_sequence(
                 <= int(stockage_valeurs_propres_inser_del_majoritaires[elem]['base_number']) \
                 <= G_protein_type_A[1]+ duplication_type_A + decalage_pre_genes + decalage_proteine_G:
                     stockage_decalage_proteine_G.append([stockage_valeurs_propres_inser_del_majoritaires[elem]['base_number'],\
-                                                        stockage_valeurs_propres_inser_del_majoritaires[elem]["clé"],\
+                                                        stockage_valeurs_propres_inser_del_majoritaires[elem]["keys"],\
                                                         stockage_valeurs_propres_inser_del_majoritaires[elem]['value']])
                     decalage_proteine_G -= int(nombre)
                     # print(f"decalage_proteine_G {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
@@ -1328,7 +1328,7 @@ def correction_sequence(
                 < int(stockage_valeurs_propres_inser_del_majoritaires[elem]['base_number']) \
                 < F_protein_type_A[0]+ duplication_type_A + decalage_pre_genes + decalage_proteine_G:
                     stockage_decalage_inter_proteine_G_F.append([stockage_valeurs_propres_inser_del_majoritaires[elem]['base_number'],\
-                                                                stockage_valeurs_propres_inser_del_majoritaires[elem]["clé"],\
+                                                                stockage_valeurs_propres_inser_del_majoritaires[elem]["keys"],\
                                                                 stockage_valeurs_propres_inser_del_majoritaires[elem]['value']])
                     decalage_inter_proteine_G_F -= int(nombre) 
                     # print(f"decalage_inter_proteine_G_F {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
@@ -1339,7 +1339,7 @@ def correction_sequence(
                 <= int(stockage_valeurs_propres_inser_del_majoritaires[elem]['base_number']) \
                 <= F_protein_type_A[0]+ duplication_type_A + decalage_pre_genes + decalage_proteine_G + decalage_inter_proteine_G_F + decalage_proteine_F:
                     stockage_decalage_proteine_F.append([stockage_valeurs_propres_inser_del_majoritaires[elem]['base_number'],\
-                                                        stockage_valeurs_propres_inser_del_majoritaires[elem]["clé"],\
+                                                        stockage_valeurs_propres_inser_del_majoritaires[elem]["keys"],\
                                                         stockage_valeurs_propres_inser_del_majoritaires[elem]['value']])
                     decalage_proteine_F -=int(nombre)
                     # print(f"decalage_proteine_F {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
@@ -1362,7 +1362,7 @@ def correction_sequence(
                 <= int(stockage_valeurs_propres_inser_del_majoritaires[elem]['base_number']) \
                 <= G_protein_type_B[1]+ duplication_type_B + decalage_pre_genes + decalage_proteine_G:
                     stockage_decalage_proteine_G.append([stockage_valeurs_propres_inser_del_majoritaires[elem]['base_number'],\
-                                                        stockage_valeurs_propres_inser_del_majoritaires[elem]["clé"],\
+                                                        stockage_valeurs_propres_inser_del_majoritaires[elem]["keys"],\
                                                         stockage_valeurs_propres_inser_del_majoritaires[elem]['value']])
                     decalage_proteine_G -= int(nombre)
                     # print(f"decalage_proteine_G {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
@@ -1372,7 +1372,7 @@ def correction_sequence(
                 < int(stockage_valeurs_propres_inser_del_majoritaires[elem]['base_number']) \
                 < F_protein_type_B[0]+ duplication_type_B + decalage_pre_genes + decalage_proteine_G:
                     stockage_decalage_inter_proteine_G_F.append([stockage_valeurs_propres_inser_del_majoritaires[elem]['base_number'],\
-                                                        stockage_valeurs_propres_inser_del_majoritaires[elem]["clé"],\
+                                                        stockage_valeurs_propres_inser_del_majoritaires[elem]["keys"],\
                                                         stockage_valeurs_propres_inser_del_majoritaires[elem]['value']])
                     decalage_inter_proteine_G_F -= int(nombre) 
                     # print(f"decalage_inter_proteine_G_F {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
@@ -1383,7 +1383,7 @@ def correction_sequence(
                 <= int(stockage_valeurs_propres_inser_del_majoritaires[elem]['base_number']) \
                 <= F_protein_type_B[0]+ duplication_type_B + decalage_pre_genes + decalage_proteine_G + decalage_inter_proteine_G_F + decalage_proteine_F:
                     stockage_decalage_proteine_F.append([stockage_valeurs_propres_inser_del_majoritaires[elem]['base_number'],\
-                                                        stockage_valeurs_propres_inser_del_majoritaires[elem]["clé"],\
+                                                        stockage_valeurs_propres_inser_del_majoritaires[elem]["keys"],\
                                                         stockage_valeurs_propres_inser_del_majoritaires[elem]['value']])
                     decalage_proteine_F -=int(nombre)
                     # print(f"decalage_proteine_F {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
@@ -1391,12 +1391,12 @@ def correction_sequence(
             modulation -= int(nombre)
         
         # (+)
-        if stockage_valeurs_propres_inser_del_majoritaires[elem]["clé"][0] == "+":
+        if stockage_valeurs_propres_inser_del_majoritaires[elem]["keys"][0] == "+":
             y = 1
             nombre = ""
-            while stockage_valeurs_propres_inser_del_majoritaires[elem]["clé"][0+y].isdigit():
+            while stockage_valeurs_propres_inser_del_majoritaires[elem]["keys"][0+y].isdigit():
                 
-                nombre += stockage_valeurs_propres_inser_del_majoritaires[elem]["clé"][0+y]
+                nombre += stockage_valeurs_propres_inser_del_majoritaires[elem]["keys"][0+y]
                 y += 1
 
             if type == "A":
@@ -1416,7 +1416,7 @@ def correction_sequence(
                 <= int(stockage_valeurs_propres_inser_del_majoritaires[elem]['base_number']) \
                 <= G_protein_type_A[1]+ duplication_type_A + decalage_pre_genes + decalage_proteine_G:
                     stockage_decalage_proteine_G.append([stockage_valeurs_propres_inser_del_majoritaires[elem]['base_number'],\
-                                                        stockage_valeurs_propres_inser_del_majoritaires[elem]["clé"],\
+                                                        stockage_valeurs_propres_inser_del_majoritaires[elem]["keys"],\
                                                         stockage_valeurs_propres_inser_del_majoritaires[elem]['value']])
                     decalage_proteine_G += int(nombre)
                     # print(f"decalage_proteine_G {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
@@ -1426,7 +1426,7 @@ def correction_sequence(
                 < int(stockage_valeurs_propres_inser_del_majoritaires[elem]['base_number']) \
                 < F_protein_type_A[0]+ duplication_type_A + decalage_pre_genes + decalage_proteine_G:
                     stockage_decalage_inter_proteine_G_F.append([stockage_valeurs_propres_inser_del_majoritaires[elem]['base_number'],\
-                                                        stockage_valeurs_propres_inser_del_majoritaires[elem]["clé"],\
+                                                        stockage_valeurs_propres_inser_del_majoritaires[elem]["keys"],\
                                                         stockage_valeurs_propres_inser_del_majoritaires[elem]['value']])
                     decalage_inter_proteine_G_F += int(nombre) 
                     # print(f"decalage_inter_proteine_G_F {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
@@ -1458,7 +1458,7 @@ def correction_sequence(
                 <= int(stockage_valeurs_propres_inser_del_majoritaires[elem]['base_number']) \
                 <= G_protein_type_B[1]+ duplication_type_B + decalage_pre_genes + decalage_proteine_G:
                     stockage_decalage_proteine_G.append([stockage_valeurs_propres_inser_del_majoritaires[elem]['base_number'],\
-                                                        stockage_valeurs_propres_inser_del_majoritaires[elem]["clé"],\
+                                                        stockage_valeurs_propres_inser_del_majoritaires[elem]["keys"],\
                                                         stockage_valeurs_propres_inser_del_majoritaires[elem]['value']])
                     decalage_proteine_G += int(nombre)
                     # print(f"decalage_proteine_G {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
@@ -1468,7 +1468,7 @@ def correction_sequence(
                 < int(stockage_valeurs_propres_inser_del_majoritaires[elem]['base_number']) \
                 < F_protein_type_B[0]+ duplication_type_B + decalage_pre_genes + decalage_proteine_G:
                     stockage_decalage_inter_proteine_G_F.append([stockage_valeurs_propres_inser_del_majoritaires[elem]['base_number'],\
-                                                        stockage_valeurs_propres_inser_del_majoritaires[elem]["clé"],\
+                                                        stockage_valeurs_propres_inser_del_majoritaires[elem]["keys"],\
                                                         stockage_valeurs_propres_inser_del_majoritaires[elem]['value']])
                     decalage_inter_proteine_G_F += int(nombre) 
                     # print(f"decalage_inter_proteine_G_F {stockage_valeurs_propres_inser_del_majoritaires[elem]}")
@@ -1479,7 +1479,7 @@ def correction_sequence(
                 <= int(stockage_valeurs_propres_inser_del_majoritaires[elem]['base_number']) \
                 <= F_protein_type_B[0]+ duplication_type_B + decalage_pre_genes + decalage_proteine_G + decalage_inter_proteine_G_F + decalage_proteine_F:
                     stockage_decalage_proteine_F.append([stockage_valeurs_propres_inser_del_majoritaires[elem]['base_number'],\
-                                                        stockage_valeurs_propres_inser_del_majoritaires[elem]["clé"],\
+                                                        stockage_valeurs_propres_inser_del_majoritaires[elem]["keys"],\
                                                         stockage_valeurs_propres_inser_del_majoritaires[elem]['value']])
                     decalage_proteine_F +=int(nombre)
                     # print(f"decalage_proteine_F {stockage_valeurs_propres_inser_del_majoritaires[elem]}")

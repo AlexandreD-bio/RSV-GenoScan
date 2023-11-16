@@ -42,8 +42,8 @@ path_ref_without_duplication = f"./../references_phylogenie/RSV_ref.fasta"
 # Directory:
 # resultat_mutations,result_proteine_type_A,result_proteine_type_B,result_final_A,result_final_B
 resultat_mutations = f"./../10-test_positions/results_mutations"
-result_proteine_type_A = f"./../10-test_positions/result_proteines/results_protéines_type_A"
-result_proteine_type_B = f"./../10-test_positions/result_proteines/results_protéines_type_B"
+result_proteine_type_A = f"./../10-test_positions/result_proteines/protein_results_type_A"
+result_proteine_type_B = f"./../10-test_positions/result_proteines/protein_results_type_B"
 result_final_A = f"./../10-test_positions/result_proteines_final_A"
 result_final_B = f"./../10-test_positions/result_proteines_final_B"
 csv_final = f"./../10.1-dossier_xlsx_result_mutations"
@@ -656,59 +656,59 @@ def generation_alignement_txtv1(
     for y in range(len(sequences_bc_prot_G_A)):
         csv_ref = open(f"./../references_phylogenie/Mutations_RSVA.csv","r")
         
-        with open(f"./../10-test_positions/result_proteines/results_protéines_type_A/result_{clefs_G_A[y].replace('>', '_')}.txt","a") as sortie_A:
+        with open(f"./../10-test_positions/result_proteines/protein_results_type_A/result_{clefs_G_A[y].replace('>', '_')}.txt","a") as sortie_A:
             
             if duplication_G_A[clefs_G_A[y]] == False:
-                sortie_A.write(f"Alignement de la protéine G de {clefs_G_A[y]} avec la protéine G de référence\n\n")
+                sortie_A.write(f"Alignment of the G protein of {clefs_G_A[y]} with the reference G protein\n\n")
                 alignement_proteine = alignement(proteines_A[0],sequences_bc_prot_G_A[y])
                 sortie_A.write(f"{alignement_proteine}")
 
                 # mutations_G_A_output,mutations_G_A = liste_mutations_prot(proteines_A[0],sequences_bc_prot_G_A[(y)])
-                sortie_A.write(f"Alignement de la protéine F de {clefs_G_A[y]} avec la protéine F de référence\n\n")
+                sortie_A.write(f"Alignment of the F protein of {clefs_G_A[y]} with the reference F protein\n\n")
                 alignement_proteine = alignement(proteines_A[1],sequences_bc_prot_F_A[(y)])
                 sortie_A.write(f"{alignement_proteine}")
 
             else:
 
-                sortie_A.write(f"Alignement de la protéine G de {clefs_G_A[y]} avec la protéine G de référence\n\n")
+                sortie_A.write(f"Alignment of the G protein of {clefs_G_A[y]} with the reference G protein\n\n")
                 alignement_proteine = alignement(proteine_A_dupli[0],sequences_bc_prot_G_A[y])
                 sortie_A.write(f"{alignement_proteine}")
 
-                sortie_A.write(f"Alignement de la protéine F de {clefs_G_A[y]} avec la protéine F de référence\n\n")
+                sortie_A.write(f"Alignment of the F protein of {clefs_G_A[y]} with the reference F protein\n\n")
                 alignement_proteine = alignement(proteine_A_dupli[1],sequences_bc_prot_F_A[y])
                 sortie_A.write(f"{alignement_proteine}")
 
 
             
 
-            # sortie_A.write(f"Alignement de la protéine G du {clefs_G_A[y]} avec la protéine G de référence\n\n")
+            # sortie_A.write(f"Alignement de la protéine G du {clefs_G_A[y]} with the reference G protein\n\n")
             # sortie_A.write(f"{alignement_proteine}")#"\n{differences_G_A}\n \n")
 
             # alignement_proteine,differences_F_A = alignement(proteines_A[1],sequences_bc_prot_F_A[(y)])
             # mutations_F_A_output,mutations_F_A = liste_mutations_prot(proteines_A[1],sequences_bc_prot_F_A[(y)])
 
-            # sortie_A.write(f"Alignement de la protéine F du {clefs_G_A[y]} avec la protéine F de référence\n\n")
+            # sortie_A.write(f"Alignement de la protéine F du {clefs_G_A[y]} with the reference F protein\n\n")
             # sortie_A.write(f"{alignement_proteine}")#\n{differences_F_A}\n \n")
  
     for z in range(len(sequences_bc_prot_G_B)):
-        with open(f"./../10-test_positions/result_proteines/results_protéines_type_B/result_{clefs_G_B[z].replace('>', '_',)}.txt","a") as sortie_B:
+        with open(f"./../10-test_positions/result_proteines/protein_results_type_B/result_{clefs_G_B[z].replace('>', '_',)}.txt","a") as sortie_B:
     
             if duplication_G_B[clefs_G_B[z]] == False:
-                sortie_B.write(f"Alignement de la protéine G de {clefs_G_B[z]} avec la protéine G de référence\n\n\n")
+                sortie_B.write(f"Alignment of the G protein of {clefs_G_B[z]} with the reference G protein\n\n\n")
                 alignement_proteine= alignement(proteines_B[0],sequences_bc_prot_G_B[z])
                 sortie_B.write(f"{alignement_proteine}")
 
                 # mutations_G_A_output,mutations_G_A = liste_mutations_prot(proteines_A[0],sequences_bc_prot_G_A[(y)])
-                sortie_B.write(f"Alignement de la protéine F de {clefs_G_B[z]} avec la protéine F de référence\n\n")
+                sortie_B.write(f"Alignment of the F protein of {clefs_G_B[z]} with the reference F protein\n\n")
                 alignement_proteine= alignement(proteines_B[1],sequences_bc_prot_F_B[(z)])
                 sortie_B.write(f"{alignement_proteine}")
             else:
 
-                sortie_B.write(f"Alignement de la protéine G de {clefs_G_B[z]} avec la protéine G de référence\n\n")
+                sortie_B.write(f"Alignment of the G protein of {clefs_G_B[z]} with the reference G protein\n\n")
                 alignement_proteine= alignement(proteine_B_dupli[0],sequences_bc_prot_G_B[z])
                 sortie_B.write(f"{alignement_proteine}")
 
-                sortie_B.write(f"Alignement de la protéine F de {clefs_G_B[z]} avec la protéine F de référence\n\n")
+                sortie_B.write(f"Alignment of the F protein of {clefs_G_B[z]} with the reference F protein\n\n")
                 alignement_proteine= alignement(proteine_B_dupli[1],sequences_bc_prot_F_B[(z)])
                 sortie_B.write(f"{alignement_proteine}")
                     
@@ -876,7 +876,7 @@ def extraction_txt(path_txt:str, fichier:str, csv_posits, csv_result, csv_final_
             #génération du fichier txt v2
             # génération de la ligne "titre" pour la protéine G
             if i == 0:
-                final_file.write(f"Alignement de la protéine G de {barcode} avec la protéine G de référence\n\n")
+                final_file.write(f"Alignment of the G protein of {barcode} with the reference G protein\n\n")
                 i+=2
                 
             if i != 0 :
@@ -1145,10 +1145,10 @@ def generation_results():
 
     liste_lignes_csv_v1 = []
     csv_result = open(f"./../10-test_positions/Boolean_table_of_the_presence_of_referenced_mutations_in_the_dataset.csv","a")
-    csv_result.write("Id,Protein,Subunit,Mutation,Présence_mutation,palivizumab,FC.IC50.palivizumab,nirsevimab,FC.IC50.nirsevimab,suptavumab,FC.IC50.suptavumab\n")
+    csv_result.write("Id,Protein,Subunit,Mutation,Mutation_presence,palivizumab,FC.IC50.palivizumab,nirsevimab,FC.IC50.nirsevimab,suptavumab,FC.IC50.suptavumab\n")
 
     csv_posits = open(f"./../10-test_positions/results_mutations/table_of_presence_of_mutations_involving_resistance.csv","a")
-    csv_posits.write("Id,Protein,Subunit,Mutation,Présence_mutation,palivizumab,FC.IC50.palivizumab,nirsevimab,FC.IC50.nirsevimab,suptavumab,FC.IC50.suptavumab\n")
+    csv_posits.write("Id,Protein,Subunit,Mutation,Mutation_presence,palivizumab,FC.IC50.palivizumab,nirsevimab,FC.IC50.nirsevimab,suptavumab,FC.IC50.suptavumab\n")
 
     csv_final_write = open(f"./../10.1-dossier_xlsx_result_mutations/resume_mutations.csv","a")
 

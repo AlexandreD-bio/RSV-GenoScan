@@ -1686,7 +1686,7 @@ sortie_csv = creation_dossiers(disk, csv_file_name)
 
 
 
-sortie_csv.write("id,Couverture_génome_à_10X(en%),exploitable(à_70%),Type,Couverture_protéine_G(en%_à10X),Couverture_protéine_F(en%_à10X),Mediane_de_couverture_en_reads,Présence_dulication_protéine_G\n")
+sortie_csv.write("Id,Genome_Coverage_for_10X(%),exploitable(for_70%),Type,G_Protein_Coverage_for_10X(%),F_Protein_Coverage_for_10X(%),Median_coverage_in_reads,G protein duplication Presence\n")
 
 # import les fichiers du path choisit et en fait une liste dont les éléments sont les déterminants de la boucle 
 for fichier in os.listdir(path_windows): # path à changer 
