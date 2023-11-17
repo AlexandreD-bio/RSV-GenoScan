@@ -1,17 +1,6 @@
 from Bio import SeqIO
 import os 
 
-#============================================================ Variables Globales ============================================================#
-chemin = os.getcwd()
-disque = chemin[0]
-
-# permet d'obtenir le répertoire parent du parent du script
-script_path = os.path.abspath(__file__)
-parent_dir = os.path.dirname(os.path.dirname(script_path))
-
-#TODO!Corriger les path qui dépendront de la structure finale du projet et qui devront-être automatique.
-
-
 """
 # variables de la fonction fasta_fusion
  
@@ -43,28 +32,6 @@ parent_dir = os.path.dirname(os.path.dirname(script_path))
 # New_references_A_path = f"./../5-genbank/New_references_A"
 
 """
-
-
-
-
-studied_genomes_path = f"{parent_dir}/2-FASTA_result_folder"  #TODO: génomes étudiés
-
-fasta_A = "A.fasta"
-fasta_B = "B.fasta"
-
-chemin_output_structure_dépendant_A = f"./../5-genbank/result" 
-chemin_output_structure_dépendant_B = f"./../5-genbank/result"
-
-# chemin_genomes_input_par_user_A = f"{aefzfez}"
-# chemin_genomes_input_par_user_B = f"{aefzfez}"
-
-directory_du_dossier_contenant_les_fasta_input_par_user_en_plus_A = f"./../5-genbank/New_References_A"
-directory_du_dossier_contenant_les_fasta_input_par_user_en_plus_B = f"./../5-genbank/New_References_B"
-
-path_genomes_references_logiciel_A = f"{parent_dir}/references_phylogenie/sequences_ref_A_pre_mafft.fasta"
-path_genomes_references_logiciel_B = f"{parent_dir}/references_phylogenie/sequences_ref_B_pre_mafft.fasta"
-
-
 #============================================================ Fonctions ============================================================#
 
 
@@ -166,74 +133,104 @@ main()
 # TODO? : générer l'output
 """
 
+def fasta_homogenization_main():
 
-# test A: 
-sortie_file_A = open(f"{chemin_output_structure_dépendant_A}/file_all_genomes_A.fasta","w") # TODO? outputA
- # fasta_clean()
 
-fichiers = os.listdir(f"./../2-FASTA_result_folder")
-for fichier in fichiers:
-    
-    if fichier.endswith("A.fasta"):
+    #============================== Variables Globales
+    chemin = os.getcwd()
+    disque = chemin[0]
+
+    # permet d'obtenir le répertoire parent du parent du script
+    script_path = os.path.abspath(__file__)
+    parent_dir = os.path.dirname(os.path.dirname(script_path))
+
+    #TODO!Corriger les path qui dépendront de la structure finale du projet et qui devront-être automatique.
+
+    studied_genomes_path = f"{parent_dir}/2-FASTA_result_folder"  #TODO: génomes étudiés
+
+    fasta_A = "A.fasta"
+    fasta_B = "B.fasta"
+
+    chemin_output_structure_dépendant_A = f"./../5-genbank/result" 
+    chemin_output_structure_dépendant_B = f"./../5-genbank/result"
+
+    # chemin_genomes_input_par_user_A = f"{aefzfez}"
+    # chemin_genomes_input_par_user_B = f"{aefzfez}"
+
+    directory_du_dossier_contenant_les_fasta_input_par_user_en_plus_A = f"./../5-genbank/New_References_A"
+    directory_du_dossier_contenant_les_fasta_input_par_user_en_plus_B = f"./../5-genbank/New_References_B"
+
+    path_genomes_references_logiciel_A = f"{parent_dir}/references_phylogenie/sequences_ref_A_pre_mafft.fasta"
+    path_genomes_references_logiciel_B = f"{parent_dir}/references_phylogenie/sequences_ref_B_pre_mafft.fasta"
+
+    # test A: 
+    sortie_file_A = open(f"{chemin_output_structure_dépendant_A}/file_all_genomes_A.fasta","w") # TODO? outputA
+    # fasta_clean()
+
+    fichiers = os.listdir(f"./../2-FASTA_result_folder")
+    for fichier in fichiers:
         
-        for seq_record in SeqIO.parse(f"./../2-FASTA_result_folder/{fichier}","fasta"):
-                
-            if len(seq_record.seq) > 15000:
-
-                sortie_file_A.write(f">{seq_record.id}\n{seq_record.seq}\n")
-
-# if is_directory_not_empty(directory_du_dossier_contenant_les_fasta_input_par_user_en_plus_A):
-#     fichiers = os.listdir(f"./../5-genbank/New_References_A")
-#     for fichier in fichiers:
-
-#         if fichier.endswith(".fasta"):
-                
-#             for seq_record in SeqIO.parse(f"./../5-genbank/New_References_A/{fichier}","fasta"):
-                    
-#                 if len(seq_record.seq) > 15000:
-
-#                     sortie_file_A.write(f">{seq_record.id}\n{seq_record.seq}\n")
-
-for seq_record in SeqIO.parse(f"./../references_phylogenie/sequences_ref_A_pre_mafft.fasta","fasta"):
-        
-    if len(seq_record.seq) > 15000:
-        print(len(seq_record.seq))
-        print(seq_record)
-        sortie_file_A.write(f">{seq_record.id}\n{seq_record.seq}\n")
-
-sortie_file_A.close()
-
-#test B
-sortie_file_B = open(f"{chemin_output_structure_dépendant_B}/file_all_genomes_B.fasta","w") # fasta_clean()
-
-fichiers = os.listdir(f"./../2-FASTA_result_folder")
-for fichier in fichiers:
-
-    if fichier.endswith("B.fasta"):
+        if fichier.endswith("A.fasta"):
             
-        for seq_record in SeqIO.parse(f"./../2-FASTA_result_folder/{fichier}","fasta"):
-                
-            if len(seq_record.seq) > 15000:
-
-                sortie_file_B.write(f">{seq_record.id}\n{seq_record.seq}\n")
-
-# if is_directory_not_empty(directory_du_dossier_contenant_les_fasta_input_par_user_en_plus_B):
-#     fichiers = os.listdir(f"{parent_dir}/5-genbank/New_References_B")
-#     for fichier in fichiers:
-
-#         if fichier.endswith(".fasta"):
-                
-#             for seq_record in SeqIO.parse(f"{parent_dir}/5-genbank/New_References_B/{fichier}","fasta"):
+            for seq_record in SeqIO.parse(f"./../2-FASTA_result_folder/{fichier}","fasta"):
                     
-#                 if len(seq_record.seq) > 15000:
+                if len(seq_record.seq) > 15000:
 
-#                     sortie_file_B.write(f">{seq_record.id}\n{seq_record.seq}\n")
+                    sortie_file_A.write(f">{seq_record.id}\n{seq_record.seq}\n")
 
-for seq_record in SeqIO.parse(f"{parent_dir}/references_phylogenie/sequences_ref_B_pre_mafft.fasta","fasta"):
-        
-    if len(seq_record.seq) > 15000:
-        print(len(seq_record.seq))
-        print(seq_record)
-        sortie_file_B.write(f">{seq_record.id}\n{seq_record.seq}\n")
-        
-sortie_file_B.close()
+    # if is_directory_not_empty(directory_du_dossier_contenant_les_fasta_input_par_user_en_plus_A):
+    #     fichiers = os.listdir(f"./../5-genbank/New_References_A")
+    #     for fichier in fichiers:
+
+    #         if fichier.endswith(".fasta"):
+                    
+    #             for seq_record in SeqIO.parse(f"./../5-genbank/New_References_A/{fichier}","fasta"):
+                        
+    #                 if len(seq_record.seq) > 15000:
+
+    #                     sortie_file_A.write(f">{seq_record.id}\n{seq_record.seq}\n")
+
+    for seq_record in SeqIO.parse(f"./../references_phylogenie/sequences_ref_A_pre_mafft.fasta","fasta"):
+            
+        if len(seq_record.seq) > 15000:
+            print(len(seq_record.seq))
+            print(seq_record)
+            sortie_file_A.write(f">{seq_record.id}\n{seq_record.seq}\n")
+
+    sortie_file_A.close()
+
+    #test B
+    sortie_file_B = open(f"{chemin_output_structure_dépendant_B}/file_all_genomes_B.fasta","w") # fasta_clean()
+
+    fichiers = os.listdir(f"./../2-FASTA_result_folder")
+    for fichier in fichiers:
+
+        if fichier.endswith("B.fasta"):
+                
+            for seq_record in SeqIO.parse(f"./../2-FASTA_result_folder/{fichier}","fasta"):
+                    
+                if len(seq_record.seq) > 15000:
+
+                    sortie_file_B.write(f">{seq_record.id}\n{seq_record.seq}\n")
+
+    # if is_directory_not_empty(directory_du_dossier_contenant_les_fasta_input_par_user_en_plus_B):
+    #     fichiers = os.listdir(f"{parent_dir}/5-genbank/New_References_B")
+    #     for fichier in fichiers:
+
+    #         if fichier.endswith(".fasta"):
+                    
+    #             for seq_record in SeqIO.parse(f"{parent_dir}/5-genbank/New_References_B/{fichier}","fasta"):
+                        
+    #                 if len(seq_record.seq) > 15000:
+
+    #                     sortie_file_B.write(f">{seq_record.id}\n{seq_record.seq}\n")
+
+    for seq_record in SeqIO.parse(f"{parent_dir}/references_phylogenie/sequences_ref_B_pre_mafft.fasta","fasta"):
+            
+        if len(seq_record.seq) > 15000:
+            print(len(seq_record.seq))
+            print(seq_record)
+            sortie_file_B.write(f">{seq_record.id}\n{seq_record.seq}\n")
+            
+    sortie_file_B.close()
+fasta_homogenization_main()
