@@ -4,29 +4,9 @@ from bokeh.io import export_png
 import os
 import re
 
-
-
-
-#======================================== Variables Globales ========================================#
-
-chemin = os.getcwd()
-disque = chemin[0]
- 
-nom_fichier_txt  = r"resume_pileup.txt"
-
-script_path = os.path.abspath(__file__)
-parent_dir = os.path.dirname(script_path)
-parent_dir = os.path.dirname(parent_dir)
-
-path_windows_input = f"./../1-fastq/pileup"
-
-path_windows_output = f"./../4-Graphs"
-
-extension = ".pileup"
-
 #======================================== Fonctions ========================================#
 
-def graphiqueB(ligne_B, num_ligne_virus, total_reads,nom_fichier):
+def graphiqueB(ligne_B, num_ligne_virus, total_reads, nom_fichier, file_id):
 
 # création de la figure
     p = figure(
@@ -117,7 +97,7 @@ def graphiqueB(ligne_B, num_ligne_virus, total_reads,nom_fichier):
     return p 
 
 
-def graphiqueA(ligne_A, num_ligne_virus, total_reads,nom_fichier):
+def graphiqueA(ligne_A, num_ligne_virus, total_reads, nom_fichier, file_id):
     p = figure(
         title=f"Number of reads for each base of the virus genome (type A) corresponding to {file_id}",
         x_axis_label='Genome Position',
@@ -185,8 +165,9 @@ def graphiqueA(ligne_A, num_ligne_virus, total_reads,nom_fichier):
     export_png(p, filename=f"./../4-Graphs/Graph_{file_id}_A.png") # type: ignore
 
     return p 
-    
-def calcul_percent(nom_fichier,file_id: str):
+
+
+def calcul_percent(nom_fichier, file_id: str):
 	with open (nom_fichier,"r") as file :
             i = 0
                             
@@ -244,7 +225,7 @@ def calcul_percent(nom_fichier,file_id: str):
                     #y
                     total_reads = total_reads[0:ligne_A]
 
-                    p = graphiqueA(ligne_A, num_ligne_virus, total_reads, nom_fichier)
+                    p = graphiqueA(ligne_A, num_ligne_virus, total_reads, nom_fichier, file_id)
 
                 # type B
                 elif pourcentage_couverture_B > pourcentage_couverture_A:
@@ -253,10 +234,10 @@ def calcul_percent(nom_fichier,file_id: str):
                     num_ligne_virus = num_ligne_virus[ligne_A+1:ligne_A+1+ligne_B]
                     
                         # Plot
-                    p = graphiqueB(ligne_B, num_ligne_virus, total_reads, nom_fichier)
+                    p = graphiqueB(ligne_B, num_ligne_virus, total_reads, nom_fichier, file_id)
 
 
-def extraction_id(file_name: str,file_id: str)-> str:
+def extraction_id(file_name: str, file_id: str)-> str:
 
     file_id_pattern_regex = r'pileup/([^/]+)\.pileup'
 
@@ -270,26 +251,35 @@ def extraction_id(file_name: str,file_id: str)-> str:
     return file_id
 
 
-
-
-
-
-
-
 #======================================== Code ========================================#
+def graphics_main():
+    #==================== Variables Globales
 
-for fichier in os.listdir(path_windows_input):
-	if fichier.endswith(extension):
-        
-            nom_fichier = os.path.join(path_windows_input,fichier)
-            file_id = ""
-            file_id = extraction_id(nom_fichier,file_id)
-            
-            file = open (nom_fichier,"r")
-            content = file.readlines()
-
-            calcul_percent(nom_fichier,file_id)             
-
-
+    chemin = os.getcwd()
+    disque = chemin[0]
     
+    nom_fichier_txt  = r"resume_pileup.txt"
 
+    script_path = os.path.abspath(__file__)
+    parent_dir = os.path.dirname(script_path)
+    parent_dir = os.path.dirname(parent_dir)
+
+    path_windows_input = f"./../1-fastq/pileup"
+
+    path_windows_output = f"./../4-Graphs"
+
+    extension = ".pileup"
+
+    for fichier in os.listdir(path_windows_input):
+        if fichier.endswith(extension):
+            
+                nom_fichier = os.path.join(path_windows_input, fichier)
+                file_id = ""
+                file_id = extraction_id(nom_fichier, file_id)
+                
+                file = open (nom_fichier,"r")
+                content = file.readlines()
+
+                calcul_percent(nom_fichier, file_id)             
+
+graphics_main()
