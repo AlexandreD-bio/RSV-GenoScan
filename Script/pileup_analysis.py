@@ -11,52 +11,19 @@ import re
 # protéine F:
 # TYPE_A : 5632...7356
 # TYPE_B : 5664...7388  
-#============================================================ Variables Globales ============================================================#
 
-chemin = os.getcwd()
-disk = chemin[0]
-
-
-csv_file_name  = r"resume_pileup.csv"
-
-# script_path = os.path.abspath(__file__)
-# parent_dir = os.path.dirname(script_path)
-# parent_dir = os.path.dirname(parent_dir)
-
-script_path = os.path.abspath(__file__)
-parent_dir = os.path.dirname(os.path.dirname(script_path))
-
-
-# path_windows = f"{disque}:\\ANALYSE_RSV\\1-fastq\\pileup"
-# nouveau path 
-path_windows = f"{parent_dir}/1-fastq/pileup"
-
-
-
-# path_windows_test =f"{disque}:\\ANALYSE_RSV\\env_test"
-
-path_linux = "/media/virologie/MyPassport/ANALYSE_RSV"
-path_linux_test = "/media/virologie/MyPassport/ANALYSE_RSV/env_test"
-
-extension = ".pileup"
-
-# [5459; 5530]
-# 72 pour le type A 
-
-# [5468; 5527]
-# 60 pour le type B
-
-G_protein_type_A = [4659,5555]
-F_protein_type_A = [5632,7356]
-duplication_type_A = 72
-location_duplication_A = [5459, 5530]
-
-G_protein_type_B = [4688,5566]
-F_protein_type_B = [5664,7388]
-duplication_type_B = 60
-location_duplication_B = [5468, 5527]
 #================================================== fonctions  ==================================================#
-def supression_correction_G(resultG, sequence_consensus : str, type: Literal['A', 'B'], location_duplication_A : list, location_duplication_B: list, decalage_pre_genes: int):
+def supression_correction_G(
+    resultG,
+    sequence_consensus : str,
+    type: Literal['A', 'B'],
+    location_duplication_A : list,
+    location_duplication_B: list,
+    decalage_pre_genes: int,
+    G_protein_type_A:list[int],
+    G_protein_type_B:list[int]
+    ):
+
     value = ""
     if type == "A":
         location_Duplication_G = location_duplication_A
@@ -212,7 +179,17 @@ def supression_correction_G(resultG, sequence_consensus : str, type: Literal['A'
     return str(sequence_consensus), value
 
 #TODO! finir de corriger cette version F
-def supression_correction_F(resultF, sequence_consensus : str, type: Literal['A', 'B'], location_duplication_A : list, location_duplication_B: list, decalage_pre_genes: int , decalage_proteine_G: int, decalage_inter_proteine_G_F: int):
+def supression_correction_F(
+    resultF,
+    sequence_consensus : str,
+    type: Literal['A', 'B'],
+    location_duplication_A : list,
+    location_duplication_B: list,
+    decalage_pre_genes: int ,
+    decalage_proteine_G: int,
+    decalage_inter_proteine_G_F: int
+    ):
+
     """
         if resultF[elem][0] in [G_protein_type_A[0], location_Duplication_G[0]]:
             resultF[elem][0] = resultF[elem][0] + decalage_pre_genes
@@ -280,7 +257,15 @@ def supression_correction_F(resultF, sequence_consensus : str, type: Literal['A'
     return str(sequence_consensus)
 
 
-def correction_insersion_deletion_G(resultG, sequence_consensus: str, type: Literal['A', 'B'], location_duplication_A: list, location_duplication_B: list, decalage_pre_genes:int):
+def correction_insersion_deletion_G(
+    resultG,
+    sequence_consensus: str,
+    type: Literal['A', 'B'],
+    location_duplication_A: list,
+    location_duplication_B: list,
+    decalage_pre_genes:int,
+    G_protein_type_A
+    ):
 
     value = ""
 
@@ -474,8 +459,6 @@ def generations_combinaisons(data,target_sum,valeur_min,valeur_max,min_max : Lit
     combinations.extend([(item,) for item in data])
 
     # Applique une logique pour filtrer les combinaisons
-
-    
 
     if min_max == "min":
         filtered_combinations = [
@@ -1034,9 +1017,7 @@ def base_consensus(
     elif proportion_base_standard > 50:
         skip = "0"
         
-        
         liste_hashmap_inser_del_minoritaire_filtree=(proportion_inser_del_minoritaires(depth,hashmap,base_number,stockage_hasmap_inser_del_non_majoritaire,liste_hashmap_inser_del_minoritaire_filtree))
-
 
         return base_ref, skip, stockage_hasmap_inser_del_non_majoritaire, stockage_inser_del_majoritaire, stockage_valeurs_propres_inser_del_majoritaires,liste_hashmap_inser_del_minoritaire_filtree
     
@@ -1144,7 +1125,9 @@ def correction_sequence(
     F_protein_type_B,
     duplication_type_B,
     Duplication,
-    liste_hashmap_inser_del_minoritaire_filtree
+    liste_hashmap_inser_del_minoritaire_filtree,
+    location_duplication_A,
+    location_duplication_B
     ):
 
     valeur_decalage_pre_genes = 0
@@ -1383,12 +1366,12 @@ def correction_sequence(
 
         if modifG == False and resultG != [0]:
             
-            sequence_consensus, decalage_post_correction_G = supression_correction_G(resultG, sequence_consensus, type, location_duplication_A, location_duplication_B, valeur_decalage_pre_genes)
-        
+            sequence_consensus, decalage_post_correction_G = supression_correction_G(resultG, sequence_consensus, type, location_duplication_A, location_duplication_B, valeur_decalage_pre_genes, G_protein_type_A, G_protein_type_B)
+
         # si il existe une possibilité de correction :
         elif modifG == True:
             # traiter insersion / délétion 
-            sequence_consensus, decalage_post_correction_G = correction_insersion_deletion_G(resultG, sequence_consensus, type, location_duplication_A, location_duplication_B, valeur_decalage_pre_genes)
+            sequence_consensus, decalage_post_correction_G = correction_insersion_deletion_G(resultG, sequence_consensus, type, location_duplication_A, location_duplication_B, valeur_decalage_pre_genes, G_protein_type_A)
 
         # si pas besoin de correction
         
@@ -1427,7 +1410,7 @@ def correction_sequence(
         if modifF == False and resultF != [0]:
             
             sequence_consensus = supression_correction_F(resultF, sequence_consensus, type, location_duplication_A, location_duplication_B, valeur_decalage_pre_genes, decalage_proteine_G, decalage_inter_proteine_G_F)
-        
+
         # si il existe une possibilité de correction :
         elif modifF == True:
             
@@ -1459,13 +1442,13 @@ def correction_sequence(
         # pas d'inser/del à rajouter donc on corrige le cadre de lecture en supprimant l'insersion/délétion d'origine.
         if modifG == False and resultG != [0]:
             
-            sequence_consensus, decalage_post_correction_G = supression_correction_G(resultG, sequence_consensus, type, location_duplication_A, location_duplication_B, valeur_decalage_pre_genes)
+            sequence_consensus, decalage_post_correction_G = supression_correction_G(resultG, sequence_consensus, type, location_duplication_A, location_duplication_B, valeur_decalage_pre_genes, G_protein_type_A, G_protein_type_B)
         
         # si il existe une possibilité de correction :
         elif modifG == True:
             
             # traiter insersion / délétion 
-            sequence_consensus, decalage_post_correction_G = correction_insersion_deletion_G(resultG, sequence_consensus, type, location_duplication_A, location_duplication_B, valeur_decalage_pre_genes)
+            sequence_consensus, decalage_post_correction_G = correction_insersion_deletion_G(resultG, sequence_consensus, type, location_duplication_A, location_duplication_B, valeur_decalage_pre_genes, G_protein_type_A)
 
         # si pas besoin de correction
         else:    
@@ -1502,7 +1485,7 @@ def correction_sequence(
         if modifF == False and resultF != [0]:
             
             sequence_consensus = supression_correction_F(resultF, sequence_consensus, type, location_duplication_A, location_duplication_B, valeur_decalage_pre_genes, decalage_proteine_G, decalage_inter_proteine_G_F)
-        
+
         # si il existe une possibilité de correction :
         elif modifF == True:
             
@@ -1651,7 +1634,7 @@ def determination_sequence_consensus(
         pourcent_cover_F = "/"
     """
     
-    liste_median = median(liste_median) #TODO??????? peut-être à corriger 
+    liste_median = median(liste_median)
     
     return sequence_consensus, liste_median, base_G, base_F, base_G_dupli, base_F_dupli, stockage_valeurs_propres_inser_del_majoritaires,  liste_hashmap_inser_del_minoritaire_filtree
 
@@ -1674,47 +1657,78 @@ def extraction_id(file_name: str,file_id: str)-> str:
 
     if file_id_match:
         file_id = file_id_match.group(1)
-        
-    
-
     return file_id
 #============================================================ script ============================================================#
 
+def pileup_main():
+
+################Var;
+    chemin = os.getcwd()
+    disk = chemin[0]
 
 
-sortie_csv = creation_dossiers(disk, csv_file_name)
+    csv_file_name  = r"resume_pileup.csv"
+
+
+    script_path = os.path.abspath(__file__)
+    parent_dir = os.path.dirname(os.path.dirname(script_path))
+
+
+    path_windows = f"{parent_dir}/1-fastq/pileup"
+
+    extension = ".pileup"
+
+    # [5459; 5530]
+    # 72 pour le type A 
+
+    # [5468; 5527]
+    # 60 pour le type B
+
+    G_protein_type_A = [4659,5555]
+    F_protein_type_A = [5632,7356]
+    duplication_type_A = 72
+    location_duplication_A = [5459, 5530]
+
+    G_protein_type_B = [4688,5566]
+    F_protein_type_B = [5664,7388]
+    duplication_type_B = 60
+    location_duplication_B = [5468, 5527]
+
+
+#############programm
+    sortie_csv = creation_dossiers(disk, csv_file_name)
 
 
 
-sortie_csv.write("Id,Genome_Coverage_for_10X(%),exploitable(for_70%),Type,G_Protein_Coverage_for_10X(%),F_Protein_Coverage_for_10X(%),Median_coverage_in_reads,G protein duplication Presence\n")
+    sortie_csv.write("Id,Genome_Coverage_for_10X(%),exploitable(for_70%),Type,G_Protein_Coverage_for_10X(%),F_Protein_Coverage_for_10X(%),Median_coverage_in_reads,G protein duplication Presence\n")
 
-# import les fichiers du path choisit et en fait une liste dont les éléments sont les déterminants de la boucle 
-for fichier in os.listdir(path_windows): # path à changer 
-	
-    # si le fichier comporte l'extension .pileup, alors il est traité 
-    if fichier.endswith(extension):
-
-            # import du fichier de l'occurence de la boucle 
-            nom_fichier = os.path.join(path_windows, fichier) #path à changer
-            print(nom_fichier)
-            # ouverture du fichier en "read"        
-            file = open (nom_fichier,"r")
-            content = file.readlines()
-            file_id=""
-            # fonction permettant le traitement des fichiers pileups en lisant le fichier de A à Z et en sortant un type A/B,
-            # qui permet déviter de refaire des opérations pour l'entièreté du fichier pour les fonction d'après.
-            # De plus, il sort le pourcentage de couverture du génome ainsi que si le fichier permet d'exploiter le génome consensus qui sera déterminée plus tard,
-            # cela en fonction du pourcentage de couverture du génome (seuil à 70%)
-            # Pour finir, il sort le numéro des lignes A et lignes B qui seront réutilisée pour des calculs ultérieurement, et éviter des traitement de données inutiles.
-
-            type, pourcent, lignes_type_A, lignes_type_B, exploitable = calcul_percent(nom_fichier)
+    # import les fichiers du path choisit et en fait une liste dont les éléments sont les déterminants de la boucle 
+    for fichier in os.listdir(path_windows): # path à changer 
         
-            # si le génome du virus est considéré comme ayant un génome de Type A ou B        
-            if type == "A" or type == "B":
-                
-                # cette fonction permet de déterminer en lisant la partie A ou la partie B du fichier (A ou B étant déterminés précédemment dans le programme) la séquence consensus, 
-                # ainsi que le pourcentage de couverture des protéines G et F, mais aussi de la médiane de couverture du génome en reads. 
-                sequence_consensus, mediane, base_G, base_F, base_G_dupli, base_F_dupli, stockage_valeurs_propres_inser_del_majoritaires, liste_hashmap_inser_del_minoritaire_filtree = determination_sequence_consensus(
+        # si le fichier comporte l'extension .pileup, alors il est traité 
+        if fichier.endswith(extension):
+
+                # import du fichier de l'occurence de la boucle 
+                nom_fichier = os.path.join(path_windows, fichier) #path à changer
+                print(nom_fichier)
+                # ouverture du fichier en "read"        
+                file = open (nom_fichier,"r")
+                content = file.readlines()
+                file_id=""
+                # fonction permettant le traitement des fichiers pileups en lisant le fichier de A à Z et en sortant un type A/B,
+                # qui permet déviter de refaire des opérations pour l'entièreté du fichier pour les fonction d'après.
+                # De plus, il sort le pourcentage de couverture du génome ainsi que si le fichier permet d'exploiter le génome consensus qui sera déterminée plus tard,
+                # cela en fonction du pourcentage de couverture du génome (seuil à 70%)
+                # Pour finir, il sort le numéro des lignes A et lignes B qui seront réutilisée pour des calculs ultérieurement, et éviter des traitement de données inutiles.
+
+                type, pourcent, lignes_type_A, lignes_type_B, exploitable = calcul_percent(nom_fichier)
+            
+                # si le génome du virus est considéré comme ayant un génome de Type A ou B        
+                if type == "A" or type == "B":
+                    
+                    # cette fonction permet de déterminer en lisant la partie A ou la partie B du fichier (A ou B étant déterminés précédemment dans le programme) la séquence consensus, 
+                    # ainsi que le pourcentage de couverture des protéines G et F, mais aussi de la médiane de couverture du génome en reads. 
+                    sequence_consensus, mediane, base_G, base_F, base_G_dupli, base_F_dupli, stockage_valeurs_propres_inser_del_majoritaires, liste_hashmap_inser_del_minoritaire_filtree = determination_sequence_consensus(
                         type,
                         nom_fichier,
                         lignes_type_A,
@@ -1727,148 +1741,144 @@ for fichier in os.listdir(path_windows): # path à changer
                         F_protein_type_B,
                         duplication_type_B
                         )
-                
-                if type == "A":
-                    longueur_genome_reference_typeA_sans_duplication = 15191
 
-                    # duplication contient un Boolean
-                    Duplication = len(sequence_consensus) > longueur_genome_reference_typeA_sans_duplication + 50
+                    if type == "A":
+                        longueur_genome_reference_typeA_sans_duplication = 15191
 
-                    # TODO!!!! changer les valeurs hardcodées et la méthode de calcul.
-                    pourcent_cover_G = (base_G*100) / (5555 - 4659)
-                    pourcent_cover_F = (base_F*100) / (7356 - 5632)
+                        # duplication contient un Boolean
+                        Duplication = len(sequence_consensus) > longueur_genome_reference_typeA_sans_duplication + 50
 
-                    if Duplication:
-                        pourcent_cover_G = (base_G_dupli*100) / (( 5555 + 72 ) - 4659 )
-                        pourcent_cover_F = (base_F_dupli*100) / (( 7356 + 72 ) - ( 5632 + 72 ))
+                        # TODO!!!! changer les valeurs hardcodées et la méthode de calcul.
+                        pourcent_cover_G = (base_G*100) / (5555 - 4659)
+                        pourcent_cover_F = (base_F*100) / (7356 - 5632)
 
-                        sequence_consensus = correction_sequence(
-                            sequence_consensus,
-                            stockage_valeurs_propres_inser_del_majoritaires,
-                            type,
-                            G_protein_type_A,
-                            F_protein_type_A,
-                            duplication_type_A,
-                            G_protein_type_B,
-                            F_protein_type_B,
-                            duplication_type_B,
-                            Duplication,
-                            liste_hashmap_inser_del_minoritaire_filtree
-                            )
-                        
-                    else:
-                        duplication_type_A = 0
-                        duplication_type_B = 0
+                        if Duplication:
+                            pourcent_cover_G = (base_G_dupli*100) / (( 5555 + 72 ) - 4659 )
+                            pourcent_cover_F = (base_F_dupli*100) / (( 7356 + 72 ) - ( 5632 + 72 ))
 
-                        sequence_consensus = correction_sequence(
-                            sequence_consensus,
-                            stockage_valeurs_propres_inser_del_majoritaires,
-                            type,
-                            G_protein_type_A,
-                            F_protein_type_A,
-                            duplication_type_A,
-                            G_protein_type_B,
-                            F_protein_type_B,
-                            duplication_type_B,
-                            Duplication,
-                            liste_hashmap_inser_del_minoritaire_filtree
-                            )
-                        
-                    # "barcode,Couverture_génome_à_10X(en%),exploitable(à_70%),Type,Couverture_protéine_G(en%_à10X),Couverture_protéine_F(en%_à10X),Mediane_de_couverture_en_reads,Présence_dulication_protéine_G\n"
-                    if exploitable:
-                        file_name = extraction_id(nom_fichier, file_id)
-                        sortie_csv.write(f"{file_name},{round(float(pourcent),2)},{exploitable},A,{round(float(pourcent_cover_G),2)},{round(float(pourcent_cover_F),2)},{mediane},{Duplication}\n")
+                            sequence_consensus = correction_sequence(
+                                sequence_consensus,
+                                stockage_valeurs_propres_inser_del_majoritaires,
+                                type,
+                                G_protein_type_A,
+                                F_protein_type_A,
+                                duplication_type_A,
+                                G_protein_type_B,
+                                F_protein_type_B,
+                                duplication_type_B,
+                                Duplication,
+                                liste_hashmap_inser_del_minoritaire_filtree,
+                                location_duplication_A,
+                                location_duplication_B
+                                )
 
-                        with open(f"./../2-FASTA_result_folder/result_bc{file_name}_A.fasta","w") as sortie_fastaA:
+                        else:
+                            duplication_type_A = 0
+                            duplication_type_B = 0
 
-                            sortie_fastaA.write(f">{file_name}_A\n")
-                            sortie_fastaA.write(f"{sequence_consensus}")
-                    else:
-                        file_name = extraction_id(nom_fichier,file_id)
-                        sortie_csv.write(f"{file_name},{round(float(pourcent),2)},{exploitable},A,{round(float(pourcent_cover_G),2)},{round(float(pourcent_cover_F),2)},{mediane},{Duplication}\n")
-                        
-                elif type =="B":
-                    
-                    longueur_genome_reference_typeB_sans_duplication = 15225
+                            sequence_consensus = correction_sequence(
+                                sequence_consensus,
+                                stockage_valeurs_propres_inser_del_majoritaires,
+                                type,
+                                G_protein_type_A,
+                                F_protein_type_A,
+                                duplication_type_A,
+                                G_protein_type_B,
+                                F_protein_type_B,
+                                duplication_type_B,
+                                Duplication,
+                                liste_hashmap_inser_del_minoritaire_filtree,
+                                location_duplication_A,
+                                location_duplication_B
+                                )
 
-                    Duplication = len(sequence_consensus) > longueur_genome_reference_typeB_sans_duplication + 45
+                        # "barcode,Couverture_génome_à_10X(en%),exploitable(à_70%),Type,Couverture_protéine_G(en%_à10X),Couverture_protéine_F(en%_à10X),Mediane_de_couverture_en_reads,Présence_dulication_protéine_G\n"
+                        if exploitable:
+                            file_name = extraction_id(nom_fichier, file_id)
+                            sortie_csv.write(f"{file_name},{round(float(pourcent),2)},{exploitable},A,{round(float(pourcent_cover_G),2)},{round(float(pourcent_cover_F),2)},{mediane},{Duplication}\n")
 
+                            with open(f"./../2-FASTA_result_folder/result_bc{file_name}_A.fasta","w") as sortie_fastaA:
 
-                    #pourcent_cover_G = (base_G*100) / (5566 - 4688)
-                    #pourcent_cover_F = (base_F*100) / (7388 - 5664)
-                    pourcent_cover_G = (base_G*100) / (5566 - 4688)
-                    pourcent_cover_F = (base_F*100) / (7388 - 5664)
-
-                    if Duplication:
-                        pourcent_cover_G = (base_G_dupli*100) / ((5566 + 60) - 4688 )
-                        pourcent_cover_F = (base_F_dupli*100) / ((7388 + 60) - ( 5664 + 60 ))
-                    
-                        sequence_consensus = correction_sequence(
-                            sequence_consensus,
-                            stockage_valeurs_propres_inser_del_majoritaires,
-                            type,
-                            G_protein_type_A,
-                            F_protein_type_A,
-                            duplication_type_A,
-                            G_protein_type_B,
-                            F_protein_type_B,
-                            duplication_type_B,
-                            Duplication,
-                            liste_hashmap_inser_del_minoritaire_filtree
-                            )
-                    else:
-                        duplication_type_A = 0
-                        duplication_type_B = 0
-
-                        sequence_consensus = correction_sequence(
-                            sequence_consensus,
-                            stockage_valeurs_propres_inser_del_majoritaires,
-                            type,
-                            G_protein_type_A,
-                            F_protein_type_A,
-                            duplication_type_A,
-                            G_protein_type_B,
-                            F_protein_type_B,
-                            duplication_type_B,
-                            Duplication,
-                            liste_hashmap_inser_del_minoritaire_filtree
-                            )
-                    if exploitable:
-                        file_name = extraction_id(nom_fichier,file_id)
-                        sortie_csv.write(f"{file_name},{round(float(pourcent),2)},{exploitable},B,{round(float(pourcent_cover_G),2)},{round(float(pourcent_cover_F),2)},{mediane},{Duplication}\n")
-
-                        with open(f"./../2-FASTA_result_folder/result_{file_name}_B.fasta","w") as sortie_fastaB:
+                                sortie_fastaA.write(f">{file_name}_A\n")
+                                sortie_fastaA.write(f"{sequence_consensus}")
+                        else:
+                            file_name = extraction_id(nom_fichier,file_id)
+                            sortie_csv.write(f"{file_name},{round(float(pourcent),2)},{exploitable},A,{round(float(pourcent_cover_G),2)},{round(float(pourcent_cover_F),2)},{mediane},{Duplication}\n")
                             
-                            sortie_fastaB.write(f">{file_name}_B\n")
-                            sortie_fastaB.write(f"{sequence_consensus}")
-                    else: 
+                    elif type =="B":
                         
-                        file_name = extraction_id(nom_fichier,file_id)
-                        sortie_csv.write(f"{file_name},{round(float(pourcent),2)},{exploitable},B,{round(float(pourcent_cover_G),2)},{round(float(pourcent_cover_F),2)},{mediane},{Duplication}\n")
-            else: 
-                file_name = extraction_id(nom_fichier,file_id) 
-                sortie_csv.write(f"{file_name},/,/,/,/,/,/,/\n")
+                        longueur_genome_reference_typeB_sans_duplication = 15225
 
-            file.close()
-
-sortie_csv.close()                 
-
-    
-    # TODO* : optimiser le code pour qu'il tourne plus vite (HAHAHAHAHAHAHAHHHAHAHHHAHAHAHHAAHAHHAAHAHHAHAHAHAAHHAHA que je suis drôle.)
-    
-    # TODO! : voir si il y a moyen de paramétrer le csv avant de l'ouvrir.
-    # TODO!! : voir si il n'y a pas moyen d'utiliser les parties de code sur les protéines pour générer des fastas des prots pour les prots G et F
+                        Duplication = len(sequence_consensus) > longueur_genome_reference_typeB_sans_duplication + 45
 
 
-    #TODO! corriger les valeurs des coordonnées pour le RSV 
-    #TODO! passer totalement à la technique d'hashmap
+                        #pourcent_cover_G = (base_G*100) / (5566 - 4688)
+                        #pourcent_cover_F = (base_F*100) / (7388 - 5664)
+                        pourcent_cover_G = (base_G*100) / (5566 - 4688)
+                        pourcent_cover_F = (base_F*100) / (7388 - 5664)
+
+                        if Duplication:
+                            pourcent_cover_G = (base_G_dupli*100) / ((5566 + 60) - 4688 )
+                            pourcent_cover_F = (base_F_dupli*100) / ((7388 + 60) - ( 5664 + 60 ))
+                        
+                            sequence_consensus = correction_sequence(
+                                sequence_consensus,
+                                stockage_valeurs_propres_inser_del_majoritaires,
+                                type,
+                                G_protein_type_A,
+                                F_protein_type_A,
+                                duplication_type_A,
+                                G_protein_type_B,
+                                F_protein_type_B,
+                                duplication_type_B,
+                                Duplication,
+                                liste_hashmap_inser_del_minoritaire_filtree,
+                                location_duplication_A,
+                                location_duplication_B
+                                )
+                        else:
+                            duplication_type_A = 0
+                            duplication_type_B = 0
+
+                            sequence_consensus = correction_sequence(
+                                sequence_consensus,
+                                stockage_valeurs_propres_inser_del_majoritaires,
+                                type,
+                                G_protein_type_A,
+                                F_protein_type_A,
+                                duplication_type_A,
+                                G_protein_type_B,
+                                F_protein_type_B,
+                                duplication_type_B,
+                                Duplication,
+                                liste_hashmap_inser_del_minoritaire_filtree,
+                                location_duplication_A,
+                                location_duplication_B
+                                )
+                        if exploitable:
+                            file_name = extraction_id(nom_fichier,file_id)
+                            sortie_csv.write(f"{file_name},{round(float(pourcent),2)},{exploitable},B,{round(float(pourcent_cover_G),2)},{round(float(pourcent_cover_F),2)},{mediane},{Duplication}\n")
+
+                            with open(f"./../2-FASTA_result_folder/result_{file_name}_B.fasta","w") as sortie_fastaB:
+                                
+                                sortie_fastaB.write(f">{file_name}_B\n")
+                                sortie_fastaB.write(f"{sequence_consensus}")
+                        else: 
+                            
+                            file_name = extraction_id(nom_fichier,file_id)
+                            sortie_csv.write(f"{file_name},{round(float(pourcent),2)},{exploitable},B,{round(float(pourcent_cover_G),2)},{round(float(pourcent_cover_F),2)},{mediane},{Duplication}\n")
+                else: 
+                    file_name = extraction_id(nom_fichier,file_id) 
+                    sortie_csv.write(f"{file_name},/,/,/,/,/,/,/\n")
+
+                file.close()
+
+    sortie_csv.close()                 
+
+pileup_main()
+# TODO! : voir si il y a moyen de paramétrer le csv avant de l'ouvrir.
+# TODO!! : voir si il n'y a pas moyen d'utiliser les parties de code sur les protéines pour générer des fastas des prots pour les prots G et F
 
 
-
-
-
-
-
-#     si pas de couverture alors N +/- 30
-
-# insertiosn de plus de longuer 
+#TODO! corriger les valeurs des coordonnées pour le RSV 
+#TODO! passer totalement à la technique d'hashmap
