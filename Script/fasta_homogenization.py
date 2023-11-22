@@ -29,7 +29,7 @@ import os
 # output_A = f"{disque}:\\ANALYSE_RSV\\6-Mafft\\cleaned\\combined_files_A.fasta" #TODO? ref sans pro + fusion génomes étudiés 
 # output_B = f"{disque}:\\ANALYSE_RSV\\6-Mafft\\cleaned\\combined_files_B.fasta" #TODO? ref sans pro + fusion génomes étudiés 
 
-# New_references_A_path = f"./../5-genbank/New_references_A"
+# New_references_A_path = f"{result_folder}/5-genbank/New_references_A"
 
 """
 #============================================================ Fonctions ============================================================#
@@ -140,6 +140,7 @@ def fasta_homogenization_main():
     chemin = os.getcwd()
     disque = chemin[0]
 
+    result_folder ="./.."
     # permet d'obtenir le répertoire parent du parent du script
     script_path = os.path.abspath(__file__)
     parent_dir = os.path.dirname(os.path.dirname(script_path))
@@ -151,14 +152,14 @@ def fasta_homogenization_main():
     fasta_A = "A.fasta"
     fasta_B = "B.fasta"
 
-    chemin_output_structure_dépendant_A = f"./../5-genbank/result" 
-    chemin_output_structure_dépendant_B = f"./../5-genbank/result"
+    chemin_output_structure_dépendant_A = f"{result_folder}/5-genbank/result" 
+    chemin_output_structure_dépendant_B = f"{result_folder}/5-genbank/result"
 
     # chemin_genomes_input_par_user_A = f"{aefzfez}"
     # chemin_genomes_input_par_user_B = f"{aefzfez}"
 
-    directory_du_dossier_contenant_les_fasta_input_par_user_en_plus_A = f"./../5-genbank/New_References_A"
-    directory_du_dossier_contenant_les_fasta_input_par_user_en_plus_B = f"./../5-genbank/New_References_B"
+    directory_du_dossier_contenant_les_fasta_input_par_user_en_plus_A = f"{result_folder}/5-genbank/New_References_A"
+    directory_du_dossier_contenant_les_fasta_input_par_user_en_plus_B = f"{result_folder}/5-genbank/New_References_B"
 
     path_genomes_references_logiciel_A = f"{parent_dir}/references_phylogenie/sequences_ref_A_pre_mafft.fasta"
     path_genomes_references_logiciel_B = f"{parent_dir}/references_phylogenie/sequences_ref_B_pre_mafft.fasta"
@@ -167,30 +168,30 @@ def fasta_homogenization_main():
     sortie_file_A = open(f"{chemin_output_structure_dépendant_A}/file_all_genomes_A.fasta","w") # TODO? outputA
     # fasta_clean()
 
-    fichiers = os.listdir(f"./../2-FASTA_result_folder")
+    fichiers = os.listdir(f"{result_folder}/2-FASTA_result_folder")
     for fichier in fichiers:
         
         if fichier.endswith("A.fasta"):
             
-            for seq_record in SeqIO.parse(f"./../2-FASTA_result_folder/{fichier}","fasta"):
+            for seq_record in SeqIO.parse(f"{result_folder}/2-FASTA_result_folder/{fichier}","fasta"):
                     
                 if len(seq_record.seq) > 15000:
 
                     sortie_file_A.write(f">{seq_record.id}\n{seq_record.seq}\n")
 
     # if is_directory_not_empty(directory_du_dossier_contenant_les_fasta_input_par_user_en_plus_A):
-    #     fichiers = os.listdir(f"./../5-genbank/New_References_A")
+    #     fichiers = os.listdir(f"{result_folder}/5-genbank/New_References_A")
     #     for fichier in fichiers:
 
     #         if fichier.endswith(".fasta"):
                     
-    #             for seq_record in SeqIO.parse(f"./../5-genbank/New_References_A/{fichier}","fasta"):
+    #             for seq_record in SeqIO.parse(f"{result_folder}/5-genbank/New_References_A/{fichier}","fasta"):
                         
     #                 if len(seq_record.seq) > 15000:
 
     #                     sortie_file_A.write(f">{seq_record.id}\n{seq_record.seq}\n")
 
-    for seq_record in SeqIO.parse(f"./../references_phylogenie/sequences_ref_A_pre_mafft.fasta","fasta"):
+    for seq_record in SeqIO.parse(f"{result_folder}/references_phylogenie/sequences_ref_A_pre_mafft.fasta","fasta"):
             
         if len(seq_record.seq) > 15000:
             print(len(seq_record.seq))
@@ -202,12 +203,12 @@ def fasta_homogenization_main():
     #test B
     sortie_file_B = open(f"{chemin_output_structure_dépendant_B}/file_all_genomes_B.fasta","w") # fasta_clean()
 
-    fichiers = os.listdir(f"./../2-FASTA_result_folder")
+    fichiers = os.listdir(f"{result_folder}/2-FASTA_result_folder")
     for fichier in fichiers:
 
         if fichier.endswith("B.fasta"):
                 
-            for seq_record in SeqIO.parse(f"./../2-FASTA_result_folder/{fichier}","fasta"):
+            for seq_record in SeqIO.parse(f"{result_folder}/2-FASTA_result_folder/{fichier}","fasta"):
                     
                 if len(seq_record.seq) > 15000:
 
