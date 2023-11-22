@@ -18,9 +18,9 @@ import re
 #======================================== Fonctions Spécifiques aux générations de fastas prot ========================================#
 #                                                                                                                                      #
 # sert à extraire la liste des valeurs True or fasle du fichier csv qui permettent de savoir si il y a duplication ou non
-def extraction_Boolean_duplication():
+def extraction_Boolean_duplication(result_folder:str):
 
-    with open(f"./../2.1-Pileup_result_csv_Folder/resume_pileup.csv","r") as csv_file:
+    with open(f"{result_folder}/2.1-Pileup_result_csv_Folder/resume_pileup.csv","r") as csv_file:
         i = 0
         csv_values = []
         for lines in csv_file:
@@ -1802,30 +1802,30 @@ def determination_sequence_consensus(
     return sequence_consensus, base_G, base_F, base_G_dupli, base_F_dupli, stockage_valeurs_propres_inser_del_majoritaires,  liste_hashmap_inser_del_minoritaire_filtree
 
 
-def path_creation():
+def path_creation(result_folder:str):
     
     directories = [
 
-        f"./../3-FASTA_protein_sequences/Fasta_A/Fasta_prot_F",
-        f"./../3-FASTA_protein_sequences/Fasta_A/Fasta_prot_G",
-        f"./../3-FASTA_protein_sequences/Fasta_B/Fasta_prot_F",
-        f"./../3-FASTA_protein_sequences/Fasta_B/Fasta_prot_G"
+        f"{result_folder}/3-FASTA_protein_sequences/Fasta_A/Fasta_prot_F",
+        f"{result_folder}/3-FASTA_protein_sequences/Fasta_A/Fasta_prot_G",
+        f"{result_folder}/3-FASTA_protein_sequences/Fasta_B/Fasta_prot_F",
+        f"{result_folder}/3-FASTA_protein_sequences/Fasta_B/Fasta_prot_G"
     ]
     for directory in directories:
         if not os.path.exists(directory):
             os.makedirs(directory)
 
 
-def sortie_fasta(type : str, sequence_F : str, sequence_G: str, file_id: str, matched_duplication_boolean):
+def sortie_fasta(type : str, sequence_F : str, sequence_G: str, file_id: str, matched_duplication_boolean,result_folder:str):
     if type == "A":
 
         
-        with open(f"./../3-FASTA_protein_sequences/Fasta_A/Fasta_prot_F/result_{file_id}_A_sequence_F.fasta","w") as sortie_fastaA:
+        with open(f"{result_folder}/3-FASTA_protein_sequences/Fasta_A/Fasta_prot_F/result_{file_id}_A_sequence_F.fasta","w") as sortie_fastaA:
 
             sortie_fastaA.write(f">{file_id}_A\n")
             sortie_fastaA.write(f"{sequence_F}")
     
-        with open(f"./../3-FASTA_protein_sequences/Fasta_A/Fasta_prot_G/result_{file_id}_{matched_duplication_boolean}_A_sequence_G.fasta","w") as sortie_fastaA:
+        with open(f"{result_folder}/3-FASTA_protein_sequences/Fasta_A/Fasta_prot_G/result_{file_id}_{matched_duplication_boolean}_A_sequence_G.fasta","w") as sortie_fastaA:
 
             sortie_fastaA.write(f">{file_id}_A\n")
             sortie_fastaA.write(f"{sequence_G}")
@@ -1833,12 +1833,12 @@ def sortie_fasta(type : str, sequence_F : str, sequence_G: str, file_id: str, ma
     elif type == "B":
         
 
-            with open(f"./../3-FASTA_protein_sequences/Fasta_B/Fasta_prot_F/result_{file_id}_B_sequence_F.fasta","w") as sortie_fastaB:
+            with open(f"{result_folder}/3-FASTA_protein_sequences/Fasta_B/Fasta_prot_F/result_{file_id}_B_sequence_F.fasta","w") as sortie_fastaB:
 
                 sortie_fastaB.write(f">{file_id}_B\n")
                 sortie_fastaB.write(f"{sequence_F}")
 
-            with open(f"./../3-FASTA_protein_sequences/Fasta_B/Fasta_prot_G/result_{file_id}_{matched_duplication_boolean}_B_sequence_G.fasta","w") as sortie_fastaB:
+            with open(f"{result_folder}/3-FASTA_protein_sequences/Fasta_B/Fasta_prot_G/result_{file_id}_{matched_duplication_boolean}_B_sequence_G.fasta","w") as sortie_fastaB:
 
                 sortie_fastaB.write(f">{file_id}_B\n")
                 sortie_fastaB.write(f"{sequence_G}")
@@ -1862,7 +1862,10 @@ def generation_fasta_main():
     #==================== Global var:
     nom_fichier_txt  = f"resume_pileup.csv"
 
-    path_windows = f"./../1-fastq/pileup"
+    result_folder = "./.."
+
+
+    path_windows = f"{result_folder}/1-fastq/pileup"
 
     path_linux = "/media/virologie/MyPassport/ANALYSE_RSV/1-fastq/pileup"
 
@@ -1896,7 +1899,7 @@ def generation_fasta_main():
             # ouverture du fichier en "read"        
             file = open (nom_fichier,"r")
 
-            csv_values = extraction_Boolean_duplication()
+            csv_values = extraction_Boolean_duplication(result_folder)
             
             # il y aura un problème si les id sont uniquement des nombres ou des chiffres, car la fonction retournera la première occurence qui ne sera pas forcément la bonne.
         
@@ -1916,7 +1919,7 @@ def generation_fasta_main():
             # si le génome du virus est considéré comme ayant un génome de Type A ou B        
             if type == "A" or type == "B":
                 
-                path_creation()
+                path_creation(result_folder)
             
 
                 # cette fonction permet de déterminer en lisant la partie A ou la partie B du fichier (A ou B étant déterminés précédemment dans le programme) la séquence consensus, 
@@ -2036,7 +2039,7 @@ def generation_fasta_main():
                                     location_duplication_A,
                                     location_duplication_B
                                 )
-                sortie_fasta(type, sequence_F, sequence_G, file_id, matched_duplication_boolean) # type: ignore
+                sortie_fasta(type, sequence_F, sequence_G, file_id, matched_duplication_boolean,result_folder) # type: ignore
             file.close()
 # TODO* : optimiser le code pour qu'il tourne plus vite
 
