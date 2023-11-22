@@ -2,8 +2,9 @@ from ete3 import Tree
 import os
 
 def genetic_distances_main():
-    directory = "./../8-IQTree"
-    dossier = f"./../9-genetic_distances/result_txt"
+    result_folder = "./.."
+    directory = f"{result_folder}/8-IQTree"
+    dossier = f"{result_folder}/9-genetic_distances/result_txt"
     # Lire le fichier .treefile
     if os.path.exists(dossier):
         print(f"The '{dossier}' folder exists.")
@@ -15,7 +16,7 @@ def genetic_distances_main():
     for filename in os.listdir(directory):
         if filename.endswith(".treefile"):
             
-            tree = Tree(f"./../8-IQTree/{filename}") #mafft_result_B_GB.fasta-gb.treefile
+            tree = Tree(f"{result_folder}/8-IQTree/{filename}") #mafft_result_B_GB.fasta-gb.treefile
             distances_min=[]
             # Récupérer les noms des feuilles (sorties)
             leaf_names = tree.get_leaf_names()
@@ -25,7 +26,7 @@ def genetic_distances_main():
             
             viral_type = parts[2]
 
-            with open(f"./../9-genetic_distances/result_txt/distance_{viral_type}_result.txt","w") as file:
+            with open(f"{result_folder}/9-genetic_distances/result_txt/distance_{viral_type}_result.txt","w") as file:
                 # Parcourir toutes les sorties
                 for i, seq1 in enumerate(leaf_names):
                     print("Genetic distances for output:", seq1)
