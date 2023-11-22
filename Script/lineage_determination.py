@@ -32,14 +32,15 @@ def lineage_determination_main():
 
     #Global var 
     ext_variable = sys.argv[1]
-
+    result_folder = "./.."
+    references_folder = "./../references_phylogenie"
     distance_A  = "distance_A_result.txt"
     distance_B = "distance_B_result.txt"
     sous_lignee_A = "sub_lineage_A.txt"
     sous_lignee_B = "sub_lineage_B.txt"
     ref_fasta_A = "ref_A.fasta"
     ref_fasta_B = "ref_B.fasta"
-    dossier = f"./../9-genetic_distances/lineage_assignment"
+    dossier = f"{result_folder}/9-genetic_distances/lineage_assignment"
 
     file_name, sous_lignee, ref_fasta = import_variable(ext_variable, distance_A, sous_lignee_A, ref_fasta_A, distance_B, sous_lignee_B, ref_fasta_B)
 
@@ -50,9 +51,9 @@ def lineage_determination_main():
         os.mkdir(f"{dossier}")
         print(f"The '{dossier}' folder has been created")
 
-    with open(f"./../9-genetic_distances/result_txt/{file_name}","r") as open_file:
+    with open(f"{result_folder}/9-genetic_distances/result_txt/{file_name}","r") as open_file:
     
-        with open (f"./../9-genetic_distances/lineage_assignment/{sous_lignee}","w") as write_file:
+        with open (f"{result_folder}/9-genetic_distances/lineage_assignment/{sous_lignee}","w") as write_file:
             write_file.write(f"Num ID sub_lineage sub_related_lineage\n")
             
             
@@ -77,7 +78,7 @@ def lineage_determination_main():
                 # Distance genetique entre KY654518.1 et KU950692.1: 0.0026060425999999996
                 # Distance genetique entre 14_A et KY654518.1: 0.0081626275
                 
-                with open(f"./../references_phylogenie/{ref_fasta}","r") as open_file_ref:
+                with open(f"{references_folder}/{ref_fasta}","r") as open_file_ref:
 
                     for nombre_ligne in open_file_ref:
                         
