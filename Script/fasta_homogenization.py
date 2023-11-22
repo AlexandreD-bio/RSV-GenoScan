@@ -141,6 +141,7 @@ def fasta_homogenization_main():
     disque = chemin[0]
 
     result_folder ="./.."
+    references_folder="./../references_phylogenie"
     # permet d'obtenir le répertoire parent du parent du script
     script_path = os.path.abspath(__file__)
     parent_dir = os.path.dirname(os.path.dirname(script_path))
@@ -161,8 +162,8 @@ def fasta_homogenization_main():
     directory_du_dossier_contenant_les_fasta_input_par_user_en_plus_A = f"{result_folder}/5-genbank/New_References_A"
     directory_du_dossier_contenant_les_fasta_input_par_user_en_plus_B = f"{result_folder}/5-genbank/New_References_B"
 
-    path_genomes_references_logiciel_A = f"{parent_dir}/references_phylogenie/sequences_ref_A_pre_mafft.fasta"
-    path_genomes_references_logiciel_B = f"{parent_dir}/references_phylogenie/sequences_ref_B_pre_mafft.fasta"
+    path_genomes_references_logiciel_A = f"{references_folder}/sequences_ref_A_pre_mafft.fasta"
+    path_genomes_references_logiciel_B = f"{references_folder}/sequences_ref_B_pre_mafft.fasta"
 
     # test A: 
     sortie_file_A = open(f"{chemin_output_structure_dépendant_A}/file_all_genomes_A.fasta","w") # TODO? outputA
@@ -191,7 +192,7 @@ def fasta_homogenization_main():
 
     #                     sortie_file_A.write(f">{seq_record.id}\n{seq_record.seq}\n")
 
-    for seq_record in SeqIO.parse(f"{result_folder}/references_phylogenie/sequences_ref_A_pre_mafft.fasta","fasta"):
+    for seq_record in SeqIO.parse(f"{references_folder}/sequences_ref_A_pre_mafft.fasta","fasta"):
             
         if len(seq_record.seq) > 15000:
             print(len(seq_record.seq))
@@ -226,7 +227,7 @@ def fasta_homogenization_main():
 
     #                     sortie_file_B.write(f">{seq_record.id}\n{seq_record.seq}\n")
 
-    for seq_record in SeqIO.parse(f"{parent_dir}/references_phylogenie/sequences_ref_B_pre_mafft.fasta","fasta"):
+    for seq_record in SeqIO.parse(f"{references_folder}/sequences_ref_B_pre_mafft.fasta","fasta"):
             
         if len(seq_record.seq) > 15000:
             print(len(seq_record.seq))
