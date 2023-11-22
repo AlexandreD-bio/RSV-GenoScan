@@ -20,44 +20,6 @@ chemin = os.getcwd()
 disque = chemin[0]
 
 
-# path pour la vérification/création du chemin de dossiers ci-dessous
-path = f"./../10-test_positions/results"
-
-# path pour accéder aux dossiers fasta A et B
-path_A = f"./../3-FASTA_protein_sequences/Fasta_A"
-path_B = f"./../3-FASTA_protein_sequences/Fasta_B"
-
-
-# variable globale à changer qui permet de déterminer si les séquences de références vont comporter la duplication au niveau de la protéine G
-duplication = True
-
-
-# path pour les sequences de référence des types A et B
-path_ref = f"./../references_phylogenie/ref_combined_insertion.fasta"
-path_ref_without_duplication = f"./../references_phylogenie/RSV_ref.fasta"
-
-
-
-
-# Directory:
-# resultat_mutations,result_proteine_type_A,result_proteine_type_B,result_final_A,result_final_B
-resultat_mutations = f"./../10-test_positions/results_mutations"
-result_proteine_type_A = f"./../10-test_positions/result_proteines/protein_results_type_A"
-result_proteine_type_B = f"./../10-test_positions/result_proteines/protein_results_type_B"
-result_final_A = f"./../10-test_positions/result_proteines_final_A"
-result_final_B = f"./../10-test_positions/result_proteines_final_B"
-csv_final = f"./../10.1-dossier_xlsx_result_mutations"
-
-
-
-# path à supprimer :
-# path_a_delete = [result_proteine_type_A,result_proteine_type_B]
-
-
-
-
-directories = [resultat_mutations,result_proteine_type_A,result_proteine_type_B,result_final_A,result_final_B,csv_final]
-
 #================================================= fonctions =================================================#
 
 # ouvre le fichier Path_A
@@ -68,7 +30,6 @@ directories = [resultat_mutations,result_proteine_type_A,result_proteine_type_B,
 # si c'est la première ligne, alors l'id est récupéré comme clé et stockée dans une liste de clés 
 # si c'est la seconde ligne alors elle est enregistrée comme séquence dans une liste 
 
-#TODO! vérifier si des bouts de code sont inutiles !!!!!!!
 
 def extraction_regex(inputed_string: str, var_str : str, expression_regex: str)-> str:
 
@@ -343,7 +304,7 @@ def extraction_sequence_reference(path_ref_with_duplication:str, path_ref_withou
 
 # TODO! détécter automatiquemetn si la dulication est présente ou non et supprimer cette variable hardcodée
 def extraction_proteines_ref(ref_A: Seq, ref_B: Seq, ref_A_without_duplication:Seq , ref_B_without_duplication:Seq)-> tuple[list[Seq], list[Seq], list[Seq], list[Seq]]:
-    # , duplication_G_A:dict[bool, bool], duplication_G_B:dict[bool, bool]
+    
 
     #TODO!: A
     proteines_A_without_duplication = []
@@ -393,8 +354,6 @@ def extraction_proteines_ref(ref_A: Seq, ref_B: Seq, ref_A_without_duplication:S
 
     start_prot_F_type_B = 5663
     fin_prot_F_type_B = 7388
-
-    
 
     # for elem in duplication_G_B:
     #     if duplication_G_B[elem]:
@@ -649,14 +608,15 @@ def generation_alignement_txtv1(
     clefs_F_B:list[str],
     duplication_G_A:dict[str,bool], # dictionnaire comprennant les booleans de présences ou non de la duplication au niveau de la protéine G avec les ids pour clés. 
     duplication_G_B:dict[str,bool], #idem
+    result_folder:str
     ):
     
     # f"{clefs_G_A[y]},{protein},{subunit},{mutation},Fasle,{palivizumab},{FC_IC50_palivizumab},{nirsevimab},{FC_IC50_nirsevimab},{suptavumab},{FC_IC50_suptavumab}\n"
 
     for y in range(len(sequences_bc_prot_G_A)):
-        csv_ref = open(f"./../references_phylogenie/Mutations_RSVA.csv","r")
+        csv_ref = open(f"{result_folder}/references_phylogenie/Mutations_RSVA.csv","r")
         
-        with open(f"./../10-test_positions/result_proteines/protein_results_type_A/result_{clefs_G_A[y].replace('>', '_')}.txt","a") as sortie_A:
+        with open(f"{result_folder}/10-test_positions/result_proteines/protein_results_type_A/result_{clefs_G_A[y].replace('>', '_')}.txt","a") as sortie_A:
             
             if duplication_G_A[clefs_G_A[y]] == False:
                 sortie_A.write(f"Alignment of the G protein of {clefs_G_A[y]} with the reference G protein\n\n")
@@ -691,7 +651,7 @@ def generation_alignement_txtv1(
             # sortie_A.write(f"{alignement_proteine}")#\n{differences_F_A}\n \n")
  
     for z in range(len(sequences_bc_prot_G_B)):
-        with open(f"./../10-test_positions/result_proteines/protein_results_type_B/result_{clefs_G_B[z].replace('>', '_',)}.txt","a") as sortie_B:
+        with open(f"{result_folder}/10-test_positions/result_proteines/protein_results_type_B/result_{clefs_G_B[z].replace('>', '_',)}.txt","a") as sortie_B:
     
             if duplication_G_B[clefs_G_B[z]] == False:
                 sortie_B.write(f"Alignment of the G protein of {clefs_G_B[z]} with the reference G protein\n\n\n")
@@ -745,93 +705,93 @@ def add_spaces(number)->str:
 
 def selection_mutations_pour_csv(liste_mutation_à_ajouter_au_csv):
             
-            resistance_palivizumab_boolean = False
-            resistance_nirsevimab_boolean = False
-            resistance_suptavumab_boolean = False
+    resistance_palivizumab_boolean = False
+    resistance_nirsevimab_boolean = False
+    resistance_suptavumab_boolean = False
+    
+    type_resistance_palivizumab = ""
+    type_resistance_nirsevimab = ""
+    type_resistance_suptavumab = ""
+    
+    resistance_palivizumab = []
+    resistance_nirsevimab = []
+    resistance_suptavumab = []
+    
+    # résistant "R"
+    for elem in liste_mutation_à_ajouter_au_csv:
+        if elem["palivizumab"] =="R":
+            resistance_palivizumab.append(elem["mutation"]) 
+        if elem["nirsevimab"] == "R":
+            resistance_nirsevimab.append(elem["mutation"])
+        if elem["suptavumab"] == "R":
+            resistance_suptavumab.append(elem["mutation"])
             
-            type_resistance_palivizumab = ""
-            type_resistance_nirsevimab = ""
-            type_resistance_suptavumab = ""
+    if  len(resistance_palivizumab) > 0:
+        resistance_palivizumab_boolean = True 
+        type_resistance_palivizumab = "R"
+        
+    if  len(resistance_nirsevimab) > 0:
+        resistance_nirsevimab_boolean = True
+        type_resistance_nirsevimab = "R"
+        
+    if  len(resistance_suptavumab) > 0:
+        resistance_suptavumab_boolean = True
+        type_resistance_suptavumab = "R"
+                
+    if resistance_palivizumab_boolean == False or \
+        resistance_nirsevimab_boolean == False or \
+        resistance_suptavumab_boolean == False :
             
-            resistance_palivizumab = []
-            resistance_nirsevimab = []
-            resistance_suptavumab = []
+        # intermédiaire "I"
+        for elem in liste_mutation_à_ajouter_au_csv:
+            if elem["palivizumab"] =="I":
+                resistance_palivizumab.append(elem["mutation"]) 
+            if elem["nirsevimab"] == "I":
+                resistance_nirsevimab.append(elem["mutation"])
+            if elem["suptavumab"] == "I":
+                resistance_suptavumab.append(elem["mutation"])
+        
+        if  len(resistance_palivizumab) > 0:
+            resistance_palivizumab_boolean = True 
+            type_resistance_palivizumab = "I"
+        
+        if  len(resistance_nirsevimab) > 0:
+            resistance_nirsevimab_boolean = True
+            type_resistance_nirsevimab = "I"
             
-            # résistant "R"
-            for elem in liste_mutation_à_ajouter_au_csv:
-                if elem["palivizumab"] =="R":
-                    resistance_palivizumab.append(elem["mutation"]) 
-                if elem["nirsevimab"] == "R":
-                    resistance_nirsevimab.append(elem["mutation"])
-                if elem["suptavumab"] == "R":
-                    resistance_suptavumab.append(elem["mutation"])
-                    
-            if  len(resistance_palivizumab) > 0:
-                resistance_palivizumab_boolean = True 
-                type_resistance_palivizumab = "R"
+        if  len(resistance_suptavumab) > 0:
+            resistance_suptavumab_boolean = True
+            type_resistance_suptavumab = "I"        
+        
+        # sensible "S"
+        for elem in liste_mutation_à_ajouter_au_csv:
+            if elem["palivizumab"] =="S":
+                resistance_palivizumab.append(elem["mutation"])
+            if elem["nirsevimab"] == "S":
+                resistance_nirsevimab.append(elem["mutation"])
+            if elem["suptavumab"] == "S":
+                resistance_suptavumab.append(elem["mutation"])
                 
-            if  len(resistance_nirsevimab) > 0:
-                resistance_nirsevimab_boolean = True
-                type_resistance_nirsevimab = "R"
-                
-            if  len(resistance_suptavumab) > 0:
-                resistance_suptavumab_boolean = True
-                type_resistance_suptavumab = "R"
-                       
-            if resistance_palivizumab_boolean == False or \
-               resistance_nirsevimab_boolean == False or \
-               resistance_suptavumab_boolean == False :
-                   
-                # intermédiaire "I"
-                for elem in liste_mutation_à_ajouter_au_csv:
-                    if elem["palivizumab"] =="I":
-                        resistance_palivizumab.append(elem["mutation"]) 
-                    if elem["nirsevimab"] == "I":
-                        resistance_nirsevimab.append(elem["mutation"])
-                    if elem["suptavumab"] == "I":
-                        resistance_suptavumab.append(elem["mutation"])
-                
-                if  len(resistance_palivizumab) > 0:
-                    resistance_palivizumab_boolean = True 
-                    type_resistance_palivizumab = "I"
-                
-                if  len(resistance_nirsevimab) > 0:
-                    resistance_nirsevimab_boolean = True
-                    type_resistance_nirsevimab = "I"
-                    
-                if  len(resistance_suptavumab) > 0:
-                    resistance_suptavumab_boolean = True
-                    type_resistance_suptavumab = "I"        
-                
-                # sensible "S"
-                for elem in liste_mutation_à_ajouter_au_csv:
-                    if elem["palivizumab"] =="S":
-                        resistance_palivizumab.append(elem["mutation"])
-                    if elem["nirsevimab"] == "S":
-                        resistance_nirsevimab.append(elem["mutation"])
-                    if elem["suptavumab"] == "S":
-                        resistance_suptavumab.append(elem["mutation"])
-                        
-                if  len(resistance_palivizumab) > 0 and resistance_palivizumab_boolean == False:
-                    resistance_palivizumab_boolean = True 
-                    type_resistance_palivizumab = "S"
-                else:
-                    type_resistance_palivizumab = "Undetermined"
-                    
-                if  len(resistance_nirsevimab) > 0 and resistance_nirsevimab_boolean == False:
-                    resistance_nirsevimab_boolean = True
-                    type_resistance_nirsevimab = "S"
-                else:
-                    type_resistance_nirsevimab = "Undetermined"
-                    
-                if  len(resistance_suptavumab) > 0 and resistance_suptavumab_boolean == False:
-                    resistance_suptavumab_boolean = True
-                    type_resistance_suptavumab = "S"
-                else:
-                   type_resistance_suptavumab = "Undetermined" 
-                
+        if  len(resistance_palivizumab) > 0 and resistance_palivizumab_boolean == False:
+            resistance_palivizumab_boolean = True 
+            type_resistance_palivizumab = "S"
+        else:
+            type_resistance_palivizumab = "Undetermined"
             
-            return resistance_palivizumab,type_resistance_palivizumab,resistance_nirsevimab,type_resistance_nirsevimab,resistance_suptavumab,type_resistance_suptavumab
+        if  len(resistance_nirsevimab) > 0 and resistance_nirsevimab_boolean == False:
+            resistance_nirsevimab_boolean = True
+            type_resistance_nirsevimab = "S"
+        else:
+            type_resistance_nirsevimab = "Undetermined"
+            
+        if  len(resistance_suptavumab) > 0 and resistance_suptavumab_boolean == False:
+            resistance_suptavumab_boolean = True
+            type_resistance_suptavumab = "S"
+        else:
+            type_resistance_suptavumab = "Undetermined" 
+        
+    
+    return resistance_palivizumab,type_resistance_palivizumab,resistance_nirsevimab,type_resistance_nirsevimab,resistance_suptavumab,type_resistance_suptavumab
 
 
 def concat(resistance_palivizumab):
@@ -841,8 +801,10 @@ def concat(resistance_palivizumab):
             return result
         
 
-def extraction_txt(path_txt:str, fichier:str, csv_posits, csv_result, csv_final_write,barcode:str,ligne_barcode:list)->tuple[list,list]:
+def extraction_txt(path_txt:str, fichier:str, csv_posits, csv_result, csv_final_write,barcode:str,ligne_barcode:list,result_folder:str)->tuple[list,list]:
     
+    motif_A = 'type_A'
+    motif_B = 'type_B'
     
     nom_fichier = os.path.join(path_txt, fichier) #path à changer
     # ouverture du fichier en "read"       
@@ -850,10 +812,20 @@ def extraction_txt(path_txt:str, fichier:str, csv_posits, csv_result, csv_final_
 
         lignes = file.readlines()
         # ouverture en écriture : 
-        final_file = open(f"{nom_fichier[0:22]}/result_proteines_final_{nom_fichier[63]}/{barcode}.txt","a")
+        type_result = None
         
+        if motif_A in nom_fichier:
+            type_result="A"   
+        if motif_B in nom_fichier:   
+            type_result="B"
+
+        final_file = open(f"{nom_fichier[0:22]}/result_proteines_final_{type_result}/{barcode}.txt","a")
+
+        
+        
+
         # ouverture en lecture :
-        csv_ref = open(f"./../references_phylogenie/Mutations_RSV{nom_fichier[63]}.csv","r")
+        csv_ref = open(f"{result_folder}/references_phylogenie/Mutations_RSV{type_result}.csv","r")
         #découpage du fichier csv en lignes
         content =csv.reader(csv_ref)
         
@@ -1141,18 +1113,18 @@ def path_creation(directories:list[str]):
             os.makedirs(directory)
 
 
-def generation_results():
+def generation_results(result_proteine_type_A,clefs_G_A,result_proteine_type_B,clefs_G_B,result_folder:str):
 
     liste_lignes_csv_v1 = []
-    csv_result = open(f"./../10-test_positions/Boolean_table_of_the_presence_of_referenced_mutations_in_the_dataset.csv","a")
+    csv_result = open(f"{result_folder}/10-test_positions/Boolean_table_of_the_presence_of_referenced_mutations_in_the_dataset.csv","a")
     csv_result.write("Id,Protein,Subunit,Mutation,Mutation_presence,palivizumab,FC.IC50.palivizumab,nirsevimab,FC.IC50.nirsevimab,suptavumab,FC.IC50.suptavumab\n")
 
-    csv_posits = open(f"./../10-test_positions/results_mutations/table_of_presence_of_mutations_involving_resistance.csv","a")
+    csv_posits = open(f"{result_folder}/10-test_positions/results_mutations/table_of_presence_of_mutations_involving_resistance.csv","a")
     csv_posits.write("Id,Protein,Subunit,Mutation,Mutation_presence,palivizumab,FC.IC50.palivizumab,nirsevimab,FC.IC50.nirsevimab,suptavumab,FC.IC50.suptavumab\n")
 
-    csv_final_write = open(f"./../10.1-dossier_xlsx_result_mutations/resume_mutations.csv","a")
+    csv_final_write = open(f"{result_folder}/10.1-dossier_xlsx_result_mutations/resume_mutations.csv","a")
 
-    csv_recap_lecture = open(f"./../2.1-Pileup_result_csv_Folder/resume_pileup.csv","r")
+    csv_recap_lecture = open(f"{result_folder}/2.1-Pileup_result_csv_Folder/resume_pileup.csv","r")
     content = csv.reader(csv_recap_lecture)
     
 
@@ -1183,7 +1155,7 @@ def generation_results():
 
                             if ligne_barcode != None :
                                 barcode = clefs_G_A[i]
-                                extraction_txt(result_proteine_type_A,fichier_A,csv_posits,csv_result,csv_final_write,barcode,ligne_barcode)
+                                extraction_txt(result_proteine_type_A,fichier_A,csv_posits,csv_result,csv_final_write,barcode,ligne_barcode,result_folder)
                                 #  TODO! à modifier: v
                                 
 
@@ -1199,7 +1171,7 @@ def generation_results():
                             ligne_barcode = liste_lignes_csv_v1[y]
                             if ligne_barcode != None :
                                 barcode = clefs_G_B[i]
-                                extraction_txt(result_proteine_type_B,fichier_B,csv_posits,csv_result,csv_final_write,barcode,ligne_barcode)
+                                extraction_txt(result_proteine_type_B,fichier_B,csv_posits,csv_result,csv_final_write,barcode,ligne_barcode,result_folder)
 
     csv_result.close()
     csv_posits.close()
@@ -1207,35 +1179,67 @@ def generation_results():
     csv_final_write.close()
 
 #================================================= Code =================================================#
+def mutation_detection_main():
+
+    #============================================= Variables Globales
+
+    result_folder = "./.."
+
+    # path pour la vérification/création du chemin de dossiers ci-dessous
+    path = f"{result_folder}/10-test_positions/results"
+
+    # path pour accéder aux dossiers fasta A et B
+    path_A = f"{result_folder}/3-FASTA_protein_sequences/Fasta_A"
+    path_B = f"{result_folder}/3-FASTA_protein_sequences/Fasta_B"
+
+    # variable globale à changer qui permet de déterminer si les séquences de références vont comporter la duplication au niveau de la protéine G
+    duplication = True
+
+    # path pour les sequences de référence des types A et B
+    path_ref = f"{result_folder}/references_phylogenie/ref_combined_insertion.fasta"
+    path_ref_without_duplication = f"{result_folder}/references_phylogenie/RSV_ref.fasta"
 
 
-clefs_G_A, clefs_G_B, clefs_F_A, clefs_F_B, sequences_bc_prot_G_A, sequences_bc_prot_G_B, sequences_bc_prot_F_A, sequences_bc_prot_F_B, duplication_G_A, duplication_G_B = append_sequences_prot(path_A, path_B)
-
-
-ref_A, ref_B, ref_A_without_duplication, ref_B_without_duplication = extraction_sequence_reference(path_ref, path_ref_without_duplication)
-
-proteines_A, proteine_A_dupli, proteines_B, proteine_B_dupli = extraction_proteines_ref(ref_A, ref_B, ref_A_without_duplication , ref_B_without_duplication)
-# , duplication_G_A, duplication_G_B
-
-"""
-sequences_prot_G_A,sequences_prot_G_B, sequences_bc_prot_F_A, sequences_bc_prot_F_B, proteines_A, proteines_B = transcription(sequences_prot_G_A,
-    sequences_prot_G_B,
-    sequences_bc_prot_F_A,
-    sequences_bc_prot_F_B,
-    proteines_A,
-    proteines_B)
-"""
-sequences_bc_prot_G_A, sequences_bc_prot_G_B, sequences_bc_prot_F_A, sequences_bc_prot_F_B, proteines_A, proteines_B, proteine_A_dupli, proteine_B_dupli = traduction(proteines_A, proteines_B, sequences_bc_prot_G_A, sequences_bc_prot_G_B, sequences_bc_prot_F_A, sequences_bc_prot_F_B, proteine_A_dupli, proteine_B_dupli)
-
-path_creation(directories)
-
-generation_alignement_txtv1(proteines_A, proteine_A_dupli, proteines_B, proteine_B_dupli, sequences_bc_prot_G_A, sequences_bc_prot_G_B, sequences_bc_prot_F_A , sequences_bc_prot_F_B, clefs_G_A, clefs_G_B, clefs_F_A, clefs_F_B, duplication_G_A, duplication_G_B) 
+    # Directory:
+    # resultat_mutations,result_proteine_type_A,result_proteine_type_B,result_final_A,result_final_B
+    resultat_mutations = f"{result_folder}/10-test_positions/results_mutations"
+    result_proteine_type_A = f"{result_folder}/10-test_positions/result_proteines/protein_results_type_A"
+    result_proteine_type_B = f"{result_folder}/10-test_positions/result_proteines/protein_results_type_B"
+    result_final_A = f"{result_folder}/10-test_positions/result_proteines_final_A"
+    result_final_B = f"{result_folder}/10-test_positions/result_proteines_final_B"
+    csv_final = f"{result_folder}/10.1-dossier_xlsx_result_mutations"
+    directories = [resultat_mutations,result_proteine_type_A,result_proteine_type_B,result_final_A,result_final_B,csv_final]
 
 
 
 
-generation_results()
-#TODO?: same que le TODO bleu dessus.
 
+    clefs_G_A, clefs_G_B, clefs_F_A, clefs_F_B, sequences_bc_prot_G_A, sequences_bc_prot_G_B, sequences_bc_prot_F_A, sequences_bc_prot_F_B, duplication_G_A, duplication_G_B = append_sequences_prot(path_A, path_B)
+
+
+    ref_A, ref_B, ref_A_without_duplication, ref_B_without_duplication = extraction_sequence_reference(path_ref, path_ref_without_duplication)
+
+    proteines_A, proteine_A_dupli, proteines_B, proteine_B_dupli = extraction_proteines_ref(ref_A, ref_B, ref_A_without_duplication , ref_B_without_duplication)
+    # , duplication_G_A, duplication_G_B
+
+    """
+    sequences_prot_G_A,sequences_prot_G_B, sequences_bc_prot_F_A, sequences_bc_prot_F_B, proteines_A, proteines_B = transcription(sequences_prot_G_A,
+        sequences_prot_G_B,
+        sequences_bc_prot_F_A,
+        sequences_bc_prot_F_B,
+        proteines_A,
+        proteines_B)
+    """
+    sequences_bc_prot_G_A, sequences_bc_prot_G_B, sequences_bc_prot_F_A, sequences_bc_prot_F_B, proteines_A, proteines_B, proteine_A_dupli, proteine_B_dupli = traduction(proteines_A, proteines_B, sequences_bc_prot_G_A, sequences_bc_prot_G_B, sequences_bc_prot_F_A, sequences_bc_prot_F_B, proteine_A_dupli, proteine_B_dupli)
+
+    path_creation(directories)
+
+    generation_alignement_txtv1(proteines_A, proteine_A_dupli, proteines_B, proteine_B_dupli, sequences_bc_prot_G_A, sequences_bc_prot_G_B, sequences_bc_prot_F_A , sequences_bc_prot_F_B, clefs_G_A, clefs_G_B, clefs_F_A, clefs_F_B, duplication_G_A, duplication_G_B,result_folder) 
+
+
+
+
+    generation_results(result_proteine_type_A,clefs_G_A,result_proteine_type_B,clefs_G_B,result_folder)
+mutation_detection_main()     
 
 #TODO! : chaines de Markov 
