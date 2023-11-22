@@ -6,7 +6,7 @@ import re
 
 #======================================== Fonctions ========================================#
 
-def graphiqueB(ligne_B, num_ligne_virus, total_reads, nom_fichier, file_id):
+def graphiqueB(ligne_B, num_ligne_virus, total_reads, nom_fichier, file_id,result_folder):
 
 # création de la figure
     p = figure(
@@ -92,12 +92,12 @@ def graphiqueB(ligne_B, num_ligne_virus, total_reads, nom_fichier, file_id):
 
     show(p) # type: ignore 
 
-    export_png(p, filename=f"./../4-Graphs/Graph_{file_id}_B.png") # type: ignore
+    export_png(p, filename=f"{result_folder}/4-Graphs/Graph_{file_id}_B.png") # type: ignore
 
     return p 
 
 
-def graphiqueA(ligne_A, num_ligne_virus, total_reads, nom_fichier, file_id):
+def graphiqueA(ligne_A, num_ligne_virus, total_reads, nom_fichier, file_id,result_folder:str):
     p = figure(
         title=f"Number of reads for each base of the virus genome (type A) corresponding to {file_id}",
         x_axis_label='Genome Position',
@@ -162,12 +162,12 @@ def graphiqueA(ligne_A, num_ligne_virus, total_reads, nom_fichier, file_id):
 
     show(p) # type: ignore
 
-    export_png(p, filename=f"./../4-Graphs/Graph_{file_id}_A.png") # type: ignore
+    export_png(p, filename=f"{result_folder}/4-Graphs/Graph_{file_id}_A.png") # type: ignore
 
     return p 
 
 
-def calcul_percent(nom_fichier, file_id: str):
+def calcul_percent(nom_fichier, file_id: str,result_folder:str):
 	with open (nom_fichier,"r") as file :
             i = 0
                             
@@ -225,7 +225,7 @@ def calcul_percent(nom_fichier, file_id: str):
                     #y
                     total_reads = total_reads[0:ligne_A]
 
-                    p = graphiqueA(ligne_A, num_ligne_virus, total_reads, nom_fichier, file_id)
+                    p = graphiqueA(ligne_A, num_ligne_virus, total_reads, nom_fichier, file_id,result_folder)
 
                 # type B
                 elif pourcentage_couverture_B > pourcentage_couverture_A:
@@ -234,7 +234,7 @@ def calcul_percent(nom_fichier, file_id: str):
                     num_ligne_virus = num_ligne_virus[ligne_A+1:ligne_A+1+ligne_B]
                     
                         # Plot
-                    p = graphiqueB(ligne_B, num_ligne_virus, total_reads, nom_fichier, file_id)
+                    p = graphiqueB(ligne_B, num_ligne_virus, total_reads, nom_fichier, file_id,result_folder)
 
 
 def extraction_id(file_name: str, file_id: str)-> str:
@@ -258,15 +258,16 @@ def graphics_main():
     chemin = os.getcwd()
     disque = chemin[0]
     
+    result_folder = "./.."
     nom_fichier_txt  = r"resume_pileup.txt"
 
     script_path = os.path.abspath(__file__)
     parent_dir = os.path.dirname(script_path)
     parent_dir = os.path.dirname(parent_dir)
 
-    path_windows_input = f"./../1-fastq/pileup"
+    path_windows_input = f"{result_folder}/1-fastq/pileup"
 
-    path_windows_output = f"./../4-Graphs"
+    path_windows_output = f"{result_folder}/4-Graphs"
 
     extension = ".pileup"
 
@@ -280,6 +281,6 @@ def graphics_main():
                 file = open (nom_fichier,"r")
                 content = file.readlines()
 
-                calcul_percent(nom_fichier, file_id)             
+                calcul_percent(nom_fichier, file_id,result_folder)             
 
 graphics_main()
