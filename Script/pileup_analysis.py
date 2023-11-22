@@ -1639,13 +1639,13 @@ def determination_sequence_consensus(
     return sequence_consensus, liste_median, base_G, base_F, base_G_dupli, base_F_dupli, stockage_valeurs_propres_inser_del_majoritaires,  liste_hashmap_inser_del_minoritaire_filtree
 
 
-def creation_dossiers(disk: str,csv_file_name: str):
-    if not os.path.exists(f"./../2.1-Pileup_result_csv_Folder"):
-        os.makedirs(f"./../2.1-Pileup_result_csv_Folder")
-    sortie_csv = open(f"./../2.1-Pileup_result_csv_Folder/{csv_file_name}","a")
+def creation_dossiers(disk: str,csv_file_name: str,result_folder:str):
+    if not os.path.exists(f"{result_folder}/2.1-Pileup_result_csv_Folder"):
+        os.makedirs(f"{result_folder}/2.1-Pileup_result_csv_Folder")
+    sortie_csv = open(f"{result_folder}/2.1-Pileup_result_csv_Folder/{csv_file_name}","a")
     
-    if not os.path.exists(f"./../2-FASTA_result_folder"):
-        os.makedirs(f"./../2-FASTA_result_folder")
+    if not os.path.exists(f"{result_folder}/2-FASTA_result_folder"):
+        os.makedirs(f"{result_folder}/2-FASTA_result_folder")
     return sortie_csv
 
 
@@ -1666,6 +1666,7 @@ def pileup_main():
     chemin = os.getcwd()
     disk = chemin[0]
 
+    result_folder="./.."
 
     csv_file_name  = r"resume_pileup.csv"
 
@@ -1696,7 +1697,7 @@ def pileup_main():
 
 
 #############programm
-    sortie_csv = creation_dossiers(disk, csv_file_name)
+    sortie_csv = creation_dossiers(disk, csv_file_name,result_folder)
 
 
 
@@ -1797,7 +1798,7 @@ def pileup_main():
                             file_name = extraction_id(nom_fichier, file_id)
                             sortie_csv.write(f"{file_name},{round(float(pourcent),2)},{exploitable},A,{round(float(pourcent_cover_G),2)},{round(float(pourcent_cover_F),2)},{mediane},{Duplication}\n")
 
-                            with open(f"./../2-FASTA_result_folder/result_bc{file_name}_A.fasta","w") as sortie_fastaA:
+                            with open(f"{result_folder}/2-FASTA_result_folder/result_bc{file_name}_A.fasta","w") as sortie_fastaA:
 
                                 sortie_fastaA.write(f">{file_name}_A\n")
                                 sortie_fastaA.write(f"{sequence_consensus}")
@@ -1859,7 +1860,7 @@ def pileup_main():
                             file_name = extraction_id(nom_fichier,file_id)
                             sortie_csv.write(f"{file_name},{round(float(pourcent),2)},{exploitable},B,{round(float(pourcent_cover_G),2)},{round(float(pourcent_cover_F),2)},{mediane},{Duplication}\n")
 
-                            with open(f"./../2-FASTA_result_folder/result_{file_name}_B.fasta","w") as sortie_fastaB:
+                            with open(f"{result_folder}/2-FASTA_result_folder/result_{file_name}_B.fasta","w") as sortie_fastaB:
                                 
                                 sortie_fastaB.write(f">{file_name}_B\n")
                                 sortie_fastaB.write(f"{sequence_consensus}")
