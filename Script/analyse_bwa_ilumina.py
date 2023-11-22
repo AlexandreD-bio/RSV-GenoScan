@@ -5,7 +5,7 @@ def bwa_main():
     var_ext_cores = sys.argv[1]
     var_fastq_type = str(sys.argv[2]) # 1 or 2
     dico_fichier_ilumina={}
-
+    references_folder="./../references_phylogenie"
     result_folder = "./.."
     dossier_fastq = os.listdir(f"{result_folder}/1-fastq/fastq.gz")
 
@@ -77,7 +77,7 @@ def bwa_main():
                             file1=f"{result_folder}/1-fastq/fastq.gz/{name_stockage[0]['id']}_{name_stockage[0]['sample_index']}_{name_stockage[0]['lane']}_{name_stockage[0]['Read_number']}_{name_stockage[0]['sequencing_iteration']}"
                             file2=f"{result_folder}/1-fastq/fastq.gz/{name_stockage[1]['id']}_{name_stockage[1]['sample_index']}_{name_stockage[1]['lane']}_{name_stockage[1]['Read_number']}_{name_stockage[1]['sequencing_iteration']}"
 
-                            commande = f"bwa mem -t{var_ext_cores} {result_folder}/references_phylogenie/ref_combined_insertion.fasta {file1} {file2} > {result_folder}/1-fastq/sam/{name_stockage[0]['id']}.sam"
+                            commande = f"bwa mem -t{var_ext_cores} {references_folder}/ref_combined_insertion.fasta {file1} {file2} > {result_folder}/1-fastq/sam/{name_stockage[0]['id']}.sam"
 
 
                             try:
@@ -92,7 +92,7 @@ def bwa_main():
                 add=""
                 if item_used_as_id ==1:
                     add=f"_{file.split('_')[1]}"
-                commande = f"bwa mem -t{var_ext_cores} {result_folder}/references_phylogenie/ref_combined_insertion.fasta {result_folder}/1-fastq/fastq.gz/{file} > {result_folder}/1-fastq/sam/{file.split('_')[0]}{add}.sam"
+                commande = f"bwa mem -t{var_ext_cores} {references_folder}/ref_combined_insertion.fasta {result_folder}/1-fastq/fastq.gz/{file} > {result_folder}/1-fastq/sam/{file.split('_')[0]}{add}.sam"
                 try:
                     result=subprocess.check_output(commande, shell=True, universal_newlines=True)
                 except subprocess.CalledProcessError as e:
@@ -144,7 +144,7 @@ def bwa_main():
                             file1=f"{result_folder}/1-fastq/fastq.gz/{name_stockage[0]['id']}_{name_stockage[0]['Read']}"
                             file2=f"{result_folder}/1-fastq/fastq.gz/{name_stockage[1]['id']}_{name_stockage[1]['Read']}"
 
-                            commande = f"bwa mem -t{var_ext_cores} {result_folder}/references_phylogenie/ref_combined_insertion.fasta {file1} {file2} > {result_folder}/1-fastq/sam/{name_stockage[0]['id']}.sam"
+                            commande = f"bwa mem -t{var_ext_cores} {references_folder}/ref_combined_insertion.fasta {file1} {file2} > {result_folder}/1-fastq/sam/{name_stockage[0]['id']}.sam"
 
 
                             try:
@@ -155,7 +155,7 @@ def bwa_main():
         else:
             for file in dossier_fastq:
                 
-                commande = f"bwa mem -t{var_ext_cores} {result_folder}/references_phylogenie/ref_combined_insertion.fasta {result_folder}/1-fastq/fastq.gz/{file} > {result_folder}/1-fastq/sam/{file.split('_')[0]}.sam"
+                commande = f"bwa mem -t{var_ext_cores} {references_folder}/ref_combined_insertion.fasta {result_folder}/1-fastq/fastq.gz/{file} > {result_folder}/1-fastq/sam/{file.split('_')[0]}.sam"
                 try:
                     result=subprocess.check_output(commande, shell=True, universal_newlines=True)
                 except subprocess.CalledProcessError as e:
