@@ -608,13 +608,14 @@ def generation_alignement_txtv1(
     clefs_F_B:list[str],
     duplication_G_A:dict[str,bool], # dictionnaire comprennant les booleans de présences ou non de la duplication au niveau de la protéine G avec les ids pour clés. 
     duplication_G_B:dict[str,bool], #idem
-    result_folder:str
+    result_folder:str,
+    references_folder:str
     ):
     
     # f"{clefs_G_A[y]},{protein},{subunit},{mutation},Fasle,{palivizumab},{FC_IC50_palivizumab},{nirsevimab},{FC_IC50_nirsevimab},{suptavumab},{FC_IC50_suptavumab}\n"
 
     for y in range(len(sequences_bc_prot_G_A)):
-        csv_ref = open(f"{result_folder}/references_phylogenie/Mutations_RSVA.csv","r")
+        csv_ref = open(f"{references_folder}/Mutations_RSVA.csv","r")
         
         with open(f"{result_folder}/10-test_positions/result_proteines/protein_results_type_A/result_{clefs_G_A[y].replace('>', '_')}.txt","a") as sortie_A:
             
@@ -801,7 +802,7 @@ def concat(resistance_palivizumab):
             return result
         
 
-def extraction_txt(path_txt:str, fichier:str, csv_posits, csv_result, csv_final_write,barcode:str,ligne_barcode:list,result_folder:str)->tuple[list,list]:
+def extraction_txt(path_txt:str, fichier:str, csv_posits, csv_result, csv_final_write,barcode:str,ligne_barcode:list,result_folder:str,references_folder:str)->tuple[list,list]:
     
     motif_A = 'type_A'
     motif_B = 'type_B'
@@ -825,7 +826,7 @@ def extraction_txt(path_txt:str, fichier:str, csv_posits, csv_result, csv_final_
         
 
         # ouverture en lecture :
-        csv_ref = open(f"{result_folder}/references_phylogenie/Mutations_RSV{type_result}.csv","r")
+        csv_ref = open(f"{references_folder}/Mutations_RSV{type_result}.csv","r")
         #découpage du fichier csv en lignes
         content =csv.reader(csv_ref)
         
@@ -1113,7 +1114,7 @@ def path_creation(directories:list[str]):
             os.makedirs(directory)
 
 
-def generation_results(result_proteine_type_A,clefs_G_A,result_proteine_type_B,clefs_G_B,result_folder:str):
+def generation_results(result_proteine_type_A,clefs_G_A,result_proteine_type_B,clefs_G_B,result_folder:str,references_folder:str):
 
     liste_lignes_csv_v1 = []
     csv_result = open(f"{result_folder}/10-test_positions/Boolean_table_of_the_presence_of_referenced_mutations_in_the_dataset.csv","a")
@@ -1155,7 +1156,7 @@ def generation_results(result_proteine_type_A,clefs_G_A,result_proteine_type_B,c
 
                             if ligne_barcode != None :
                                 barcode = clefs_G_A[i]
-                                extraction_txt(result_proteine_type_A,fichier_A,csv_posits,csv_result,csv_final_write,barcode,ligne_barcode,result_folder)
+                                extraction_txt(result_proteine_type_A,fichier_A,csv_posits,csv_result,csv_final_write,barcode,ligne_barcode,result_folder,references_folder)
                                 #  TODO! à modifier: v
                                 
 
@@ -1171,7 +1172,7 @@ def generation_results(result_proteine_type_A,clefs_G_A,result_proteine_type_B,c
                             ligne_barcode = liste_lignes_csv_v1[y]
                             if ligne_barcode != None :
                                 barcode = clefs_G_B[i]
-                                extraction_txt(result_proteine_type_B,fichier_B,csv_posits,csv_result,csv_final_write,barcode,ligne_barcode,result_folder)
+                                extraction_txt(result_proteine_type_B,fichier_B,csv_posits,csv_result,csv_final_write,barcode,ligne_barcode,result_folder,references_folder)
 
     csv_result.close()
     csv_posits.close()
@@ -1184,7 +1185,7 @@ def mutation_detection_main():
     #============================================= Variables Globales
 
     result_folder = "./.."
-
+    references_folder = "./../references_phylogenie"
     # path pour la vérification/création du chemin de dossiers ci-dessous
     path = f"{result_folder}/10-test_positions/results"
 
@@ -1196,8 +1197,8 @@ def mutation_detection_main():
     duplication = True
 
     # path pour les sequences de référence des types A et B
-    path_ref = f"{result_folder}/references_phylogenie/ref_combined_insertion.fasta"
-    path_ref_without_duplication = f"{result_folder}/references_phylogenie/RSV_ref.fasta"
+    path_ref = f"{references_folder}/ref_combined_insertion.fasta"
+    path_ref_without_duplication = f"{references_folder}/RSV_ref.fasta"
 
 
     # Directory:
@@ -1234,12 +1235,12 @@ def mutation_detection_main():
 
     path_creation(directories)
 
-    generation_alignement_txtv1(proteines_A, proteine_A_dupli, proteines_B, proteine_B_dupli, sequences_bc_prot_G_A, sequences_bc_prot_G_B, sequences_bc_prot_F_A , sequences_bc_prot_F_B, clefs_G_A, clefs_G_B, clefs_F_A, clefs_F_B, duplication_G_A, duplication_G_B,result_folder) 
+    generation_alignement_txtv1(proteines_A, proteine_A_dupli, proteines_B, proteine_B_dupli, sequences_bc_prot_G_A, sequences_bc_prot_G_B, sequences_bc_prot_F_A , sequences_bc_prot_F_B, clefs_G_A, clefs_G_B, clefs_F_A, clefs_F_B, duplication_G_A, duplication_G_B,result_folder,references_folder) 
 
 
 
 
-    generation_results(result_proteine_type_A,clefs_G_A,result_proteine_type_B,clefs_G_B,result_folder)
+    generation_results(result_proteine_type_A,clefs_G_A,result_proteine_type_B,clefs_G_B,result_folder,references_folder)
 mutation_detection_main()     
 
 #TODO! : chaines de Markov 
