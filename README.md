@@ -5,7 +5,7 @@ The algorithm is able to generate the whole genome sequence, to determine the vi
 
 # Prerequisites
 - Linux Ubuntu 20.04 LTS (or higher)
-- Python v3.4.3 (or higher)
+- Python v3.9 (or higher)
 
 # Installation
 To make the program easier to use and install, once you have downloaded all the files from the repository, you will need to run the ``packets_installation.sh`` script. It will check and install, if necessary, the various packages/software the program needs to function correctly.
