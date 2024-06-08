@@ -49,4 +49,6 @@ The pipeline:
 A video tutorial has been created for easy installation and execution of RSV-GenoScan:  https://youtu.be/8LQlHOGjkfI 
 
 # Citation
-To be submitted
+RSV-GenoScan: An automated pipeline for whole-genome human respiratory syncytial virus (RSV) sequence analysis
+Alexandre Dosbaa, Romane Guilbaud, Anna-Maria Franco Yusti, Valentine Marie Ferré, Charlotte Charpentier, Diane Descamps, Quentin Le Hingrat, Romain Coppée 
+https://doi.org/10.1016/j.jviromet.2024.114938
